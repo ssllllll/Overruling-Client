@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.7.10",
+  "package": "me.overruling.client.mixin.client",
+  "refmap": "mixins.overruling.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinWorld",
+    "MixinEntityPlayerSP",
+    "MixinNetworkManager"
+  ]
+}
