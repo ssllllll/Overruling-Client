@@ -74,7 +74,7 @@ public class Module implements Listenable, Labeled {
             for(Setting setting : getOptions()) {
                 if(setting instanceof ModeSetting) {
                     ModeSetting modeSetting = (ModeSetting)setting;
-                    modeSetting.setValue(modeSetting.getMode((String)configUtils.get(modeSetting.getLabel())));
+                    modeSetting.setValue((int)configUtils.get(modeSetting.getLabel()));
                 } else if(setting instanceof StringSetting) {
                     StringSetting stringSetting = (StringSetting)setting;
                     stringSetting.setValue((String)configUtils.get(stringSetting.getLabel()));
@@ -103,7 +103,7 @@ public class Module implements Listenable, Labeled {
         for(Setting setting : getOptions()) {
             if(setting instanceof ModeSetting) {
                 ModeSetting modeSetting = (ModeSetting)setting;
-                configUtils.set(modeSetting.getLabel(), modeSetting.getValue().name());
+                configUtils.set(modeSetting.getLabel(), modeSetting.getI());
             } else if(setting instanceof StringSetting) {
                 StringSetting stringSetting = (StringSetting)setting;
                 configUtils.set(stringSetting.getLabel(), stringSetting.getValue());

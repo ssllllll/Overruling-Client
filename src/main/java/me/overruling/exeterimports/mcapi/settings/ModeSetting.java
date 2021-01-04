@@ -1,66 +1,49 @@
 package me.overruling.exeterimports.mcapi.settings;
 
+import me.overruling.client.clickgui.components.buttons.settings.bettermode.BetterMode;
+
 public class ModeSetting extends Setting {
-    public final Enum[] modes;
-    private Enum value;
+    public final BetterMode[] modes;
+    private int i = 0;
 
-    public ModeSetting(String label, String[] aliases, Enum value, Enum[] modes) {
+    public ModeSetting(String label, String[] aliases, int defaultIndex, BetterMode[] modes) {
         super(label, aliases);
-        this.value = value;
         this.modes = modes;
+        this.i = defaultIndex;
     }
 
-    public Enum getValue() {
-        return value;
+    public String getValue() {
+        return modes[i].mode;
     }
-
-    public void setValue(Enum value) {
-        if (value != null) {
-            for (int index = 0; index < modes.length; index++) {
-                if (!value.equals(modes[index])) {
-                    this.value = modes[index];
-                    break;
-                }
-            }
-        }
+    public void setValue(int i) {
+        this.i = i;
+        if(i > modes.length-1 || i < 0)
+            this.i = modes.length-1;
     }
-
-    public Enum getMode(String label) {
-        for (Enum mode : modes) {
-            if (mode.name().equalsIgnoreCase(label)) {
-                return mode;
-            }
-        }
+    public int getI() { return i; }
+    public BetterMode[] getModes() { return modes; }
+    public BetterMode getModeByName(String name) {
+        for(int i = 0; i < modes.length; i++)
+            if(modes[i].mode.equalsIgnoreCase(name))
+                return modes[i];
         return null;
+    }
+    public int getModeIndexByName(String name) {
+        for(int i = 0; i < modes.length; i++)
+            if(modes[i].mode.equalsIgnoreCase(name))
+                return i;
+        return -1;
     }
 
     public void increment() {
-        Enum[] array;
-        for (int length = (array = ((Enum) getValue()).getClass().getEnumConstants()).length, index = 0; index < length; index++) {
-            if (array[index].name().equalsIgnoreCase(getValue().name())) {
-                index++;
-                if (index > array.length - 1) {
-                    index = 0;
-                }
-                setValue(array[index]);
-            }
-        }
+        i++;
+        if(i > modes.length-1)
+            i = 0;
     }
 
     public void decrement() {
-        Enum[] array;
-        for (int length = (array = ((Enum) getValue()).getClass().getEnumConstants()).length, index = 0; index < length; index++) {
-            if (array[index].name().equalsIgnoreCase(getValue().name())) {
-                index--;
-                if (index < 0) {
-                    index = array.length - 1;
-                }
-                setValue(array[index]);
-            }
-        }
-    }
-
-    public Enum[] getModes() {
-        return modes;
+        i--;
+        if(i < 0)
+            i = modes.length-1;
     }
 }

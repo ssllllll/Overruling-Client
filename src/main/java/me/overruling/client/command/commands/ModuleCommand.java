@@ -30,15 +30,14 @@ public class ModuleCommand extends Command {
         }
         if(args.length < 2) {
             StringBuilder message = new StringBuilder();
-            message.append(ChatColor.prefix_parse('&', "" +
-                    "&eShowing module info:\n" +
-                    "   &rNAME: '&l" + module.getName() + "&r'\n" +
-                    "   &rKEY: '&l" + Keyboard.getKeyName(module.getKey()) + "&r'" +
-                    "   &rCONFIG: \n"));
+            message.append(ChatColor.prefix_parse('&', "&eShowing module info:\n"));
+            message.append(ChatColor.prefix_parse('&', "   &rNAME: '&l" + module.getName() + "&r'\n"));
+            message.append(ChatColor.prefix_parse('&', "   &rKEY: '&l" + Keyboard.getKeyName(module.getKey()) + "&r'"));
+            message.append(ChatColor.prefix_parse('&', "   &rCONFIG: \n"));
             for(Setting setting : module.getOptions()) {
                 if(setting instanceof ModeSetting) {
                     ModeSetting modeSetting = (ModeSetting)setting;
-                    message.append(ChatColor.prefix_parse('&', "     - " + modeSetting.getLabel() + "(&l" + modeSetting.getValue().name() + "&r) &o[" + ChatColor.enumList(modeSetting.modes) + "]"));
+                    message.append(ChatColor.prefix_parse('&', "     - " + modeSetting.getLabel() + "(&l" + modeSetting.getValue() + "&r) &o[" + ChatColor.betterList(modeSetting.modes) + "]"));
                 } else if(setting instanceof StringSetting) {
                     StringSetting stringSetting = (StringSetting)setting;
                     message.append(ChatColor.prefix_parse('&', "     - " + stringSetting.getLabel() + "(&l\"" + stringSetting.getValue() + "\"&r)"));
@@ -77,8 +76,8 @@ public class ModuleCommand extends Command {
             }
             if(setting instanceof ModeSetting) {
                 ModeSetting modeSetting = (ModeSetting)setting;
-                Enum e = modeSetting.getMode(args[2]);
-                if(e == null) {
+                int e = modeSetting.getModeIndexByName(args[2]);
+                if(e == -1) {
                     mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', "&cInvalid value.")));
                     return;
                 }

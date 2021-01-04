@@ -14,6 +14,7 @@ public class ModeComponent extends Component {
 
     @Override
     public void onClicked(int mouseX, int mouseY, int mouseButton) {
+
         if (isHovering(mouseX, mouseY, 20)) {
             switch (mouseButton) {
                 case 0:
@@ -24,6 +25,7 @@ public class ModeComponent extends Component {
                     break;
             }
         }
+
     }
 
     @Override
