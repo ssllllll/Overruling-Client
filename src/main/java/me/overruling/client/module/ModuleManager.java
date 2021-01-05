@@ -3,6 +3,8 @@ package me.overruling.client.module;
 import me.overruling.client.module.modules.exploit.AntiHungerModule;
 import me.overruling.client.module.modules.exploit.PacketCancellerModule;
 import me.overruling.client.module.modules.gui.ClickGuiModule;
+import me.overruling.client.module.modules.miscellaneous.AutoQMainModule;
+import me.overruling.client.module.modules.movement.AutoWalkModule;
 import me.overruling.client.module.modules.render.FullbrightModule;
 
 import java.util.ArrayList;
@@ -21,9 +23,9 @@ public class ModuleManager {
         modules.add(new AntiHungerModule());
         modules.add(new PacketCancellerModule());
         /* Miscellaneous */
-
+        modules.add(new AutoQMainModule());
         /* Movement */
-
+        modules.add(new AutoWalkModule());
         /* Render */
         modules.add(new FullbrightModule());
         /* World */

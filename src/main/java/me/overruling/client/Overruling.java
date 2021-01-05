@@ -65,15 +65,6 @@ public class Overruling {
         EVENT_BUS.subscribe(new CEventProcessor());
     }
 
-     @Mod.EventHandler
-     public void preInit(FMLInitializationEvent event) {
-        logger.info("woi yoi! -Venuz");
-        logger.info("fernadogamer12");
-        logger.info("warriorcrystal master code 69");
-        logger.info("grego is a furry");
-
-     }
-
     public void saveEverything() {
         for(Module module : getModuleManager().getModules())
             module.save();

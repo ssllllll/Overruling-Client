@@ -8,6 +8,7 @@
   "mixins": [
     "MixinWorld",
     "MixinEntityPlayerSP",
-    "MixinNetworkManager"
+    "MixinNetworkManager",
+    "MixinMovementInputFromOptions"
   ]
 }
