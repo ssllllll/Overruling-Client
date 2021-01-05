@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.Logger;
+
 import org.lwjgl.opengl.Display;
 
 @Mod(modid = Overruling.MOD_ID, name = Overruling.NAME, version = Overruling.VERSION)
@@ -63,6 +64,15 @@ public class Overruling {
 
         EVENT_BUS.subscribe(new CEventProcessor());
     }
+
+     @Mod.EventHandler
+     public void preInit(FMLInitializationEvent event) {
+        logger.info("woi yoi! -Venuz");
+        logger.info("fernadogamer12");
+        logger.info("warriorcrystal master code 69");
+        logger.info("grego is a furry");
+
+     }
 
     public void saveEverything() {
         for(Module module : getModuleManager().getModules())
