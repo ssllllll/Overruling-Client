@@ -1,5 +1,7 @@
 package me.overruling.client.module;
 
+import me.overruling.client.module.modules.exploit.AntiHungerModule;
+import me.overruling.client.module.modules.exploit.PacketCancellerModule;
 import me.overruling.client.module.modules.gui.ClickGuiModule;
 import me.overruling.client.module.modules.render.FullbrightModule;
 
@@ -16,7 +18,8 @@ public class ModuleManager {
         /* Combat */
 
         /* Exploits */
-
+        modules.add(new AntiHungerModule());
+        modules.add(new PacketCancellerModule());
         /* Miscellaneous */
 
         /* Movement */
