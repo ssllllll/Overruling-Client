@@ -1,6 +1,7 @@
 package me.overruling.client.util;
 
 import me.overruling.client.Overruling;
+import me.overruling.client.clickgui.components.buttons.settings.bettermode.BetterMode;
 
 public class ChatColor {
     public static String parse(char c, String txt) { return txt.replaceAll(String.valueOf(c), "\u00a7"); }
@@ -9,6 +10,15 @@ public class ChatColor {
         StringBuilder list = new StringBuilder();
         for(int i = 0; i < enums.length; i++) {
             list.append(enums[i].name());
+            if(enums.length-1!=i)
+                list.append(", ");
+        }
+        return list.toString();
+    }
+    public static String betterList(BetterMode[] enums) {
+        StringBuilder list = new StringBuilder();
+        for(int i = 0; i < enums.length; i++) {
+            list.append(enums[i].mode);
             if(enums.length-1!=i)
                 list.append(", ");
         }

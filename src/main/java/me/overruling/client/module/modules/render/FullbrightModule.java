@@ -1,5 +1,6 @@
 package me.overruling.client.module.modules.render;
 
+import me.overruling.client.clickgui.components.buttons.settings.bettermode.BetterMode;
 import me.overruling.client.event.custom.CustomEvent;
 import me.overruling.client.event.custom.networkmanager.NetworkPacketEvent;
 import me.overruling.client.event.custom.player.PlayerUpdateEvent;
@@ -14,7 +15,7 @@ import net.minecraft.network.play.server.SPacketEntityEffect;
 import net.minecraft.potion.PotionEffect;
 
 public class FullbrightModule extends Module {
-    public static final ModeSetting mode = new ModeSetting("Mode", null, Mode.GAMMA, Mode.values());
+    public static final ModeSetting mode = new ModeSetting("Mode", null, 0, BetterMode.construct("GAMMA", "POTION"));
     public static final ToggleableSetting effects = new ToggleableSetting("Effects", null, false);
 
     private float previousSetting;
@@ -37,16 +38,16 @@ public class FullbrightModule extends Module {
     public void onDisable() {
         super.onDisable();
 
-        if(mode.getValue() == Mode.POTION) /* POTION */
+        if(mode.getValue().equalsIgnoreCase("POTION")) /* POTION */
             mc.player.removePotionEffect(MobEffects.NIGHT_VISION);
         mc.gameSettings.gammaSetting = previousSetting;
     }
 
     @EventHandler
     private Listener<PlayerUpdateEvent> updateEventListener = new Listener<>(event -> {
-        if(mode.getValue() == Mode.GAMMA) /* GAMMA */
+        if(mode.getValue().equalsIgnoreCase("GAMMA")) /* GAMMA */
             mc.gameSettings.gammaSetting = 1000.0f;
-        if(mode.getValue() == Mode.POTION) /* POTION */
+        if(mode.getValue().equalsIgnoreCase("POTION")) /* POTION */
             mc.player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 5210));
     });
 
@@ -60,7 +61,7 @@ public class FullbrightModule extends Module {
     });
 
     @Override
-    public String getMeta() { return mode.getValue().name(); }
+    public String getMeta() { return mode.getValue(); }
 
     public enum Mode { GAMMA, POTION }
 }
