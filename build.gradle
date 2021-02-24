@@ -8,11 +8,11 @@ buildscript {
         }
         maven {
             name = 'forge'
-            url = 'http://files.minecraftforge.net/maven'
+            url = 'https://files.minecraftforge.net/maven'
         }
         maven {
             name = 'SpongePowered'
-            url = 'http://repo.spongepowered.org/maven'
+            url = 'https://repo.spongepowered.org/maven'
         }
         maven {
             name = 'sonatype'
@@ -26,7 +26,7 @@ buildscript {
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
         classpath 'com.google.code.gson:gson:2.8.6'
         classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.0.9'
 
@@ -57,7 +57,7 @@ minecraft {
     version = project.forgeVersion
     runDir = 'run'
     mappings = project.mcpVersion
-    coreMod = 'me.overruling.client.mixin.MixinLoaderForge'
+    coreMod = 'me.htrewrite.client.mixin.MixinLoaderForge'
     makeObfSourceJar = false
 
     replaceIn 'reference/Reference.java'
@@ -73,7 +73,7 @@ minecraft {
 repositories {
     maven {
         name = 'spongepowered-repo'
-        url = 'http://repo.spongepowered.org/maven/'
+        url = 'https://repo.spongepowered.org/maven/'
     }
     maven {
         name = 'impactdevelopment-repo'
@@ -178,7 +178,7 @@ shadowJar {
 
 mixin {
     defaultObfuscationEnv searge
-    add sourceSets.main, 'mixins.overruling.refmap.json'
+    add sourceSets.main, 'mixins.htrewrite.refmap.json'
 }
 
 reobf {
@@ -191,13 +191,13 @@ reobf {
 jar {
     manifest {
         attributes(
-                'MixinConfigs': 'mixins.overruling.json',
+                'MixinConfigs': 'mixins.htrewrite.json',
                 'tweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
                 'TweakOrder': 0,
                 'FMLCorePluginContainsFMLMod': 'true',
-                'FMLCorePlugin': 'me.overruling.client.mixin.MixinLoaderForge',
+                'FMLCorePlugin': 'me.htrewrite.client.mixin.MixinLoaderForge',
                 'ForceLoadAsMod': 'true',
-                'FMLAT': 'overruling_at.cfg'
+                'FMLAT': 'htrewrite_at.cfg'
         )
     }
 }

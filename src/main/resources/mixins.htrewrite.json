@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.7.10",
+  "package": "me.htrewrite.client.mixin.client",
+  "refmap": "mixins.htrewrite.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinWorld",
+    "MixinEntityPlayerSP",
+    "MixinNetworkManager",
+    "MixinMovementInputFromOptions",
+    "MixinEntity",
+    "MixinEntityLivingBase",
+    "MixinEntityPlayer"
+  ]
+}
