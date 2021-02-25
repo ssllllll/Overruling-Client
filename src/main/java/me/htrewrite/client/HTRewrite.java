@@ -4,6 +4,7 @@ import me.htrewrite.client.clickgui.ClickGuiScreen;
 import me.htrewrite.client.command.CommandManager;
 import me.htrewrite.client.event.CEventProcessor;
 import me.htrewrite.client.event.EventProcessor;
+import me.htrewrite.client.manager.FriendManager;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleManager;
 import me.htrewrite.exeterimports.keybind.KeybindManager;
@@ -21,7 +22,7 @@ import org.lwjgl.opengl.Display;
 public class HTRewrite {
     public static final String MOD_ID = "htrewrite";
     public static final String NAME = "HT+Rewrite";
-    public static final String VERSION = "b0.1";
+    public static final String VERSION = "a1.0";
 
     public static final EventBus EVENT_BUS = new EventManager();
 
@@ -29,6 +30,7 @@ public class HTRewrite {
     public static Logger logger;
 
     private KeybindManager keybindManager;
+    private FriendManager friendManager;
     private ModuleManager moduleManager;
     private CommandManager commandManager;
 
@@ -50,6 +52,8 @@ public class HTRewrite {
 
         keybindManager = new KeybindManager();
 
+        friendManager = new FriendManager();
+
         moduleManager = new ModuleManager();
         moduleManager.setModules();
         for(Module module : moduleManager.getModules())
@@ -66,11 +70,14 @@ public class HTRewrite {
     }
 
     public void saveEverything() {
+        friendManager.configUtils.save();
         for(Module module : getModuleManager().getModules())
             module.save();
+        commandManager.configUtils.save();
     }
 
     public KeybindManager getKeybindManager() { return keybindManager; }
+    public FriendManager getFriendManager() { return friendManager; }
     public ModuleManager getModuleManager() { return moduleManager; }
     public CommandManager getCommandManager() { return commandManager; }
 

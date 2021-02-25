@@ -73,7 +73,7 @@ public abstract class PanelComponent extends Component {
 
     @Override
     public int getHeight() {
-        int height = StaticScrollOffset.offset + 20;
+        int height = 20;
         for (Component component : components) {
             height += component.getHeight();
         }

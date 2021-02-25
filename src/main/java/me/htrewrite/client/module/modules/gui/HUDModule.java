@@ -2,6 +2,7 @@ package me.htrewrite.client.module.modules.gui;
 
 import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.clickgui.components.buttons.settings.bettermode.BetterMode;
+import me.htrewrite.client.event.custom.event.RenderGetFOVModifierEvent;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleType;
 import me.htrewrite.client.util.ChatColor;
@@ -27,6 +28,8 @@ public class HUDModule extends Module {
     public static final ToggleableSetting fps = new ToggleableSetting("FPS", null, true);
     public static final ToggleableSetting arraylist = new ToggleableSetting("ArrayList", null, true);
     public static final ValueSetting<Double> watermarkScale = new ValueSetting<>("WaterSize", null, 1.5D, 0.5D, 3D);
+    public static final ToggleableSetting customFovEnabled = new ToggleableSetting("CustomFovEnabled", null, false);
+    public static final ValueSetting<Double> customFov = new ValueSetting<>("CustomFov", null, 0D, 170D, 10D);
 
     public HUDModule() {
         super("HUD", "Interface", ModuleType.Gui, 0);
@@ -36,11 +39,22 @@ public class HUDModule extends Module {
         addOption(position.setVisibility(a -> setting.getI() == 0));
         addOption(fps.setVisibility(a -> setting.getI() == 0));
         addOption(arraylist.setVisibility(a -> setting.getI() == 0));
+        addOption(customFovEnabled.setVisibility(a -> setting.getI() == 0));
         /* EDIT */
         addOption(watermarkScale.setVisibility(a -> setting.getI() == 1));
+        addOption(customFov.setVisibility(a -> setting.getI() == 1));
 
         endOption();
     }
+
+    @EventHandler
+    private Listener<RenderGetFOVModifierEvent> fovModifierEventListener = new Listener<>(event -> {
+        if(!customFovEnabled.isEnabled())
+            return;
+
+        event.cancel();
+        event.setFOV(customFov.getValue().floatValue());
+    });
 
     @EventHandler
     private Listener<RenderGameOverlayEvent.Text> textListener = new Listener<>(event -> {

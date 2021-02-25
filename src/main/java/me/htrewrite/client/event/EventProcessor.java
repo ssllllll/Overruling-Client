@@ -7,12 +7,14 @@ import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.Wrapper;
 import me.htrewrite.client.command.CommandManager;
 import me.htrewrite.client.command.CommandReturnStatus;
+import me.htrewrite.client.event.custom.event.RenderGetFOVModifierEvent;
 import me.htrewrite.client.event.custom.player.PlayerDisconnectEvent;
 import me.htrewrite.client.event.custom.render.RenderEvent;
 import me.htrewrite.client.module.Module;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.ClientChatEvent;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -86,4 +88,11 @@ public class EventProcessor {
 
     @SubscribeEvent public void startInteract(LivingEntityUseItemEvent.Start event) { EVENT_BUS.post(event); }
     @SubscribeEvent public void stopInteract(LivingEntityUseItemEvent.Stop event) { EVENT_BUS.post(event); }
+    @SubscribeEvent
+    public void getFOVModifier(EntityViewRenderEvent.FOVModifier event) {
+        RenderGetFOVModifierEvent renderGetFOVModifierEvent = new RenderGetFOVModifierEvent((float)event.getRenderPartialTicks(), true);
+        EVENT_BUS.post(renderGetFOVModifierEvent);
+        if(renderGetFOVModifierEvent.isCancelled())
+            renderGetFOVModifierEvent.setFOV(event.getFOV());
+    }
 }

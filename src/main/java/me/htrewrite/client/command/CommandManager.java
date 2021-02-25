@@ -2,17 +2,19 @@ package me.htrewrite.client.command;
 
 import static me.htrewrite.client.command.CommandReturnStatus.*;
 
+import me.htrewrite.client.command.commands.FriendCommand;
 import me.htrewrite.client.command.commands.HelpCommand;
 import me.htrewrite.client.command.commands.ModuleCommand;
+import me.htrewrite.client.command.commands.PrefixCommand;
 import me.htrewrite.client.util.ConfigUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 
 public class CommandManager {
-    public static String prefix = ".";
+    public static String prefix = "'";
 
-    protected final ConfigUtils configUtils;
+    public final ConfigUtils configUtils;
     private ArrayList<Command> commands;
 
     public CommandManager() {
@@ -22,8 +24,10 @@ public class CommandManager {
         else prefix = (String)object;
 
         commands = new ArrayList<Command>();
+        commands.add(new FriendCommand());
         commands.add(new HelpCommand());
         commands.add(new ModuleCommand());
+        // commands.add(new PrefixCommand());
     }
 
     public Command get(String alias) {
@@ -48,7 +52,6 @@ public class CommandManager {
 
     public void setPrefix(String newPrefix) {
         CommandManager.prefix = newPrefix;
-        configUtils.set("prefix", CommandManager.prefix);
-        configUtils.save();
+        configUtils.set("prefix", newPrefix);
     }
 }

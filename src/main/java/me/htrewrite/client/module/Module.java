@@ -31,7 +31,7 @@ public class Module implements Listenable, Labeled {
         this.mc = Minecraft.getMinecraft();
         this.htRewrite = HTRewrite.INSTANCE;
         this.key = default_key;
-        this.configUtils = new ConfigUtils(name, "modules");
+        this.configUtils = new ConfigUtils(name, "modules\\" + category.name());
     }
 
     @Override public String getLabel() { return name; }

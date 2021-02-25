@@ -7,10 +7,7 @@ import me.htrewrite.client.module.modules.exploit.PacketCancellerModule;
 import me.htrewrite.client.module.modules.gui.ClickGuiModule;
 import me.htrewrite.client.module.modules.gui.HUDModule;
 import me.htrewrite.client.module.modules.gui.NotificationsModule;
-import me.htrewrite.client.module.modules.miscellaneous.AutoHappyMealModule;
-import me.htrewrite.client.module.modules.miscellaneous.AutoQMainModule;
-import me.htrewrite.client.module.modules.miscellaneous.ChatModule;
-import me.htrewrite.client.module.modules.miscellaneous.MobOwnerModule;
+import me.htrewrite.client.module.modules.miscellaneous.*;
 import me.htrewrite.client.module.modules.movement.AutoWalkModule;
 import me.htrewrite.client.module.modules.movement.ElytraFlyModule;
 import me.htrewrite.client.module.modules.render.FullbrightModule;
@@ -34,10 +31,12 @@ public class ModuleManager {
         modules.add(new AntiHungerModule());
         modules.add(new PacketCancellerModule());
         /* Miscellaneous */
-        modules.add(new AutoHappyMealModule());
+        // modules.add(new AutoHappyMealModule()); /* CUMMING VERY HARD */ \\
         modules.add(new AutoQMainModule());
         modules.add(new ChatModule());
+        modules.add(new MiddleClickModule());
         modules.add(new MobOwnerModule());
+        modules.add(new XCarryModule());
         /* Movement */
         modules.add(new AutoWalkModule());
         modules.add(new ElytraFlyModule());
