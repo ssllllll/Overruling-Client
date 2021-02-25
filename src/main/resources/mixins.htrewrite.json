@@ -12,6 +12,7 @@
     "MixinMovementInputFromOptions",
     "MixinEntity",
     "MixinEntityLivingBase",
-    "MixinEntityPlayer"
+    "MixinEntityPlayer",
+    "MixinGuiScreen"
   ]
 }

@@ -1,5 +1,6 @@
 package me.htrewrite.client.module;
 
+import me.htrewrite.client.module.modules.combat.AutoCityModule;
 import me.htrewrite.client.module.modules.combat.AutoTotemModule;
 import me.htrewrite.client.module.modules.combat.InstantBurrowModule;
 import me.htrewrite.client.module.modules.exploit.AntiHungerModule;
@@ -10,9 +11,12 @@ import me.htrewrite.client.module.modules.gui.NotificationsModule;
 import me.htrewrite.client.module.modules.miscellaneous.*;
 import me.htrewrite.client.module.modules.movement.AutoWalkModule;
 import me.htrewrite.client.module.modules.movement.ElytraFlyModule;
+import me.htrewrite.client.module.modules.render.CityESPModule;
 import me.htrewrite.client.module.modules.render.FullbrightModule;
+import me.htrewrite.client.module.modules.render.ShulkerPreviewModule;
 import me.htrewrite.client.module.modules.world.AutoTunnelModule;
 import me.htrewrite.client.module.modules.world.EntityLoggerModule;
+import me.htrewrite.client.module.modules.world.LawnmowerModule;
 
 import java.util.ArrayList;
 
@@ -25,6 +29,7 @@ public class ModuleManager {
 
     public void setModules() {
         /* Combat */
+        modules.add(new AutoCityModule());
         modules.add(new AutoTotemModule());
         modules.add(new InstantBurrowModule());
         /* Exploits */
@@ -41,10 +46,13 @@ public class ModuleManager {
         modules.add(new AutoWalkModule());
         modules.add(new ElytraFlyModule());
         /* Render */
+        modules.add(new CityESPModule());
         modules.add(new FullbrightModule());
+        modules.add(new ShulkerPreviewModule());
         /* World */
         modules.add(new AutoTunnelModule());
         modules.add(new EntityLoggerModule());
+        modules.add(new LawnmowerModule());
         /* Gui */
         modules.add(new ClickGuiModule());
         modules.add(new HUDModule());
