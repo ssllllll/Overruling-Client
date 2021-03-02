@@ -7,5 +7,6 @@
       "mcversion": "${version_minecraft}",
       "url": "",
       "updateUrl": "",
-      "authorList": ["PK2_Stimpy", "VenuzWeeb", "CGrego3211", "WarriorCrystal"]
+      "authorList": ["PK2_Stimpy", "CGrego3211"]
     }
+]

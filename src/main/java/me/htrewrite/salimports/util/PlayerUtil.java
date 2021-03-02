@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.util.UUIDTypeAdapter;
 import me.htrewrite.client.Wrapper;
+import me.htrewrite.client.util.ClientAuthenticator;
 import me.htrewrite.client.util.Timer;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.client.Minecraft;

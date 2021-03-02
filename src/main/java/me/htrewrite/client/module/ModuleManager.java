@@ -17,6 +17,7 @@ import me.htrewrite.client.module.modules.render.ShulkerPreviewModule;
 import me.htrewrite.client.module.modules.world.AutoTunnelModule;
 import me.htrewrite.client.module.modules.world.EntityLoggerModule;
 import me.htrewrite.client.module.modules.world.LawnmowerModule;
+import me.htrewrite.client.module.modules.world.SpeedmineModule;
 
 import java.util.ArrayList;
 
@@ -53,6 +54,7 @@ public class ModuleManager {
         modules.add(new AutoTunnelModule());
         modules.add(new EntityLoggerModule());
         modules.add(new LawnmowerModule());
+        modules.add(new SpeedmineModule());
         /* Gui */
         modules.add(new ClickGuiModule());
         modules.add(new HUDModule());

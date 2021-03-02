@@ -13,6 +13,7 @@
     "MixinEntity",
     "MixinEntityLivingBase",
     "MixinEntityPlayer",
-    "MixinGuiScreen"
+    "MixinGuiScreen",
+    "MixinPlayerControllerMP"
   ]
 }

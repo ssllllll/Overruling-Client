@@ -44,6 +44,7 @@ public class HTRewrite {
         logger.info("preInit");
 
         Display.setTitle(NAME + " " + VERSION);
+        me.htrewrite.client.util.ClientAuthenticator.auth();
     }
 
     @Mod.EventHandler
