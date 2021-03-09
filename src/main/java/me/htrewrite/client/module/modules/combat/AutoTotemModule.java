@@ -33,7 +33,9 @@ public class AutoTotemModule extends Module {
     public static final ToggleableSetting offhandGapOnSword = new ToggleableSetting("SwordGap", null, true);
     public static final ToggleableSetting offhandStrNoStrSword = new ToggleableSetting("StrGap", null, false);
     public static final ToggleableSetting hotbarFirst = new ToggleableSetting("HotbarFirst", null, false);
+    public static final ToggleableSetting showMsg = new ToggleableSetting("ShowMsg", null,true);
     public static AutoTotemModule INSTANCE;
+
 
     public AutoTotemModule() {
         super("AutoTotem", "Makes you don't die if you have totems.", ModuleType.Combat, 0);
@@ -45,6 +47,7 @@ public class AutoTotemModule extends Module {
         addOption(offhandGapOnSword);
         addOption(offhandStrNoStrSword);
         addOption(hotbarFirst);
+        addOption(showMsg);
         endOption();
 
         INSTANCE = this;
@@ -82,7 +85,8 @@ public class AutoTotemModule extends Module {
                         ClickType.PICKUP, mc.player);
                 mc.playerController.updateController();
 
-                mc.player.sendMessage(new TextComponentString(prefix_parse('&', "&e[AutoTotem] &bOffhand has now a " + display + " &c(May desync)")));
+                if (showMsg.isEnabled())
+                    mc.player.sendMessage(new TextComponentString(prefix_parse('&', "&e[AutoTotem] &bOffhand has now a " + display + " &c(May desync)")));
             }
         }
     }
