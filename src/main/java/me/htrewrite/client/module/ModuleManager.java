@@ -13,6 +13,7 @@ import me.htrewrite.client.module.modules.movement.AutoWalkModule;
 import me.htrewrite.client.module.modules.movement.ElytraFlyModule;
 import me.htrewrite.client.module.modules.render.CityESPModule;
 import me.htrewrite.client.module.modules.render.FullbrightModule;
+import me.htrewrite.client.module.modules.render.HandProgressModule;
 import me.htrewrite.client.module.modules.render.ShulkerPreviewModule;
 import me.htrewrite.client.module.modules.world.AutoTunnelModule;
 import me.htrewrite.client.module.modules.world.EntityLoggerModule;
@@ -47,6 +48,7 @@ public class ModuleManager {
         /* Render */
         modules.add(new CityESPModule());
         modules.add(new FullbrightModule());
+        modules.add(new HandProgressModule());
         modules.add(new ShulkerPreviewModule());
         /* World */
         modules.add(new AutoTunnelModule());
