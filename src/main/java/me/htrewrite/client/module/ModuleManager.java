@@ -38,8 +38,6 @@ public class ModuleManager {
         modules.add(new AntiHungerModule());
         modules.add(new PacketCancellerModule());
         /* Miscellaneous */
-        // modules.add(new AutoHappyMealModule()); /* CUMMING VERY HARD */ \\
-        modules.add(new AutoQMainModule());
         modules.add(new ChatModule());
         modules.add(new MiddleClickModule());
         modules.add(new MobOwnerModule());
