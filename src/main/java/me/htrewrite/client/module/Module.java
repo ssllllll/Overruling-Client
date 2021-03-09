@@ -2,11 +2,13 @@ package me.htrewrite.client.module;
 
 import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.event.custom.module.ModuleToggleEvent;
+import me.htrewrite.client.util.ChatColor;
 import me.htrewrite.client.util.ConfigUtils;
 import me.htrewrite.exeterimports.mcapi.interfaces.Labeled;
 import me.htrewrite.exeterimports.mcapi.settings.*;
 import me.zero.alpine.fork.listener.Listenable;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.ArrayList;
 
@@ -123,4 +125,6 @@ public class Module implements Listenable, Labeled {
         }
         configUtils.save();
     }
+
+    public void sendMessage(String message) { mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', "&e[" + getName() + "] &b" + message))); }
 }
