@@ -32,6 +32,6 @@ public class AutoGearModule extends Module {
     public void onEnable() {
         super.onEnable();
 
-        String curConfigName = AutoGear
+       // String curConfigName = AutoGear
     }
 }

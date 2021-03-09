@@ -3,6 +3,7 @@ package me.htrewrite.client.module.modules.gui;
 import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.event.custom.module.ModuleToggleEvent;
 import me.htrewrite.client.event.custom.networkmanager.NetworkPacketEvent;
+import me.htrewrite.client.event.custom.player.PlayerUpdateEvent;
 import me.htrewrite.client.manager.FriendManager;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleType;
@@ -11,6 +12,7 @@ import me.htrewrite.exeterimports.mcapi.settings.ToggleableSetting;
 import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.util.text.TextComponentString;
 import scala.reflect.internal.Trees;
@@ -58,21 +60,22 @@ public class NotificationsModule extends Module {
                 }
 
                 if (entity == mc.player) return;
-                if (friendManager.isFriend(entity.getName())){
-
-
-                    
-
-
-
-                }
-
-
-
-
+                sendMessage("&b"+entity.getName()+" has poped "+count+" totems!");
             }
         }
     });
 
+    @EventHandler
+    private Listener<PlayerUpdateEvent> updateEventListener = new Listener<>(event -> {
+        for (EntityPlayer player : mc.world.playerEntities){
+            if (!totem_pop_counter.containsKey(player)) continue;
+            if (player.isDead||player.getHealth()<=0){
+                int count=totem_pop_counter.get(player.getName());
+                totem_pop_counter.remove(player.getName());
+                if (player== mc.player) continue;
+                sendMessage("&c"+player.getName()+" died after poping "+count+" totems!");
+            }
+        }
 
+    });
 }
