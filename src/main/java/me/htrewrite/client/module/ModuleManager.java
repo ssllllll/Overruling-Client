@@ -39,6 +39,7 @@ public class ModuleManager {
         modules.add(new PacketCancellerModule());
         /* Miscellaneous */
         modules.add(new ChatModule());
+        modules.add(new FakePlayerModule());
         modules.add(new MiddleClickModule());
         modules.add(new MobOwnerModule());
         modules.add(new XCarryModule());
