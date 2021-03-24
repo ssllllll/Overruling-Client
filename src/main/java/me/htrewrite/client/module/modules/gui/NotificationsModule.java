@@ -76,7 +76,7 @@ public class NotificationsModule extends Module {
 
         for (EntityPlayer player : mc.world.playerEntities){
             if (!totem_pop_counter.containsKey(player)) continue;
-            if (player.isDead||player.getHealth()<=0){
+            if (player.isDead||player.getHealth()<=0.0f){
                 int count=totem_pop_counter.get(player.getName());
                 totem_pop_counter.remove(player.getName());
                 if (player== mc.player) continue;

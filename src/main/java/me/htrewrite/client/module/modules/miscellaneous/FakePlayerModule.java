@@ -35,8 +35,7 @@ public class FakePlayerModule extends Module {
     }
 
     public void onDisable() {
-        if (mc.world != null) {
+        if (mc.world != null)
             mc.world.removeEntityFromWorld(-1234);
-        }
     }
 }
