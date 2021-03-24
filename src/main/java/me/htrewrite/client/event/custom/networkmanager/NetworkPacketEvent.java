@@ -5,10 +5,13 @@ import net.minecraft.network.Packet;
 
 public class NetworkPacketEvent extends CustomEvent {
     private Packet packet;
+    public final boolean reading;
 
-    public NetworkPacketEvent(Packet packet) {
+    public NetworkPacketEvent(Packet packet, Era era, boolean reading) {
         super();
+        this.setEra(era);
         this.packet = packet;
+        this.reading = reading;
     }
 
     public Packet getPacket() { return packet; }

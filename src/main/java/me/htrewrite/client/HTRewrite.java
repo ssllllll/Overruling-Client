@@ -22,7 +22,7 @@ import org.lwjgl.opengl.Display;
 public class HTRewrite {
     public static final String MOD_ID = "htrewrite";
     public static final String NAME = "HT+Rewrite";
-    public static final String VERSION = "a1.0";
+    public static final String VERSION = "a1.1";
 
     public static final EventBus EVENT_BUS = new EventManager();
 

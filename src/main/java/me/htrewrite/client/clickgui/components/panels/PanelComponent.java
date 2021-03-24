@@ -45,7 +45,6 @@ public abstract class PanelComponent extends Component {
         if (isDragging()) {
             setPositionX(getDraggingPositionX() + mouseX);
             setPositionY(getDraggingPositionY() + mouseY);
-            //TODO colliding math, make panels not collide; maybe alignment lines
         }
         drawBorderedRectReliant(getPositionX(), StaticScrollOffset.offset + getPositionY(), getPositionX() + getWidth(),
                 StaticScrollOffset.offset + getPositionY() + (open ? getHeight() : 20), 1.7F,

@@ -15,7 +15,7 @@ public class ValueComponent extends Component {
 
     @Override
     public void onClicked(int mouseX, int mouseY, int mouseButton) {
-        //TODO slidING or avo type shit
+        //TODO: Slide 1km3lk12m33m12kl3
     }
 
     @Override

@@ -1,6 +1,7 @@
 package me.htrewrite.client.module.modules.gui;
 
 import me.htrewrite.client.HTRewrite;
+import me.htrewrite.client.event.custom.CustomEvent;
 import me.htrewrite.client.event.custom.module.ModuleToggleEvent;
 import me.htrewrite.client.event.custom.networkmanager.NetworkPacketEvent;
 import me.htrewrite.client.event.custom.player.PlayerUpdateEvent;
@@ -47,6 +48,11 @@ public class NotificationsModule extends Module {
 
     @EventHandler
     private Listener<NetworkPacketEvent> packetEventListener = new Listener<>(event -> {
+        if(!totemNotifications.isEnabled())
+            return;
+        if(!(event.getEra() == CustomEvent.Era.PRE && event.reading))
+            return;
+
         if (event.getPacket() instanceof SPacketEntityStatus) {
             SPacketEntityStatus packetEntityStatus = (SPacketEntityStatus) event.getPacket();
             if (packetEntityStatus.getOpCode()==35){
@@ -55,9 +61,7 @@ public class NotificationsModule extends Module {
                 if (totem_pop_counter.containsKey(entity.getName())) {
                     count = totem_pop_counter.get(entity.getName());
                     totem_pop_counter.put(entity.getName(), ++count);
-                } else {
-                    totem_pop_counter.put(entity.getName(), count);
-                }
+                } else totem_pop_counter.put(entity.getName(), count);
 
                 if (entity == mc.player) return;
                 sendMessage("&b"+entity.getName()+" has poped "+count+" totems!");
@@ -67,6 +71,9 @@ public class NotificationsModule extends Module {
 
     @EventHandler
     private Listener<PlayerUpdateEvent> updateEventListener = new Listener<>(event -> {
+        if(!totemNotifications.isEnabled())
+            return;
+
         for (EntityPlayer player : mc.world.playerEntities){
             if (!totem_pop_counter.containsKey(player)) continue;
             if (player.isDead||player.getHealth()<=0){
@@ -76,6 +83,17 @@ public class NotificationsModule extends Module {
                 sendMessage("&c"+player.getName()+" died after poping "+count+" totems!");
             }
         }
-
     });
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
+        totem_pop_counter.clear();
+    }
+
+    @Override
+    public void onEnable() {
+        super.onEnable();
+        totem_pop_counter.clear();
+    }
 }
