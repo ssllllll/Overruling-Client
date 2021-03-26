@@ -10,9 +10,11 @@ import me.htrewrite.exeterimports.mcapi.settings.ModeSetting;
 import me.htrewrite.exeterimports.mcapi.settings.StringSetting;
 import me.htrewrite.exeterimports.mcapi.settings.ToggleableSetting;
 import me.htrewrite.exeterimports.mcapi.settings.ValueSetting;
+import me.htrewrite.phobosimports.BlockUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.*;
@@ -77,7 +79,7 @@ public class AutoCrystalModule extends Module {
     public static final ToggleableSetting holdFacePlace = new ToggleableSetting("HoldFacePlace", null, false);
     public static final ToggleableSetting holdFaceBreak = new ToggleableSetting("HoldFaceBreak", null, false);
     public static final ToggleableSetting slowFaceBreak = new ToggleableSetting("SlowFaceBreak", null, false);
-    public static final ToggleableSetting actualFaceBreak = new ToggleableSetting("ActuallySlow", null, false);
+    public static final ToggleableSetting actualSlowBreak = new ToggleableSetting("ActuallySlow", null, false);
     public static final ValueSetting<Double> facePlaceSpeed = new ValueSetting<>("FaceSpeed", null, 500D, 0D, 500D);
     public static final ToggleableSetting antiNaked = new ToggleableSetting("AntiNaked", null, true);
     public static final ValueSetting<Double> range = new ValueSetting<>("Range", null, 12D, .1D, 20D);
@@ -114,6 +116,7 @@ public class AutoCrystalModule extends Module {
     public static final ModeSetting logic = new ModeSetting("Logic", null, Logic.BREAKPLACE.ordinal(), BetterMode.construct(enumToStringArray(Logic.values())));
     public static final ModeSetting damageSync = new ModeSetting("DamageSync", null, DamageSync.NONE.ordinal(), BetterMode.construct(enumToStringArray(DamageSync.values())));
     public static final ValueSetting<Double> damageSyncTime = new ValueSetting<>("SyncDelay", null, 500D, 0D, 500D);
+    public static final ValueSetting<Double> dropOff = new ValueSetting<>("DropOff", null, 5D, 0D, 10D);
     public static final ValueSetting<Double> confirm = new ValueSetting<>("Confirm", null, 250D, 0D, 1000D);
     public static final ToggleableSetting syncedFeetPlace = new ToggleableSetting("FeetSync", null, false);
     public static final ToggleableSetting fullSync = new ToggleableSetting("FullSync", null, false);
@@ -188,6 +191,109 @@ public class AutoCrystalModule extends Module {
 
     public AutoCrystalModule() {
         super("AutoCrystal", "Places and breaks crystals.", ModuleType.Combat, 0);
+        addOption(setting);
+        addOption(raytrace.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(place.setVisibility(v -> setting.getValue().contentEquals("PLACE")));
+        addOption(placeDelay.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled()));
+        addOption(placeRange.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled()));
+        addOption(minDamage.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled()));
+        addOption(maxSelfPlace.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled()));
+        addOption(wasteAmount.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled()));
+        addOption(wasteMinDmgAmount.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled()));
+        addOption(facePlace.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled()));
+        addOption(placetrace.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled() && !raytrace.getValue().contentEquals("NONE") && !raytrace.getValue().contentEquals("BREAK")));
+        addOption(antiSurround.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled()));
+        addOption(limitFacePlace.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled()));
+        addOption(oneDot15.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled()));
+        addOption(doublePop.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled()));
+        addOption(popHealth.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled() && doublePop.isEnabled()));
+        addOption(popDamage.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled() && doublePop.isEnabled()));
+        addOption(popTime.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled() && doublePop.isEnabled()));
+        addOption(explode.setVisibility(v -> setting.getValue().contentEquals("BREAK")));
+        addOption(switchMode.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled()));
+        addOption(breakDelay.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled()));
+        addOption(breakRange.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled()));
+        addOption(packets.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled()));
+        addOption(maxSelfBreak.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled()));
+        addOption(breaktrace.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled() && !raytrace.getValue().equalsIgnoreCase("NONE") && !raytrace.getValue().equalsIgnoreCase("PLACE")));
+        addOption(manual.setVisibility(v -> setting.getValue().contentEquals("BREAK")));
+        addOption(manualMinDmg.setVisibility(v -> setting.getValue().contentEquals("BREAK") && manual.isEnabled()));
+        addOption(manualBreak.setVisibility(v -> setting.getValue().contentEquals("BREAK") && manual.isEnabled()));
+        addOption(sync.setVisibility(v -> setting.getValue().contentEquals("BREAK") && (explode.isEnabled() || manual.isEnabled())));
+        addOption(instant.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled() && place.isEnabled()));
+        addOption(instantTimer.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled() && place.isEnabled() && instant.isEnabled()));
+        addOption(resetBreakTimer.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled() && place.isEnabled() && instant.isEnabled()));
+        addOption(predictDelay.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled() && place.isEnabled() && instant.isEnabled() && instantTimer.getValue().contentEquals("PREDICT")));
+        addOption(predictCalc.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled() && place.isEnabled() && instant.isEnabled()));
+        addOption(superSafe.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled() && place.isEnabled() && instant.isEnabled()));
+        addOption(antiCommit.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled() && place.isEnabled() && instant.isEnabled()));
+        addOption(render.setVisibility(v -> setting.getValue().contentEquals("RENDER")));
+        addOption(colorSync.setVisibility(v -> setting.getValue().contentEquals("RENDER")));
+        addOption(box.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled()));
+        addOption(outline.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled()));
+        addOption(text.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled()));
+        addOption(red.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled()));
+        addOption(green.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled()));
+        addOption(blue.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled()));
+        addOption(alpha.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled()));
+        addOption(boxAlpha.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled() && box.isEnabled()));
+        addOption(lineWidth.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled() && outline.isEnabled()));
+        addOption(customOutline.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled() && outline.isEnabled()));
+        addOption(cRed.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled() && outline.isEnabled() && customOutline.isEnabled()));
+        addOption(cGreen.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled() && outline.isEnabled() && customOutline.isEnabled()));
+        addOption(cBlue.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled() && outline.isEnabled() && customOutline.isEnabled()));
+        addOption(cAlpha.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled() && outline.isEnabled() && customOutline.isEnabled()));
+        addOption(holdFacePlace.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(holdFaceBreak.setVisibility(v -> setting.getValue().contentEquals("MISC") && holdFacePlace.isEnabled()));
+        addOption(slowFaceBreak.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(actualSlowBreak.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(facePlaceSpeed.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(antiNaked.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(range.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(targetMode.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(minArmor.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(switchCooldown.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(autoSwitch.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(switchBind.setVisibility(v -> setting.getValue().contentEquals("MISC") && autoSwitch.getValue().contentEquals("TOGGLE")));
+        addOption(offhandSwitch.setVisibility(v -> setting.getValue().contentEquals("MISC") && !autoSwitch.getValue().contentEquals("NONE")));
+        addOption(switchBack.setVisibility(v -> setting.getValue().contentEquals("MISC") && !autoSwitch.getValue().contentEquals("NONE") && offhandSwitch.isEnabled()));
+        addOption(lethalSwitch.setVisibility(v -> setting.getValue().contentEquals("MISC") && !autoSwitch.getValue().contentEquals("NONE")));
+        addOption(mineSwitch.setVisibility(v -> setting.getValue().contentEquals("MISC") && !autoSwitch.getValue().contentEquals("NONE")));
+        addOption(rotate.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(suicide.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(webAttack.setVisibility(v -> setting.getValue().contentEquals("MISC") && !targetMode.getValue().contentEquals("DAMAGE")));
+        addOption(fullCalc.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(sound.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(soundRange.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(soundPlayer.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(soundConfirm.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(extraSelfCalc.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(antiFriendPop.setVisibility(v -> setting.getValue().contentEquals("MISC")));
+        addOption(noCount.setVisibility(v -> setting.getValue().contentEquals("MISC") && (antiFriendPop.getValue().contentEquals("ALL") || antiFriendPop.getValue().contentEquals("BREAK"))));
+        addOption(calcEvenIfNoDamage.setVisibility(v -> setting.getValue().contentEquals("MISC") && (antiFriendPop.getValue().contentEquals("ALL") || antiFriendPop.getValue().contentEquals("BREAK")) && !targetMode.getValue().contentEquals("DAMAGE")));
+        addOption(predictFriendDmg.setVisibility(v -> setting.getValue().contentEquals("MISC") && (antiFriendPop.getValue().contentEquals("ALL") || antiFriendPop.getValue().contentEquals("BREAK")) && instant.isEnabled()));
+        addOption(minMinDmg.setVisibility(v -> setting.getValue().contentEquals("DEV") && place.isEnabled()));
+        addOption(attackOppositeHand.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(removeAfterAttack.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(breakSwing.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(placeSwing.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(exactHand.setVisibility(v -> setting.getValue().contentEquals("DEV") && placeSwing.isEnabled()));
+        addOption(justRender.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(fakeSwing.setVisibility(v -> setting.getValue().contentEquals("DEV") && justRender.isEnabled()));
+        addOption(logic.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(damageSync.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(damageSyncTime.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE")));
+        addOption(dropOff.setVisibility(v -> setting.getValue().contentEquals("DEV") && damageSync.getValue().contentEquals("BREAK")));
+        addOption(confirm.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE")));
+        addOption(syncedFeetPlace.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE")));
+        addOption(fullSync.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE") && syncedFeetPlace.isEnabled()));
+        addOption(syncCount.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE") && syncedFeetPlace.isEnabled()));
+        addOption(hyperSync.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE") && syncedFeetPlace.isEnabled()));
+        addOption(gigaSync.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE") && syncedFeetPlace.isEnabled()));
+        addOption(syncySync.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE") && syncedFeetPlace.isEnabled()));
+
+
+        instance = this;
     }
 
     public enum PredictTimer { NONE, BREAK, PREDICT }
@@ -215,7 +321,7 @@ public class AutoCrystalModule extends Module {
         }
 
         public void runPlace() {
-            //BlockUtil.placeCrystalOnBlock(this.pos, this.offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, this.placeSwing, this.exactHand);
+            BlockUtil.placeCrystalOnBlock(this.pos, this.offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, this.placeSwing, this.exactHand);
         }
     }
 }

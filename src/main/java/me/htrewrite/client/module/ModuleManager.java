@@ -3,14 +3,15 @@ package me.htrewrite.client.module;
 import me.htrewrite.client.module.modules.combat.AutoCityModule;
 import me.htrewrite.client.module.modules.combat.AutoTotemModule;
 import me.htrewrite.client.module.modules.combat.InstantBurrowModule;
+import me.htrewrite.client.module.modules.combat.VelocityModule;
 import me.htrewrite.client.module.modules.exploit.AntiHungerModule;
+import me.htrewrite.client.module.modules.exploit.AutoSelfCrashModule;
 import me.htrewrite.client.module.modules.exploit.PacketCancellerModule;
 import me.htrewrite.client.module.modules.gui.ClickGuiModule;
 import me.htrewrite.client.module.modules.gui.HUDModule;
 import me.htrewrite.client.module.modules.gui.NotificationsModule;
 import me.htrewrite.client.module.modules.miscellaneous.*;
-import me.htrewrite.client.module.modules.movement.AutoWalkModule;
-import me.htrewrite.client.module.modules.movement.ElytraFlyModule;
+import me.htrewrite.client.module.modules.movement.*;
 import me.htrewrite.client.module.modules.render.CityESPModule;
 import me.htrewrite.client.module.modules.render.FullbrightModule;
 import me.htrewrite.client.module.modules.render.HandProgressModule;
@@ -34,8 +35,10 @@ public class ModuleManager {
         modules.add(new AutoCityModule());
         modules.add(new AutoTotemModule());
         modules.add(new InstantBurrowModule());
+        modules.add(new VelocityModule());
         /* Exploits */
         modules.add(new AntiHungerModule());
+        modules.add(new AutoSelfCrashModule());
         modules.add(new PacketCancellerModule());
         /* Miscellaneous */
         modules.add(new ChatModule());
@@ -44,8 +47,11 @@ public class ModuleManager {
         modules.add(new MobOwnerModule());
         modules.add(new XCarryModule());
         /* Movement */
+        modules.add(new AntiLevitateModule());
         modules.add(new AutoWalkModule());
+        modules.add(new BlinkModule());
         modules.add(new ElytraFlyModule());
+        modules.add(new SprintModule());
         /* Render */
         modules.add(new CityESPModule());
         modules.add(new FullbrightModule());

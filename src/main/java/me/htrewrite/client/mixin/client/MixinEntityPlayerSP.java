@@ -4,12 +4,14 @@ import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.event.custom.CustomEvent;
 import me.htrewrite.client.event.custom.player.PlayerChatEvent;
 import me.htrewrite.client.event.custom.player.PlayerMotionUpdateEvent;
+import me.htrewrite.client.event.custom.player.PlayerPushOutOfBlocksEvent;
 import me.htrewrite.client.event.custom.player.PlayerUpdateEvent;
 import net.minecraft.client.entity.EntityPlayerSP;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityPlayerSP.class)
 public abstract class MixinEntityPlayerSP {
@@ -43,5 +45,13 @@ public abstract class MixinEntityPlayerSP {
         HTRewrite.EVENT_BUS.post(playerChatEvent);
         if(playerChatEvent.isCancelled())
             callbackInfo.cancel();
+    }
+
+    @Inject(method = "pushOutOfBlocks(DDD)Z", at = @At("HEAD"), cancellable = true)
+    public void pushOutOfBlocks(double x, double y, double z, CallbackInfoReturnable<Boolean> callbackInfo) {
+        PlayerPushOutOfBlocksEvent event = new PlayerPushOutOfBlocksEvent(x, y, z);
+        HTRewrite.EVENT_BUS.post(event);
+        if(event.isCancelled())
+            callbackInfo.setReturnValue(false);
     }
 }
