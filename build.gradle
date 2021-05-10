@@ -125,6 +125,13 @@ dependencies {
 // https://mvnrepository.com/artifact/com.sun/tools
     compile group: 'com.sun', name: 'tools', version: '1.5.0'
     compile group: 'org.beanshell', name: 'bsh', version: '1.3.0'
+    compile('org.slick2d:slick2d-core:1.0.2') {
+        exclude module: 'lwjgl'
+    }
+
+/*
+    implementation 'com.github.cabaletta:baritone:1.2.14'
+    compile('cabaletta:baritone-api:1.2')*/
 
 
     //deobfCompile group: group, name: 'LunatriusCore', version: "${project.version_minecraft}-${project.version_lunatriuscore}", classifier: 'universal'
@@ -169,6 +176,8 @@ shadowJar {
         include(dependency('org.yaml:snakeyaml'))
         include(dependency('org.reflections:reflections'))
         include(dependency('org.javassist:javassist'))
+        include(dependency('org.slick2d:slick2d-core'))
+        //include(dependency('cabaletta:baritone-api:1.2'))
     }
     exclude 'dummyThing'
     exclude 'LICENSE.txt'

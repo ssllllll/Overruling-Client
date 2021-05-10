@@ -48,5 +48,6 @@ public class ConfigUtils {
             printWriter.print(jsonObject.toString());
             printWriter.close();
         }catch (Exception e) { e.printStackTrace(); }
+        System.out.println("Saved config " + name);
     }
 }

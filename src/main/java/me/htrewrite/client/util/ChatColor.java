@@ -4,8 +4,10 @@ import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.clickgui.components.buttons.settings.bettermode.BetterMode;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class ChatColor {
+    public static String stripColor(final String input) { return input == null ? null : Pattern.compile("(?i)" + '\u00A7' + "[0-9A-FK-OR]").matcher(input).replaceAll(""); }
     public static String parse(char c, String txt) { return txt.replaceAll(String.valueOf(c), "\u00a7"); }
     public static String prefix_parse(char c, String txt) { return parse(c, "&8&l[&b" + HTRewrite.NAME + "&8&l] &r" + txt); }
     public static String enumList(Enum[] enums) {
@@ -30,6 +32,6 @@ public class ChatColor {
         ArrayList<String> array = new ArrayList<>();
         for(Enum e : enums)
             array.add(e.name());
-        return (String[])array.toArray();
+        return array.toArray(new String[array.size()]);
     }
 }

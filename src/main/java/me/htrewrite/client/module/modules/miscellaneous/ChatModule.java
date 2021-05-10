@@ -24,7 +24,7 @@ public class ChatModule extends Module {
     public static final ToggleableSetting color_enabled = new ToggleableSetting("ColorEnabled", null, false);
     public static final ModeSetting color = new ModeSetting("Color", null, 0, BetterMode.construct("YELLOW", "GREEN", "BLUE"));
     /** SETTINGS **/
-    public static final StringSetting exceptions = new StringSetting("Exceptions", null, ";\"/");
+    public static final StringSetting exceptions = new StringSetting("Except", null, "/");
 
     public ChatModule() {
         super("Chat", "Chat modifier.", ModuleType.Miscellaneous, 0);
@@ -40,7 +40,7 @@ public class ChatModule extends Module {
 
     @EventHandler
     private Listener<PlayerChatEvent> chatEventListener = new Listener<>(event -> {
-        String[] exceptions = ChatModule.exceptions.getValue().split("\"");
+        String[] exceptions = ChatModule.exceptions.getValue().split(" ");
         for(String exception : exceptions)
             if(event.message.startsWith(exception))
                 return;

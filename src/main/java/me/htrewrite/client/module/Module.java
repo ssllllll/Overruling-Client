@@ -25,6 +25,8 @@ public class Module implements Listenable, Labeled {
     private boolean enabled;
     private ConfigUtils configUtils;
 
+
+    public final BindSetting bindSetting;
     public Module(String name, String description, ModuleType category, int default_key) {
         this.name = name;
         this.description = description;
@@ -34,6 +36,7 @@ public class Module implements Listenable, Labeled {
         this.htRewrite = HTRewrite.INSTANCE;
         this.key = default_key;
         this.configUtils = new ConfigUtils(name, "modules\\" + category.name());
+        this.bindSetting = new BindSetting(this);
     }
 
     @Override public String getLabel() { return name; }
@@ -64,12 +67,12 @@ public class Module implements Listenable, Labeled {
 
     public void addOption(Setting setting) { options.add(setting); }
     public void endOption() {
+        addOption(bindSetting);
         if(!configUtils.getFile().exists() || configUtils.getJSON().isEmpty()) save(); else {
             ArrayList<Object> arrayList = new ArrayList<Object>();
             arrayList.add(configUtils.get("enabled"));
-            arrayList.add(configUtils.get("key"));
             for(Setting setting : getOptions())
-                arrayList.add(configUtils.get(setting.getLabel()));
+                arrayList.add(configUtils.get((setting instanceof BindSetting)?((BindSetting)setting).getConfigLabel():setting.getLabel()));
             boolean succ = false;
             for(Object object : arrayList)
                 if(object == null)
@@ -78,7 +81,6 @@ public class Module implements Listenable, Labeled {
             arrayList.clear();
 
             enabled = (boolean)configUtils.get("enabled");
-            key = (Integer)configUtils.get("key");
             for(Setting setting : getOptions()) {
                 if(setting instanceof ModeSetting) {
                     ModeSetting modeSetting = (ModeSetting)setting;
@@ -92,6 +94,9 @@ public class Module implements Listenable, Labeled {
                 } else if(setting instanceof ToggleableSetting) {
                     ToggleableSetting toggleableSetting = (ToggleableSetting)setting;
                     toggleableSetting.setEnabled((boolean)configUtils.get(toggleableSetting.getLabel()));
+                } else if(setting instanceof BindSetting) {
+                    BindSetting bindSetting = (BindSetting)setting;
+                    bindSetting.bind((Integer)configUtils.get("key"));
                 }
             }
         }
@@ -107,7 +112,6 @@ public class Module implements Listenable, Labeled {
 
     public void save() {
         configUtils.set("enabled", enabled);
-        configUtils.set("key", key);
         for(Setting setting : getOptions()) {
             if(setting instanceof ModeSetting) {
                 ModeSetting modeSetting = (ModeSetting)setting;
@@ -121,10 +125,15 @@ public class Module implements Listenable, Labeled {
             } else if(setting instanceof ToggleableSetting) {
                 ToggleableSetting toggleableSetting = (ToggleableSetting)setting;
                 configUtils.set(toggleableSetting.getLabel(), toggleableSetting.isEnabled());
+            } else if(setting instanceof BindSetting) {
+                BindSetting bindSetting = (BindSetting)setting;
+                configUtils.set("key", bindSetting.getBind());
             }
         }
         configUtils.save();
     }
 
     public void sendMessage(String message) { mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', "&e[" + getName() + "] &b" + message))); }
+    public boolean nullCheck() { return mc.player == null || mc.world == null; }
+    public ArrayList<Setting> getSettings() { return options; }
 }

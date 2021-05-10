@@ -9,10 +9,10 @@ import net.minecraft.util.text.TextComponentString;
 public class PrefixCommand extends Command {
     CommandManager commandManager;
 
-    public PrefixCommand() {
+    public PrefixCommand(CommandManager manager) {
         super("prefix", "<prefix>", "Change your prefix.");
 
-        commandManager = HTRewrite.INSTANCE.getCommandManager();
+        commandManager = manager;
     }
 
     @Override

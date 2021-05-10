@@ -1,10 +1,9 @@
 {
   "required": true,
-  "minVersion": "0.7.10",
+  "compatibilityLevel": "JAVA_8",
   "package": "me.htrewrite.client.mixin.client",
   "refmap": "mixins.htrewrite.refmap.json",
-  "target": "@env(DEFAULT)",
-  "compatibilityLevel": "JAVA_8",
+  "verbose": true,
   "mixins": [
     "MixinWorld",
     "MixinEntityPlayerSP",
@@ -15,6 +14,11 @@
     "MixinEntityPlayer",
     "MixinGuiScreen",
     "MixinPlayerControllerMP",
-    "MixinItemRenderer"
+    "MixinItemRenderer",
+    "MixinMinecraft",
+    "MixinBlockSoulSand",
+    "MixinKeyBinding",
+    "MixinForgeSplashScreen",
+    "MixinNettyCompressionDecoder"
   ]
 }

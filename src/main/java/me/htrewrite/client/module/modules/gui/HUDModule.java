@@ -1,5 +1,6 @@
 package me.htrewrite.client.module.modules.gui;
 
+import com.sun.javafx.geom.Vec2d;
 import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.clickgui.components.buttons.settings.bettermode.BetterMode;
 import me.htrewrite.client.module.Module;
@@ -26,7 +27,21 @@ public class HUDModule extends Module {
     public static final ToggleableSetting position = new ToggleableSetting("Position", null, true);
     public static final ToggleableSetting fps = new ToggleableSetting("FPS", null, true);
     public static final ToggleableSetting arraylist = new ToggleableSetting("ArrayList", null, true);
+
+    public static final ModeSetting moduleEdit = new ModeSetting("SModule", null, 0, BetterMode.construct("Watermark", "Position", "FPS", "ArrayList"));
+    /* WATERMARK */
+    public static final ValueSetting<Double> watermarkX = new ValueSetting<>("WaterX", null, 4D, 0D, 1000D);
+    public static final ValueSetting<Double> watermarkY = new ValueSetting<>("WaterY", null, 4D, 0D, 1000D);
     public static final ValueSetting<Double> watermarkScale = new ValueSetting<>("WaterSize", null, 1.5D, 0.5D, 3D);
+    /* POSITION */
+    public static final ValueSetting<Double> positionX = new ValueSetting<>("PosX", null, 4d, 0D, 1000D);
+    public static final ValueSetting<Double> positionY = new ValueSetting<>("PosY", null, 0d, 0d, 1000d);
+    /* FPS */
+    public static final ValueSetting<Double> fpsX = new ValueSetting<>("FPSX", null, 4d, 0D, 1000D);
+    public static final ValueSetting<Double> fpsY = new ValueSetting<>("FPSY", null, 0d, 0d, 1000d);
+    /* ArrayList */
+    public static final ValueSetting<Double> arrayX = new ValueSetting<>("ArrayX", null, 4d, 0d, 1000d);
+    public static final ValueSetting<Double> arrayY = new ValueSetting<>("ArrayY", null, 24d, 0d, 1000d);
 
     public HUDModule() {
         super("HUD", "Interface", ModuleType.Gui, 0);
@@ -37,7 +52,20 @@ public class HUDModule extends Module {
         addOption(fps.setVisibility(a -> setting.getI() == 0));
         addOption(arraylist.setVisibility(a -> setting.getI() == 0));
         /* EDIT */
-        addOption(watermarkScale.setVisibility(a -> setting.getI() == 1));
+        addOption(moduleEdit.setVisibility(v -> setting.getI()==1));
+        // - Water - \\
+        addOption(watermarkX.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==0));
+        addOption(watermarkY.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==0));
+        addOption(watermarkScale.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==0));
+        // - Position - \\
+        addOption(positionX.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==1));
+        addOption(positionY.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==1));
+        // - FPS - \\
+        addOption(fpsX.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==2));
+        addOption(fpsY.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==2));
+        // - ArrayList - \\
+        addOption(arrayX.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==3));
+        addOption(arrayY.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==3));
 
         endOption();
     }
@@ -47,7 +75,7 @@ public class HUDModule extends Module {
         if(watermark.isEnabled()) {
             GL11.glPushMatrix();
             GL11.glScalef(watermarkScale.getValue().floatValue(), watermarkScale.getValue().floatValue(), watermarkScale.getValue().floatValue());
-            mc.fontRenderer.drawStringWithShadow(HTRewrite.NAME + " " + HTRewrite.VERSION, 4, 4, Color.WHITE.getRGB());
+            mc.fontRenderer.drawStringWithShadow(HTRewrite.NAME + " " + HTRewrite.VERSION, watermarkX.getValue().intValue(), watermarkY.getValue().intValue(), Color.WHITE.getRGB());
             GL11.glPopMatrix();
         }
 
@@ -72,19 +100,21 @@ public class HUDModule extends Module {
                 coords = String.format("\u00a77X: \u00a7f%s \u00a77Y: \u00a7f%s \u00a77Z: \u00a7f%s \u00a77(\u00a7f%s \u00a7f%s\u00a77)", RenderUtils.DF((float)x, 1), RenderUtils.DF((float)y, 1), RenderUtils.DF((float)z, 1), RenderUtils.DF((float)tX, 1), RenderUtils.DF((float)tZ, 1));
             }
 
-            int heightCoords = isChatOpen ? sr.getScaledHeight() - 25 : sr.getScaledHeight() - 10;
+            int scaledHeight = sr.getScaledHeight() - positionY.getValue().intValue();
+            int heightCoords = isChatOpen ? scaledHeight - 25 : scaledHeight - 10;
 
-            RenderUtils.drawStringWithRect(coords, 4, heightCoords, Color.WHITE.getRGB(),
+            RenderUtils.drawStringWithRect(coords, positionX.getValue().intValue(), heightCoords, Color.WHITE.getRGB(),
                     colorRect, colorRect2);
         }
         if(fps.isEnabled()) {
-            int heightFPS = isChatOpen ? sr.getScaledHeight() - 37 : sr.getScaledHeight() - 22;
-            RenderUtils.drawStringWithRect("\u00a77FPS: \u00a7f" + mc.getDebugFPS(), 4, heightFPS, Color.WHITE.getRGB(),
+            int scaledHeight = sr.getScaledHeight() - fpsY.getValue().intValue();
+            int heightFPS = isChatOpen ? scaledHeight - 37 : scaledHeight - 22;
+            RenderUtils.drawStringWithRect("\u00a77FPS: \u00a7f" + mc.getDebugFPS(), fpsX.getValue().intValue(), heightFPS, Color.WHITE.getRGB(),
                     colorRect, colorRect2);
         }
         if(arraylist.isEnabled()) {
-            int yPos = (int)((24/1.5)*watermarkScale.getValue());
-            int xPos = 4;
+            int yPos = (int)((arrayY.getValue().intValue()/1.5)*watermarkScale.getValue());
+            int xPos = arrayX.getValue().intValue();
             for(Module module : HTRewrite.INSTANCE.getModuleManager().getModules()) {
                 if(!module.isEnabled()) continue;
                 RenderUtils.drawStringWithRect(

@@ -14,7 +14,7 @@ public enum Colors {
     PANEL_BORDER(0x55000000),
     PANEL_LABEL(0xFFFFFFFF);
 
-    private final int color;
+    private int color;
 
     Colors(int color) {
         this.color = color;
@@ -23,4 +23,5 @@ public enum Colors {
     public int getColor() {
         return color;
     }
+    public void setColor(int newColor) { color = newColor; }
 }

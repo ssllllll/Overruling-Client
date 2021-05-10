@@ -1,5 +1,8 @@
 package me.htrewrite.exeterimports.mcapi.settings;
 
+import me.htrewrite.client.HTRewrite;
+import me.htrewrite.client.event.custom.client.ClientSettingChangeEvent;
+
 import java.util.function.Predicate;
 
 public class ValueSetting<T extends Number> extends Setting {
@@ -43,6 +46,7 @@ public class ValueSetting<T extends Number> extends Setting {
             }
         }
         this.value = value;
+        HTRewrite.EVENT_BUS.post(new ClientSettingChangeEvent(this));
     }
 
     public T getValue() {

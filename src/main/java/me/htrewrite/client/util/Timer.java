@@ -3,8 +3,7 @@ package me.htrewrite.client.util;
 public class Timer {
     private long time;
 
-    public Timer()
-    {
+    public Timer() {
         time = -1;
     }
 

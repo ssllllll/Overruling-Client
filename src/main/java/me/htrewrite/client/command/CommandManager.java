@@ -2,10 +2,7 @@ package me.htrewrite.client.command;
 
 import static me.htrewrite.client.command.CommandReturnStatus.*;
 
-import me.htrewrite.client.command.commands.FriendCommand;
-import me.htrewrite.client.command.commands.HelpCommand;
-import me.htrewrite.client.command.commands.ModuleCommand;
-import me.htrewrite.client.command.commands.PrefixCommand;
+import me.htrewrite.client.command.commands.*;
 import me.htrewrite.client.util.ConfigUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -24,10 +21,11 @@ public class CommandManager {
         else prefix = (String)object;
 
         commands = new ArrayList<Command>();
+        commands.add(new ChatExceptCommand());
         commands.add(new FriendCommand());
         commands.add(new HelpCommand());
         commands.add(new ModuleCommand());
-        // commands.add(new PrefixCommand());
+        commands.add(new PrefixCommand(this));
     }
 
     public Command get(String alias) {

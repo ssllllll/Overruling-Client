@@ -1,6 +1,8 @@
 package me.htrewrite.exeterimports.mcapi.settings;
 
+import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.clickgui.components.buttons.settings.bettermode.BetterMode;
+import me.htrewrite.client.event.custom.client.ClientSettingChangeEvent;
 
 import java.util.function.Predicate;
 
@@ -21,6 +23,7 @@ public class ModeSetting extends Setting {
         this.i = i;
         if(i > modes.length-1 || i < 0)
             this.i = modes.length-1;
+        HTRewrite.EVENT_BUS.post(new ClientSettingChangeEvent(this));
     }
     public int getI() { return i; }
     public BetterMode[] getModes() { return modes; }

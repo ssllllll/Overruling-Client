@@ -1,12 +1,14 @@
 package me.htrewrite.client.clickgui;
 
 import me.htrewrite.client.HTRewrite;
+import me.htrewrite.client.Wrapper;
 import me.htrewrite.client.clickgui.components.buttons.ModComponent;
 import me.htrewrite.client.clickgui.components.panels.PanelComponent;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleType;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,6 +41,20 @@ public final class ClickGuiScreen extends GuiScreen {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        if(Wrapper.binding != null) {
+            if(keyCode == Keyboard.KEY_BACK || keyCode == Keyboard.KEY_DELETE) { /* RESET KEY */
+                Wrapper.binding.bind(0);
+                Wrapper.sendClientText("&cUnbinded module &l" + Wrapper.binding.module.getName() + "&c!");
+                Wrapper.binding = null;
+
+                return;
+            }
+            Wrapper.binding.bind(keyCode);
+            Wrapper.sendClientText("&aBinded module &l" + Wrapper.binding.module.getName() + " &ato '" + Keyboard.getKeyName(keyCode) + "' key!");
+            Wrapper.binding = null;
+            return;
+        }
+
         if(keyCode == Keyboard.KEY_UP)
             StaticScrollOffset.offset-=10;
         if(keyCode == Keyboard.KEY_DOWN)

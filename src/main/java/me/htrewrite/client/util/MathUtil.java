@@ -1,16 +1,75 @@
 package me.htrewrite.client.util;
 
+import me.htrewrite.phobosimports.BlockUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 import java.awt.Point;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
-public final class MathUtil
-{
+public final class MathUtil {
+    public static Vec3d roundVec(Vec3d vec3d, int places) {
+        return new Vec3d(MathUtil.round(vec3d.x, places), MathUtil.round(vec3d.y, places), MathUtil.round(vec3d.z, places));
+    }
+
+    public static List<Vec3d> getBlockBlocks(Entity entity) {
+        ArrayList<Vec3d> vec3ds = new ArrayList<Vec3d>();
+        AxisAlignedBB bb = entity.getEntityBoundingBox();
+        double y = entity.posY;
+        double minX = MathUtil.round(bb.minX, 0);
+        double minZ = MathUtil.round(bb.minZ, 0);
+        double maxX = MathUtil.round(bb.maxX, 0);
+        double maxZ = MathUtil.round(bb.maxZ, 0);
+        if (minX != maxX) {
+            Vec3d vec3d1 = new Vec3d(minX, y, minZ);
+            Vec3d vec3d2 = new Vec3d(maxX, y, minZ);
+            BlockPos pos1 = new BlockPos(vec3d1);
+            BlockPos pos2 = new BlockPos(vec3d2);
+            if (BlockUtil.isBlockUnSolid(pos1) && BlockUtil.isBlockUnSolid(pos2)) {
+                vec3ds.add(vec3d1);
+                vec3ds.add(vec3d2);
+            }
+            if (minZ != maxZ) {
+                Vec3d vec3d3 = new Vec3d(minX, y, maxZ);
+                Vec3d vec3d4 = new Vec3d(maxX, y, maxZ);
+                BlockPos pos3 = new BlockPos(vec3d1);
+                BlockPos pos4 = new BlockPos(vec3d2);
+                if (BlockUtil.isBlockUnSolid(pos3) && BlockUtil.isBlockUnSolid(pos4)) {
+                    vec3ds.add(vec3d3);
+                    vec3ds.add(vec3d4);
+                    return vec3ds;
+                }
+            }
+            if (vec3ds.isEmpty()) {
+                vec3ds.add(entity.getPositionVector());
+            }
+            return vec3ds;
+        }
+        if (minZ != maxZ) {
+            Vec3d vec3d1 = new Vec3d(minX, y, minZ);
+            Vec3d vec3d2 = new Vec3d(minX, y, maxZ);
+            BlockPos pos1 = new BlockPos(vec3d1);
+            BlockPos pos2 = new BlockPos(vec3d2);
+            if (BlockUtil.isBlockUnSolid(pos1) && BlockUtil.isBlockUnSolid(pos2)) {
+                vec3ds.add(vec3d1);
+                vec3ds.add(vec3d2);
+            }
+            if (vec3ds.isEmpty()) {
+                vec3ds.add(entity.getPositionVector());
+            }
+            return vec3ds;
+        }
+        vec3ds.add(entity.getPositionVector());
+        return vec3ds;
+    }
+    public static double square(double number) { return number*number; }
 
     public static Vec3d interpolateEntity(Entity entity, float time)
     {

@@ -3,26 +3,49 @@ package me.htrewrite.client.module.modules.combat;
 import static me.htrewrite.client.util.ChatColor.*;
 
 import io.netty.util.internal.ConcurrentSet;
+import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.clickgui.components.buttons.settings.bettermode.BetterMode;
+import me.htrewrite.client.event.custom.CustomEvent;
+import me.htrewrite.client.event.custom.networkmanager.NetworkPacketEvent;
+import me.htrewrite.client.event.custom.player.PlayerUpdateEvent;
+import me.htrewrite.client.event.custom.player.UpdateWalkingPlayerEvent;
+import me.htrewrite.client.event.custom.render.RenderEvent;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleType;
+import me.htrewrite.client.util.MathUtil;
+import me.htrewrite.client.util.Timer;
 import me.htrewrite.exeterimports.mcapi.settings.ModeSetting;
 import me.htrewrite.exeterimports.mcapi.settings.StringSetting;
 import me.htrewrite.exeterimports.mcapi.settings.ToggleableSetting;
 import me.htrewrite.exeterimports.mcapi.settings.ValueSetting;
 import me.htrewrite.phobosimports.BlockUtil;
+import me.htrewrite.phobosimports.DamageUtil;
+import me.htrewrite.phobosimports.EntityUtil;
+import me.htrewrite.phobosimports.RenderUtil;
+import me.zero.alpine.fork.listener.EventHandler;
+import me.zero.alpine.fork.listener.Listener;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.network.play.client.CPacketAnimation;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
+import net.minecraft.network.play.server.*;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
+import java.awt.*;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/* WARNING!! This module is unfinished please don't add it. */
 public class AutoCrystalModule extends Module {
     public static final ModeSetting setting = new ModeSetting("Setting", null, Settings.PLACE.ordinal(), BetterMode.construct(enumToStringArray(Settings.values())));
     public static final ModeSetting raytrace = new ModeSetting("Raytrace", null, Raytrace.NONE.ordinal(), BetterMode.construct(enumToStringArray(Raytrace.values())));
@@ -61,7 +84,6 @@ public class AutoCrystalModule extends Module {
     public static final ToggleableSetting superSafe = new ToggleableSetting("SuperSafe", null, true);
     public static final ToggleableSetting antiCommit = new ToggleableSetting("AntiOverCommit", null, true);
     public static final ToggleableSetting render = new ToggleableSetting("Render", null, true);
-    public static final ToggleableSetting colorSync = new ToggleableSetting("CSync", null, false);
     public static final ToggleableSetting box = new ToggleableSetting("Box", null, true);
     public static final ToggleableSetting outline = new ToggleableSetting("Outline", null, true);
     public static final ToggleableSetting text = new ToggleableSetting("Text", null, false);
@@ -228,7 +250,6 @@ public class AutoCrystalModule extends Module {
         addOption(superSafe.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled() && place.isEnabled() && instant.isEnabled()));
         addOption(antiCommit.setVisibility(v -> setting.getValue().contentEquals("BREAK") && explode.isEnabled() && place.isEnabled() && instant.isEnabled()));
         addOption(render.setVisibility(v -> setting.getValue().contentEquals("RENDER")));
-        addOption(colorSync.setVisibility(v -> setting.getValue().contentEquals("RENDER")));
         addOption(box.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled()));
         addOption(outline.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled()));
         addOption(text.setVisibility(v -> setting.getValue().contentEquals("RENDER") && render.isEnabled()));
@@ -291,10 +312,305 @@ public class AutoCrystalModule extends Module {
         addOption(hyperSync.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE") && syncedFeetPlace.isEnabled()));
         addOption(gigaSync.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE") && syncedFeetPlace.isEnabled()));
         addOption(syncySync.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE") && syncedFeetPlace.isEnabled()));
-
+        addOption(enormousSync.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE") && syncedFeetPlace.isEnabled()));
+        addOption(holySync.setVisibility(v -> setting.getValue().contentEquals("DEV") && !damageSync.getValue().contentEquals("NONE") && syncedFeetPlace.isEnabled()));
+        addOption(eventMode.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(rotateFirst.setVisibility(v -> setting.getValue().contentEquals("DEV") && !rotate.getValue().contentEquals("OFF") && eventMode.getValue().intValue()==2));
+        addOption(threadMode.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(threadDelay.setVisibility(v -> setting.getValue().contentEquals("DEV") && !threadMode.getValue().contentEquals("NONE")));
+        addOption(syncThreadBool.setVisibility(v -> setting.getValue().contentEquals("DEV") && !threadMode.getValue().contentEquals("NONE")));
+        addOption(syncThreads.setVisibility(v -> setting.getValue().contentEquals("DEV") && !threadMode.getValue().contentEquals("NONE") && syncThreadBool.isEnabled()));
+        addOption(predictPos.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(renderExtrapolation.setVisibility(v -> setting.getValue().contentEquals("DEV") && predictPos.isEnabled()));
+        addOption(predictTicks.setVisibility(v -> setting.getValue().contentEquals("DEV") && predictPos.isEnabled()));
+        addOption(rotations.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(predictRotate.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(predictOffset.setVisibility(v -> setting.getValue().contentEquals("DEV")));
+        addOption(doublePopOnDamage.setVisibility(v -> setting.getValue().contentEquals("PLACE") && place.isEnabled() && doublePop.isEnabled() && targetMode.getValue().contentEquals("DAMAGE")));
 
         instance = this;
     }
+
+    @EventHandler
+    private Listener<TickEvent.ClientTickEvent> eventListener = new Listener<>(event -> {
+        if(threadMode.getValue().contentEquals("NONE") && eventMode.getValue().intValue() == 3)
+            doAutoCrystal();
+    });
+
+    @EventHandler
+    private Listener<UpdateWalkingPlayerEvent> updateWalkingPlayerEventListener = new Listener<>(event -> {
+        if(event.getEra() == CustomEvent.Era.PRE) {
+            postProcessing();
+            return;
+        }
+        if(!threadMode.getValue().contentEquals("NONE"))
+            processMultiThreading();
+        else if(eventMode.getValue().intValue() == 2)
+            doAutoCrystal();
+    });
+
+    @EventHandler
+    private Listener<PlayerUpdateEvent> updateEventListener = new Listener<>(event -> {
+        if(event.getEra() != CustomEvent.Era.PRE)
+            return;
+
+        if(threadMode.getValue().contentEquals("NONE") && eventMode.getValue().intValue()==1)
+            doAutoCrystal();
+    });
+
+    @Override
+    public void toggle() {
+        super.toggle();
+
+        brokenPos.clear();
+        placedPos.clear();
+        totemPops.clear();
+        rotating = false;
+    }
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
+
+        if(thread != null)
+            shouldInterrupt.set(true);
+        if(executor != null)
+            executor.shutdown();
+    }
+
+    @Override
+    public void onEnable() {
+        super.onEnable();
+
+        if(!threadMode.getValue().contentEquals("NONE"))
+            processMultiThreading();
+    }
+
+    @Override
+    public String getMeta() {
+        if(target != null)
+            return target.getName();
+        return "";
+    }
+
+    @EventHandler
+    private Listener<NetworkPacketEvent> packetEventListener = new Listener<>(event -> {
+        if(nullCheck())
+            return;
+
+        if(!event.reading && event.getEra() == CustomEvent.Era.PRE) {
+            if (!rotate.getValue().contentEquals("OFF") && rotating && eventMode.getValue().intValue() != 2 && event.getPacket() instanceof CPacketPlayer) {
+                CPacketPlayer packet = (CPacketPlayer) event.getPacket();
+                packet.yaw = this.yaw;
+                packet.pitch = this.pitch;
+                ++rotationPacketsSpoofed;
+                if (rotationPacketsSpoofed >= rotations.getValue()) {
+                    rotating = false;
+                    rotationPacketsSpoofed = 0;
+                }
+            }
+            if(event.getPacket() instanceof CPacketUseEntity) {
+                CPacketUseEntity packet = (CPacketUseEntity) event.getPacket();
+                if(packet.getAction() == CPacketUseEntity.Action.ATTACK && packet.getEntityFromWorld(mc.world) instanceof EntityEnderCrystal) {
+                    if(attackOppositeHand.isEnabled())
+                        packet.hand = (mc.player.getHeldItemOffhand().getItem() == Items.END_CRYSTAL)?EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+                    if(removeAfterAttack.isEnabled()) {
+                        packet.getEntityFromWorld(mc.world).setDead();
+                        mc.world.removeEntityFromWorld(packet.entityId);
+                    }
+                }
+            }
+        }
+        if(event.reading && event.getEra()== CustomEvent.Era.PRE) {
+            SPacketSoundEffect packetSound;
+            if (!justRender.isEnabled() && explode.isEnabled() && instant.isEnabled() && event.getPacket() instanceof SPacketSpawnObject && (syncedCrystalPos == null || !syncedFeetPlace.isEnabled() || damageSync.getValue().contentEquals("NONE"))) {
+                SPacketSpawnObject packet = (SPacketSpawnObject) event.getPacket();
+
+                BlockPos pos = new BlockPos(packet.getX(), packet.getY(), packet.getZ());
+                if (packet.getType() == 51 && mc.player.getDistanceSq(pos) + predictOffset.getValue() <= MathUtil.square(breakRange.getValue()) && (instantTimer.getValue().contentEquals("NONE") || instantTimer.getValue().contentEquals("BREAK") && breakTimer.passed(breakDelay.getValue().intValue()) || instantTimer.getValue().contentEquals("PREDICT") && predictTimer.passed(predictDelay.getValue().intValue()))) {
+                    if (predictSlowBreak(pos.down()))
+                        return;
+                    if (predictFriendDmg.isEnabled() && (antiFriendPop.getValue().contentEquals("BREAK") || antiFriendPop.getValue().contentEquals("ALL")) && isRightThread())
+                        for (EntityPlayer friend : mc.world.playerEntities) {
+                            if (friend == null || mc.player == friend || friend.getDistanceSq(pos) > MathUtil.square(range.getValue() + placeRange.getValue()) || HTRewrite.INSTANCE.getFriendManager().isFriend(friend.getName()) || !((double) DamageUtil.calculateDamage(pos, (Entity) friend) > (double) EntityUtil.getHealth((Entity) friend) + .5))
+                                continue;
+                            return;
+                        }
+                    if (placedPos.contains(pos.down())) {
+                        double selfDamage = DamageUtil.calculateDamage(pos, mc.player);
+                        if (isRightThread() && superSafe.isEnabled() ? DamageUtil.canTakeDamage(suicide.isEnabled()) && selfDamage - .5 > (double) EntityUtil.getHealth(mc.player) || (selfDamage > maxSelfBreak.getValue()) : superSafe.isEnabled())
+                            return;
+                        attackCrystalPredict(packet.getEntityID(), pos);
+                    } else if (predictCalc.isEnabled() && isRightThread()) {
+                        float selfDamage = -1.0f;
+                        if (DamageUtil.canTakeDamage(suicide.isEnabled()))
+                            selfDamage = DamageUtil.calculateDamage(pos, mc.player);
+                        if ((double) selfDamage + .5 < (double) EntityUtil.getHealth(mc.player) && selfDamage <= maxSelfBreak.getValue().floatValue())
+                            for (EntityPlayer player : mc.world.playerEntities) {
+                                float damage = DamageUtil.calculateDamage(pos, player);
+                                if (!(player.getDistanceSq(pos) <= MathUtil.square(range.getValue())) || !EntityUtil.isValid(player, range.getValue().floatValue() + breakRange.getValue().floatValue()) || antiNaked.isEnabled() && DamageUtil.isNaked(player) || !(damage > selfDamage || damage > minDamage.getValue().floatValue() && !DamageUtil.canTakeDamage(suicide.isEnabled())) && !(damage > EntityUtil.getHealth(player)))
+                                    continue;
+                                if (predictRotate.isEnabled() && eventMode.getValue().intValue() != 2 && (rotate.getValue().contentEquals("BREAK") || rotate.getValue().contentEquals("ALL")))
+                                    rotateToPos(pos);
+                                attackCrystalPredict(packet.getEntityID(), pos);
+                                break;
+                            }
+                    }
+                }
+            } else if (!soundConfirm.isEnabled() && event.getPacket() instanceof SPacketExplosion) {
+                SPacketExplosion packetExplosion = (SPacketExplosion) event.getPacket();
+                BlockPos pos = new BlockPos(packetExplosion.getX(), packetExplosion.getY(), packetExplosion.getZ()).down();
+                removePos(pos);
+            } else if (event.getPacket() instanceof SPacketDestroyEntities) {
+                SPacketDestroyEntities packetDestroy = (SPacketDestroyEntities)event.getPacket();
+                for(int id : packetDestroy.getEntityIDs()) {
+                    Entity entity = mc.world.getEntityByID(id);
+                    if(!(entity instanceof EntityEnderCrystal))
+                        continue;
+                    brokenPos.remove(new BlockPos(entity.getPositionVector()).down());
+                    placedPos.remove(new BlockPos(entity.getPositionVector()).down());
+                }
+            } else if(event.getPacket() instanceof SPacketEntityStatus) {
+                SPacketEntityStatus packetStatus = (SPacketEntityStatus)event.getPacket();
+                if(packetStatus.getOpCode() == 35 && packetStatus.getEntity(mc.world) instanceof EntityPlayer) {
+                    Timer timer = new Timer();
+                    timer.reset();
+                    totemPops.put((EntityPlayer)packetStatus.getEntity(mc.world), timer);
+                }
+            } else if(event.getPacket() instanceof SPacketSoundEffect && (packetSound = (SPacketSoundEffect)event.getPacket()).getCategory() == SoundCategory.BLOCKS && packetSound.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
+                BlockPos pos = new BlockPos(packetSound.getX(), packetSound.getY(), packetSound.getZ());
+                if(sound.isEnabled() || threadMode.getValue().contentEquals("SOUND"))
+                    removeEntities(packetSound, soundRange.getValue().floatValue());
+                if(soundConfirm.isEnabled())
+                    removePos(pos);
+                if(threadMode.getValue().contentEquals("SOUND") && isRightThread() && mc.player != null && mc.player.getDistanceSq(pos) < MathUtil.square(soundPlayer.getValue().floatValue()))
+                    handlePool(true);
+            }
+        }
+    });
+
+    private Listener<RenderEvent> renderEventListener = new Listener<>(event -> {
+        if((offHand || mainHand || switchMode.getValue().contentEquals("CALC")) && renderPos != null && render.isEnabled() && (box.isEnabled() || text.isEnabled() || outline.isEnabled())) {
+            RenderUtil.drawBoxESP(renderPos, new Color(red.getValue().intValue(), green.getValue().intValue(), blue.getValue().intValue(), alpha.getValue().intValue()), customOutline.isEnabled(), new Color(cRed.getValue().intValue(), cGreen.getValue().intValue(), cBlue.getValue().intValue(), cAlpha.getValue().intValue()), lineWidth.getValue().floatValue(), outline.isEnabled(), box.isEnabled(), boxAlpha.getValue().intValue(), false);
+            if(text.isEnabled())
+                RenderUtil.drawText(renderPos, (Math.floor(renderDamage) == renderDamage ? String.valueOf((int)renderDamage) : String.format("%.1f", renderDamage)) + "");
+        }
+    });
+
+
+
+    public void removeEntities(SPacketSoundEffect packet, float range) {
+        BlockPos pos = new BlockPos(packet.getX(), packet.getY(), packet.getZ());
+        ArrayList<Entity> toRemove = new ArrayList<Entity>();
+        for (Entity entity : mc.world.loadedEntityList) {
+            if (!(entity instanceof EntityEnderCrystal) || !(entity.getDistanceSq(pos) <= MathUtil.square(range))) continue;
+            toRemove.add(entity);
+        }
+        for (Entity entity : toRemove) {
+            entity.setDead();
+        }
+    }
+
+    private boolean isRightThread() { return mc.isCallingFromMinecraftThread() || !HTRewrite.INSTANCE.getEventProcessor().ticksOngoing() && !threadOngoing.get(); }
+
+    private void attackCrystalPredict(int entityID, BlockPos pos) {
+        if(!(!predictRotate.isEnabled() || eventMode.getValue().intValue() == 2 && threadMode.getValue().contentEquals("NONE") || !rotate.getValue().contentEquals("BREAK") && !rotate.getValue().contentEquals("ALL")))
+            rotateToPos(pos);
+        CPacketUseEntity packetUseEntity = new CPacketUseEntity();
+        packetUseEntity.entityId = entityID;
+        packetUseEntity.action = CPacketUseEntity.Action.ATTACK;
+        mc.player.connection.sendPacket(packetUseEntity);
+        if(breakSwing.isEnabled())
+            mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
+        if(resetBreakTimer.isEnabled())
+            breakTimer.reset();
+        predictTimer.reset();
+    }
+
+    private void removePos(BlockPos pos) {
+        if(damageSync.getValue().contentEquals("PLACE")) {
+            if(placedPos.remove(pos))
+                posConfirmed = true;
+        } else if(damageSync.getValue().contentEquals("BREAK") && brokenPos.remove(pos))
+            posConfirmed = true;
+    }
+
+    private boolean predictSlowBreak(BlockPos pos) {
+        if (antiCommit.isEnabled() && lowDmgPos.remove(pos)) {
+            return this.shouldSlowBreak(false);
+        }
+        return false;
+    }
+
+    private void postProcessing() {
+        if(!threadMode.getValue().contentEquals("NONE") || eventMode.getValue().intValue() != 2 || rotate.getValue().contentEquals("OFF") || !rotateFirst.isEnabled())
+            return;
+
+        switch(logic.getValue()) {
+            case "BREAKPLACE": {
+                postProcessBreak();
+                postProcessPlace();
+                break;
+            }
+            case "PLACEBREAK": {
+                postProcessPlace();
+                postProcessBreak();
+                break;
+            }
+        }
+    }
+
+    // TODO: 586
+
+    private void postProcessBreak() {
+        while (!packetUseEntities.isEmpty()) {
+            CPacketUseEntity packet = packetUseEntities.poll();
+            mc.player.connection.sendPacket(packet);
+            if(breakSwing.isEnabled())
+                mc.player.swingArm(EnumHand.MAIN_HAND);
+            breakTimer.reset();
+        }
+    }
+
+    private void postProcessPlace() {
+        if(placeInfo != null) {
+            placeInfo.runPlace();
+            placeTimer.reset();
+            placeInfo = null;
+        }
+    }
+
+    private void handleWhile() {}
+
+    private void processMultiThreading() {
+        if(!isEnabled())
+            return;
+
+        if(threadMode.getValue().contentEquals("WHILE"))
+            handleWhile();
+        else if(!threadMode.getValue().contentEquals("NONE")) handlePool(false);
+    }
+
+    private void handlePool(boolean justDoIt) {
+        if(justDoIt || executor == null || executor.isTerminated() || executor.isShutdown() || syncroTimer.passed(syncThreads.getValue().intValue()) && syncThreadBool.isEnabled()) {
+            if(executor != null)
+                executor.shutdown();
+            executor = getExecutor();
+            syncroTimer.reset();
+        }
+    }
+
+    private ScheduledExecutorService getExecutor() {
+        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+        service.scheduleAtFixedRate(RAutoCrystal.getInstance(this), 0L, this.threadDelay.getValue().intValue(), TimeUnit.MILLISECONDS);
+        return service;
+    }
+
+    public void doAutoCrystal() {}
+
+    private void rotateToPos(BlockPos pos) {}
+
+    private boolean shouldSlowBreak(boolean withManual) { return !withManual; }
 
     public enum PredictTimer { NONE, BREAK, PREDICT }
     public enum AntiFriendPop { NONE, PLACE, BREAK, ALL }
@@ -322,6 +638,48 @@ public class AutoCrystalModule extends Module {
 
         public void runPlace() {
             BlockUtil.placeCrystalOnBlock(this.pos, this.offhand ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND, this.placeSwing, this.exactHand);
+        }
+    }
+    private static class RAutoCrystal implements Runnable {
+        private static RAutoCrystal instance;
+        private AutoCrystalModule autoCrystal;
+
+        public static RAutoCrystal getInstance(AutoCrystalModule autoCrystal) {
+            if(instance == null) {
+                instance = new RAutoCrystal();
+                RAutoCrystal.instance.autoCrystal = autoCrystal;
+            }
+
+            return instance;
+        }
+
+        @Override
+        public void run() {
+            if(autoCrystal.threadMode.getValue().contentEquals("WHILE")) {
+                while(autoCrystal.isEnabled() && autoCrystal.threadMode.getValue().contentEquals("WHILE")) {
+                    while(HTRewrite.INSTANCE.getEventProcessor().ticksOngoing()) {}
+                    if(autoCrystal.shouldInterrupt.get()) {
+                        autoCrystal.shouldInterrupt.set(false);
+                        autoCrystal.syncroTimer.reset();
+                        autoCrystal.thread.interrupt();
+                        break;
+                    }
+                    autoCrystal.threadOngoing.set(true);
+                    // TODO: Safety check(1301)
+                    autoCrystal.doAutoCrystal();
+                    autoCrystal.threadOngoing.set(false);
+                    try { Thread.sleep(autoCrystal.threadDelay.getValue().intValue()); } catch (Exception exception) {
+                        autoCrystal.thread.interrupt();
+                        exception.printStackTrace();
+                    }
+                }
+            } else if(!autoCrystal.threadMode.getValue().contentEquals("NONE") && autoCrystal.isEnabled()) {
+                while(HTRewrite.INSTANCE.getEventProcessor().ticksOngoing()) {}
+                autoCrystal.threadOngoing.set(true);
+                // TODO: Safety check(1316)
+                autoCrystal.doAutoCrystal();
+                autoCrystal.threadOngoing.set(false);
+            }
         }
     }
 }

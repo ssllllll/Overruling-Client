@@ -1,5 +1,8 @@
 package me.htrewrite.exeterimports.mcapi.settings;
 
+import me.htrewrite.client.HTRewrite;
+import me.htrewrite.client.event.custom.client.ClientSettingChangeEvent;
+
 import java.util.function.Predicate;
 
 public class StringSetting extends Setting {
@@ -12,6 +15,7 @@ public class StringSetting extends Setting {
 
     public void setValue(String value) {
         this.value = value.replaceAll("\"", "");
+        HTRewrite.EVENT_BUS.post(new ClientSettingChangeEvent(this));
     }
 
     public String getValue() {

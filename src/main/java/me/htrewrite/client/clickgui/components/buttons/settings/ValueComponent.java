@@ -5,8 +5,19 @@ import me.htrewrite.client.clickgui.components.Colors;
 import me.htrewrite.client.clickgui.components.Component;
 import me.htrewrite.exeterimports.mcapi.settings.ValueSetting;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class ValueComponent extends Component {
     public final ValueSetting valueSetting;
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 
     public ValueComponent(ValueSetting valueSetting, String label, int positionX, int positionY, int width, int height) {
         super(label, positionX, positionY, width, height);
@@ -15,11 +26,26 @@ public class ValueComponent extends Component {
 
     @Override
     public void onClicked(int mouseX, int mouseY, int mouseButton) {
-        //TODO: Slide 1km3lk12m33m12kl3
+        if(!isHovering(mouseX, mouseY, 20))
+            return;
+        if(!valueSetting.isVisible())
+            return;
+
+        double x = mouseX-getPositionX();
+        double num = x/getWidth();
+        double max = valueSetting.getMaximum().doubleValue() + (-valueSetting.getMinimum().doubleValue());
+        double value = max*num + valueSetting.getMinimum().doubleValue();
+
+        valueSetting.setValue(round(value, 2));
     }
 
     @Override
     public void drawComponent(int mouseX, int mouseY) {
+        double x = mouseX-getPositionX();
+        double num = x/getWidth();
+        double max = (getPositionX()+1)-(getPositionX() + getWidth() - 1);
+        double value = max*num+(getPositionX()+1);
+
         drawRect(getPositionX() + 1, StaticScrollOffset.offset + getPositionY() + 1, getPositionX() + getWidth() - 1,
                 StaticScrollOffset.offset + getPositionY() + getHeight() - 1, Colors.BUTTON_COMPONENT.getColor());
         font.drawString(String.format("%s (%s)", getLabel(), valueSetting.getValue()), getPositionX() + 4, StaticScrollOffset.offset + getPositionY() + 1,

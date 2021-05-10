@@ -5,40 +5,63 @@ import static me.htrewrite.client.command.CommandReturnStatus.*;
 
 import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.Wrapper;
+import me.htrewrite.client.audio.AudioEnum;
+import me.htrewrite.client.clickgui.ClickGuiScreen;
+import me.htrewrite.client.clickgui.StaticScrollOffset;
 import me.htrewrite.client.command.CommandManager;
 import me.htrewrite.client.command.CommandReturnStatus;
+import me.htrewrite.client.customgui.CustomMainMenuGui;
 import me.htrewrite.client.event.custom.player.PlayerDisconnectEvent;
 import me.htrewrite.client.event.custom.render.RenderEvent;
 import me.htrewrite.client.module.Module;
+import net.minecraft.client.gui.GuiDownloadTerrain;
+import net.minecraft.client.gui.GuiGameOver;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.client.event.ClientChatEvent;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.event.KeyEvent;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class EventProcessor {
+    private AtomicBoolean tickOngoing = new AtomicBoolean(false);
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onTickHighest(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START)
+            tickOngoing.set(true);
+    }
+    @SubscribeEvent(priority=EventPriority.LOWEST)
+    public void onTickLowest(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END)
+            tickOngoing.set(false);
+    }
+    public boolean ticksOngoing() { return tickOngoing.get(); }
+
     @SubscribeEvent
     public void onInput(InputEvent.KeyInputEvent inputEvent) {
         boolean eventKeyState = Keyboard.getEventKeyState();
         int eventKey = Keyboard.getEventKey();
         if(!eventKeyState) return;
 
-        if (eventKey != Keyboard.KEY_NONE && Keyboard.getEventKeyState())
-            for(Module module : HTRewrite.INSTANCE.getModuleManager().getModules())
-                if(module.getKey() == eventKey)
+        if (eventKey != Keyboard.KEY_NONE && Keyboard.getEventKeyState()) {
+            for (Module module : HTRewrite.INSTANCE.getModuleManager().getModules())
+                if (module.getKey() == eventKey)
                     module.toggle();
+        }
         EVENT_BUS.post(inputEvent);
     }
 
@@ -92,5 +115,50 @@ public class EventProcessor {
         EVENT_BUS.post(event);
         if(event.isCanceled())
             event.setFOV(event.getFOV());
+    }
+
+    @SubscribeEvent public void inputUpdateEvent(InputUpdateEvent event) { EVENT_BUS.post(event); }
+
+    CustomMainMenuGui customMainMenuGui = new CustomMainMenuGui();
+
+    @SubscribeEvent
+    public void onDimensionChange(GuiOpenEvent event) {
+        if(event.getGui() instanceof GuiDownloadTerrain || event.getGui() instanceof GuiGameOver) {
+            System.out.println("Dimension");
+            HTRewrite.INSTANCE.getEventHook().callEventHook("updateHookEvent", "GuiOpenEvent");
+        }
+
+        if(event.getGui() instanceof GuiMainMenu)
+            event.setGui(customMainMenuGui);
+    }
+
+    long ms = System.currentTimeMillis();
+    @SubscribeEvent
+    public void onTick(TickEvent event) {
+        long currentMS = System.currentTimeMillis();
+        if(currentMS > ms) {
+            ms = currentMS+50;
+            if(!(Wrapper.getMC().currentScreen instanceof ClickGuiScreen))
+                return;
+
+            int dWheel = Mouse.getDWheel();
+            StaticScrollOffset.offset+=(dWheel<0?10:dWheel>0?-10:0);
+        }
+    }
+
+    @SubscribeEvent
+    public void playerRenderEvent(RenderPlayerEvent.Pre event) {
+        EVENT_BUS.post(event);
+    }
+
+
+    @SubscribeEvent
+    public void onJoinServer(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+        AudioEnum.Music.MAIN.stop();
+    }
+
+    @SubscribeEvent
+    public void playerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
+        AudioEnum.Music.MAIN.stop();
     }
 }

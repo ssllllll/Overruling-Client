@@ -3,10 +3,7 @@ package me.htrewrite.client.clickgui.components.buttons;
 import me.htrewrite.client.clickgui.StaticScrollOffset;
 import me.htrewrite.client.clickgui.components.Colors;
 import me.htrewrite.client.clickgui.components.Component;
-import me.htrewrite.client.clickgui.components.buttons.settings.ModeComponent;
-import me.htrewrite.client.clickgui.components.buttons.settings.StringComponent;
-import me.htrewrite.client.clickgui.components.buttons.settings.ToggleableComponent;
-import me.htrewrite.client.clickgui.components.buttons.settings.ValueComponent;
+import me.htrewrite.client.clickgui.components.buttons.settings.*;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.exeterimports.mcapi.settings.*;
 
@@ -34,6 +31,9 @@ public class ModComponent extends Component {
                         positionY, width, height));
             } else if (setting instanceof ToggleableSetting) {
                 components.add(new ToggleableComponent((ToggleableSetting) setting, setting.getLabel(), positionX,
+                        positionY, width, height));
+            } else if (setting instanceof BindSetting) {
+                components.add(new BindComponent((BindSetting) setting, setting.getLabel(), positionX,
                         positionY, width, height));
             }
         }

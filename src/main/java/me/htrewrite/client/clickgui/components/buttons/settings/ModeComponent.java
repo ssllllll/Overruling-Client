@@ -1,8 +1,10 @@
 package me.htrewrite.client.clickgui.components.buttons.settings;
 
+import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.clickgui.StaticScrollOffset;
 import me.htrewrite.client.clickgui.components.Colors;
 import me.htrewrite.client.clickgui.components.Component;
+import me.htrewrite.client.event.custom.client.ClientSettingChangeEvent;
 import me.htrewrite.exeterimports.mcapi.settings.ModeSetting;
 
 public class ModeComponent extends Component {

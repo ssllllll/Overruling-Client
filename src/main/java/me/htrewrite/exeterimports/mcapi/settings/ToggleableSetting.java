@@ -1,5 +1,7 @@
 package me.htrewrite.exeterimports.mcapi.settings;
 
+import me.htrewrite.client.HTRewrite;
+import me.htrewrite.client.event.custom.client.ClientSettingChangeEvent;
 import me.htrewrite.exeterimports.mcapi.interfaces.Toggleable;
 
 import java.util.function.Predicate;
@@ -20,6 +22,7 @@ public class ToggleableSetting extends Setting implements Toggleable {
     @Override
     public void setEnabled(boolean flag) {
         this.enabled = flag;
+        HTRewrite.EVENT_BUS.post(new ClientSettingChangeEvent(this));
     }
 
     @Override

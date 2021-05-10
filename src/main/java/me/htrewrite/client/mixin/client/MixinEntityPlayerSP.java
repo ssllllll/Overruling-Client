@@ -2,10 +2,7 @@ package me.htrewrite.client.mixin.client;
 
 import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.event.custom.CustomEvent;
-import me.htrewrite.client.event.custom.player.PlayerChatEvent;
-import me.htrewrite.client.event.custom.player.PlayerMotionUpdateEvent;
-import me.htrewrite.client.event.custom.player.PlayerPushOutOfBlocksEvent;
-import me.htrewrite.client.event.custom.player.PlayerUpdateEvent;
+import me.htrewrite.client.event.custom.player.*;
 import net.minecraft.client.entity.EntityPlayerSP;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,6 +15,7 @@ public abstract class MixinEntityPlayerSP {
     @Inject(method = "onUpdate", at = @At("HEAD"), cancellable = true)
     public void onUpdate(CallbackInfo callbackInfo) {
         PlayerUpdateEvent playerUpdateEvent = new PlayerUpdateEvent();
+        playerUpdateEvent.setEra(CustomEvent.Era.PRE);
         HTRewrite.EVENT_BUS.post(playerUpdateEvent);
         if(playerUpdateEvent.isCancelled())
             callbackInfo.cancel();
@@ -53,5 +51,19 @@ public abstract class MixinEntityPlayerSP {
         HTRewrite.EVENT_BUS.post(event);
         if(event.isCancelled())
             callbackInfo.setReturnValue(false);
+    }
+
+    @Inject(method={"onUpdateWalkingPlayer"}, at={@At(value="HEAD")}, cancellable=true)
+    private void preUpdateWalkingPlayer(CallbackInfo callbackInfo) {
+        UpdateWalkingPlayerEvent event = new UpdateWalkingPlayerEvent(CustomEvent.Era.PRE);
+        HTRewrite.EVENT_BUS.post(event);
+        if(event.isCancelled())
+            callbackInfo.cancel();
+    }
+
+    @Inject(method={"onUpdateWalkingPlayer"}, at={@At(value="RETURN")})
+    private void postUpdateWalkingPlayer(CallbackInfo callbackInfo) {
+        UpdateWalkingPlayerEvent event = new UpdateWalkingPlayerEvent(CustomEvent.Era.POST);
+        HTRewrite.EVENT_BUS.post(event);
     }
 }
