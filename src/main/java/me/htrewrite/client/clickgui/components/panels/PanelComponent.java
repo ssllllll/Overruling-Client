@@ -28,7 +28,7 @@ public abstract class PanelComponent extends Component {
                 case 0:
                     setDragging(true);
                     setDraggingPositionX(getPositionX() - mouseX);
-                    setDraggingPositionY(StaticScrollOffset.offset+getPositionY() - mouseY);
+                    setDraggingPositionY(getPositionY() - mouseY);
                     break;
                 case 1:
                     this.open = !open;

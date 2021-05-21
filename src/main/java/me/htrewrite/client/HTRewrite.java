@@ -3,14 +3,13 @@ package me.htrewrite.client;
 import me.htrewrite.client.audio.AudioEnum;
 import me.htrewrite.client.audio.StaticAudioDownloader;
 import me.htrewrite.client.clickgui.ClickGuiScreen;
-import me.htrewrite.client.clickgui.StaticClickGuiColor;
-import me.htrewrite.client.clickgui.components.Colors;
 import me.htrewrite.client.command.CommandManager;
 import me.htrewrite.client.customgui.SplashProgressGui;
 import me.htrewrite.client.event.CEventProcessor;
 import me.htrewrite.client.event.EventProcessor;
 import me.htrewrite.client.event.hook.EventHook;
 import me.htrewrite.client.manager.FriendManager;
+import me.htrewrite.client.manager.TickRateManager;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleManager;
 import me.htrewrite.client.util.ClientAuthenticator;
@@ -38,7 +37,7 @@ import java.util.concurrent.Executors;
 public class HTRewrite {
     public static final String MOD_ID = "htrewrite";
     public static final String NAME = "HT+Rewrite";
-    public static final String VERSION = "a1.4";
+    public static final String VERSION = "a1.8";
 
     public static final EventBus EVENT_BUS = new EventManager();
     public static final ConfigUtils configuration = new ConfigUtils("client", "");
@@ -46,20 +45,22 @@ public class HTRewrite {
     public static HTRewrite INSTANCE;
     public static Logger logger;
     public static ExecutorService executorService;
+    public static ExecutorService chatExecutor;
 
     private EventProcessor eventProcessor;
 
     private KeybindManager keybindManager;
+    private TickRateManager tickRateManager;
     private FriendManager friendManager;
     private ModuleManager moduleManager;
     private CommandManager commandManager;
 
     private ClickGuiScreen clickGuiScreen;
 
-    private EventHook eventHook;
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         INSTANCE = this;
+        Display.setTitle(NAME + " " + VERSION);
         if(configuration.get("menu-music-enabled") == null) {
             configuration.set("menu-music-enabled", true);
             configuration.save();
@@ -73,17 +74,10 @@ public class HTRewrite {
 
         /* THREAD POOL */
         executorService = Executors.newSingleThreadExecutor();
+        chatExecutor = Executors.newSingleThreadExecutor();
 
         logger = event.getModLog();
         logger.info("preInit");
-
-        /* EVENT HOOK */
-        logger.info("Hooking events...");
-        long ms = System.currentTimeMillis();
-        this.eventHook = new EventHook();
-        logger.info("All events hooked up in " + (System.currentTimeMillis()-ms) + " ms!");
-
-        Display.setTitle(NAME + " " + VERSION);
 
         AudioEnum.Vocals.AUTH.play();
         me.htrewrite.client.util.ClientAuthenticator.auth();
@@ -119,6 +113,7 @@ public class HTRewrite {
         SplashProgressGui.setProgress(6, "Loading managers...");
 
         keybindManager = new KeybindManager();
+        tickRateManager = new TickRateManager();
 
         SplashProgressGui.setProgress(7, "Adding friends...");
 
@@ -162,11 +157,10 @@ public class HTRewrite {
     public EventProcessor getEventProcessor() { return eventProcessor; }
 
     public KeybindManager getKeybindManager() { return keybindManager; }
+    public TickRateManager getTickRateManager() { return tickRateManager; }
     public FriendManager getFriendManager() { return friendManager; }
     public ModuleManager getModuleManager() { return moduleManager; }
     public CommandManager getCommandManager() { return commandManager; }
 
     public ClickGuiScreen getClickGuiScreen() { return clickGuiScreen; }
-
-    public EventHook getEventHook() { return eventHook; }
 }

@@ -14,8 +14,6 @@ import me.htrewrite.client.customgui.CustomMainMenuGui;
 import me.htrewrite.client.event.custom.player.PlayerDisconnectEvent;
 import me.htrewrite.client.event.custom.render.RenderEvent;
 import me.htrewrite.client.module.Module;
-import net.minecraft.client.gui.GuiDownloadTerrain;
-import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.TextComponentString;
@@ -34,7 +32,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.event.KeyEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EventProcessor {
@@ -123,11 +120,6 @@ public class EventProcessor {
 
     @SubscribeEvent
     public void onDimensionChange(GuiOpenEvent event) {
-        if(event.getGui() instanceof GuiDownloadTerrain || event.getGui() instanceof GuiGameOver) {
-            System.out.println("Dimension");
-            HTRewrite.INSTANCE.getEventHook().callEventHook("updateHookEvent", "GuiOpenEvent");
-        }
-
         if(event.getGui() instanceof GuiMainMenu)
             event.setGui(customMainMenuGui);
     }
@@ -142,7 +134,7 @@ public class EventProcessor {
                 return;
 
             int dWheel = Mouse.getDWheel();
-            StaticScrollOffset.offset+=(dWheel<0?10:dWheel>0?-10:0);
+            StaticScrollOffset.offset+=(dWheel<0?-20:dWheel>0?20:0);
         }
     }
 
@@ -161,4 +153,7 @@ public class EventProcessor {
     public void playerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
         AudioEnum.Music.MAIN.stop();
     }
+
+    @SubscribeEvent public void fogColors(EntityViewRenderEvent.FogColors event) { EVENT_BUS.post(event); }
+    @SubscribeEvent public void fogDensity(EntityViewRenderEvent.FogDensity event) { EVENT_BUS.post(event); }
 }

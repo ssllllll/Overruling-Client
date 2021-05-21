@@ -1,6 +1,8 @@
 package me.htrewrite.client.command;
 
+import me.htrewrite.client.util.ChatColor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextComponentString;
 
 public class Command {
     protected final Minecraft mc;
@@ -20,4 +22,6 @@ public class Command {
     public String getDescription() { return description; }
 
     public void call(String[] args) {}
+    public void sendMessage(String message) { mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', message))); }
+    public void sendInvalidUsageMessage() { sendMessage("&c"+formatCmd(alias + " " + usage)); }
 }

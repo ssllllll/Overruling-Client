@@ -19,6 +19,9 @@
     "MixinBlockSoulSand",
     "MixinKeyBinding",
     "MixinForgeSplashScreen",
-    "MixinNettyCompressionDecoder"
+    "MixinNettyCompressionDecoder",
+    "MixinEntityLlama",
+    "MixinEntityPig",
+    "MixinAbstractHorse"
   ]
 }

@@ -24,8 +24,11 @@ public class CommandManager {
         commands.add(new ChatExceptCommand());
         commands.add(new FriendCommand());
         commands.add(new HelpCommand());
+        commands.add(new HTChatCommand());
+        commands.add(new HTListCommand());
         commands.add(new ModuleCommand());
         commands.add(new PrefixCommand(this));
+        commands.add(new VanishCommand());
     }
 
     public Command get(String alias) {

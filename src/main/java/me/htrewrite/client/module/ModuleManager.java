@@ -1,14 +1,8 @@
 package me.htrewrite.client.module;
 
 import me.htrewrite.client.module.modules.combat.*;
-import me.htrewrite.client.module.modules.exploit.AntiChunkBanModule;
-import me.htrewrite.client.module.modules.exploit.AntiHungerModule;
-import me.htrewrite.client.module.modules.exploit.AutoSelfCrashModule;
-import me.htrewrite.client.module.modules.exploit.PacketCancellerModule;
-import me.htrewrite.client.module.modules.gui.ClickGuiModule;
-import me.htrewrite.client.module.modules.gui.HUDModule;
-import me.htrewrite.client.module.modules.gui.MusicModule;
-import me.htrewrite.client.module.modules.gui.NotificationsModule;
+import me.htrewrite.client.module.modules.exploit.*;
+import me.htrewrite.client.module.modules.gui.*;
 import me.htrewrite.client.module.modules.miscellaneous.*;
 import me.htrewrite.client.module.modules.movement.*;
 import me.htrewrite.client.module.modules.render.*;
@@ -32,11 +26,14 @@ public class ModuleManager {
         modules.add(new AutoTotemModule());
         modules.add(new AutoSelfShutdown());
         modules.add(new InstantBurrowModule());
+        modules.add(new KillAuraModule());
         modules.add(new VelocityModule());
         /* Exploits */
         modules.add(new AntiChunkBanModule());
         modules.add(new AntiHungerModule());
         modules.add(new AutoSelfCrashModule());
+        modules.add(new BuildHeightModule());
+        modules.add(new CoordExploitModule());
         modules.add(new PacketCancellerModule());
         /* Miscellaneous */
         modules.add(new AutoDupeModule());
@@ -46,10 +43,13 @@ public class ModuleManager {
         modules.add(new MobOwnerModule());
         modules.add(new XCarryModule());
         /* Movement */
+        // modules.add(new AnchorModule());
         modules.add(new AntiLevitateModule());
         modules.add(new AutoWalkModule());
         modules.add(new BlinkModule());
         modules.add(new ElytraFlyModule());
+        modules.add(new EntityControlModule());
+        modules.add(new FreecamModule());
         modules.add(new NoSlowModule());
         modules.add(new SprintModule());
         modules.add(new StepModule());
@@ -57,8 +57,11 @@ public class ModuleManager {
         modules.add(new CityESPModule());
         modules.add(new FullbrightModule());
         modules.add(new HandProgressModule());
+        // modules.add(new HoleESPModule());
         modules.add(new IbaiModule());
         modules.add(new ShulkerPreviewModule());
+        modules.add(new SkyColorModule());
+        modules.add(new TracersModule());
         /* World */
         modules.add(new AutoTunnelModule());
         modules.add(new EntityLoggerModule());
@@ -66,6 +69,7 @@ public class ModuleManager {
         modules.add(new SpeedmineModule());
         /* Gui */
         modules.add(new ClickGuiModule());
+        modules.add(new DiscordRPCModule());
         modules.add(new HUDModule());
         modules.add(new MusicModule());
         modules.add(new NotificationsModule());
