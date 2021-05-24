@@ -3,6 +3,8 @@ package me.htrewrite.client.command;
 import static me.htrewrite.client.command.CommandReturnStatus.*;
 
 import me.htrewrite.client.command.commands.*;
+import me.htrewrite.client.module.ModuleManager;
+import me.htrewrite.client.module.modules.gui.NotificationsModule;
 import me.htrewrite.client.util.ConfigUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -14,6 +16,7 @@ public class CommandManager {
     public final ConfigUtils configUtils;
     private ArrayList<Command> commands;
 
+    private HTChatCommand chatCommand;
     public CommandManager() {
         configUtils = new ConfigUtils("config", "commands");
         Object object = configUtils.get("prefix");
@@ -24,7 +27,7 @@ public class CommandManager {
         commands.add(new ChatExceptCommand());
         commands.add(new FriendCommand());
         commands.add(new HelpCommand());
-        commands.add(new HTChatCommand());
+        commands.add(chatCommand = new HTChatCommand());
         commands.add(new HTListCommand());
         commands.add(new ModuleCommand());
         commands.add(new PrefixCommand(this));
@@ -38,6 +41,10 @@ public class CommandManager {
         return null;
     }
     public CommandReturnStatus gotMessage(String message) {
+        if(message.startsWith("%") && NotificationsModule.receiveChatNotifications.isEnabled() && ModuleManager.notificationsModule.isEnabled()) {
+            chatCommand.call(message.substring(1).split(" "));
+            return COMMAND_HTCHAT;
+        }
         if(!message.startsWith(prefix)) return COMMAND_INVALID_SYNTAX;
         String[] args = message.split(" ");
         args[0] = args[0].replaceFirst(prefix, "");

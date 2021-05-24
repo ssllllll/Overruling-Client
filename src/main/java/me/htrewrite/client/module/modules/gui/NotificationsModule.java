@@ -23,14 +23,16 @@ import java.util.HashMap;
 public class NotificationsModule extends Module {
     private FriendManager friendManager;
 
-    public ToggleableSetting toggleNotifications = new ToggleableSetting("ModuleToggle", null, true);
-    public ToggleableSetting totemNotifications = new ToggleableSetting("TotemPop",null,false);
+    public static final ToggleableSetting toggleNotifications = new ToggleableSetting("ModuleToggle", null, true);
+    public static final ToggleableSetting totemNotifications = new ToggleableSetting("TotemPop",null,false);
+    public static final ToggleableSetting receiveChatNotifications = new ToggleableSetting("HT+Chat(%)", null, true);
     public static final HashMap<String, Integer> totem_pop_counter = new HashMap<String, Integer>();
 
     public NotificationsModule() {
         super("Notifications", "Notifications", ModuleType.Gui, 0);
         addOption(toggleNotifications);
         addOption(totemNotifications);
+        addOption(receiveChatNotifications);
         endOption();
         this.friendManager = HTRewrite.INSTANCE.getFriendManager();
     }

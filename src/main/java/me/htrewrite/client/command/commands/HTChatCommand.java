@@ -1,7 +1,10 @@
 package me.htrewrite.client.command.commands;
 
 import me.htrewrite.client.HTRewrite;
+import me.htrewrite.client.Wrapper;
 import me.htrewrite.client.command.Command;
+import me.htrewrite.client.module.ModuleManager;
+import me.htrewrite.client.module.modules.gui.NotificationsModule;
 import me.htrewrite.client.util.ChatColor;
 import me.htrewrite.client.util.ConfigUtils;
 import me.pk2.chatserver.ChatAPI;
@@ -22,9 +25,9 @@ public class HTChatCommand extends Command {
         thread = new Thread(()->{
             while (true) {
                 KeepAliveResponse aliveResponse = ChatAPI.keepAlive();
-                for (Message msg : aliveResponse.queued_messages)
-                    if (mc.world != null && mc.player != null)
-                        mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', "&d" + msg.user.username + " &7&l-> &r" + msg.message)));
+                if(NotificationsModule.receiveChatNotifications.isEnabled())
+                    for (Message msg : aliveResponse.queued_messages)
+                        Wrapper.sendClientText("&d" + msg.user.username + " &7&l-> &r" + msg.message);
                 try { Thread.sleep(5000); } catch (Exception exception) {}
             }
         });
@@ -33,6 +36,11 @@ public class HTChatCommand extends Command {
 
     @Override
     public void call(String[] args) {
+        if(!NotificationsModule.receiveChatNotifications.isEnabled() || !ModuleManager.notificationsModule.isEnabled()) {
+            Wrapper.sendClientText("&cHT+Chat is disabled, please enable it on Notifications Module!");
+            return;
+        }
+
         if(args.length < 1) {
             mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', "&c"+formatCmd(getAlias() + " " + getUsage()))));
             return;

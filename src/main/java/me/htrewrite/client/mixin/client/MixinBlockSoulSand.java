@@ -22,10 +22,13 @@ public class MixinBlockSoulSand extends Block {
 
     @Inject(method={"onEntityCollision"}, at={@At(value="HEAD")}, cancellable=true)
     public void onEntityCollisionHook(World worldIn, BlockPos pos, IBlockState state, Entity entityIn, CallbackInfo info) {
+        /*
         if(NoSlowModule.getInstance() == null)
             return;
 
         if (NoSlowModule.getInstance().isEnabled() && NoSlowModule.soulSand.isEnabled())
             info.cancel();
+
+         */
     }
 }

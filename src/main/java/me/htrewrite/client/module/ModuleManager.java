@@ -3,13 +3,11 @@ package me.htrewrite.client.module;
 import me.htrewrite.client.module.modules.combat.*;
 import me.htrewrite.client.module.modules.exploit.*;
 import me.htrewrite.client.module.modules.gui.*;
+import me.htrewrite.client.module.modules.gui.hud.HUDModule;
 import me.htrewrite.client.module.modules.miscellaneous.*;
 import me.htrewrite.client.module.modules.movement.*;
 import me.htrewrite.client.module.modules.render.*;
-import me.htrewrite.client.module.modules.world.AutoTunnelModule;
-import me.htrewrite.client.module.modules.world.EntityLoggerModule;
-import me.htrewrite.client.module.modules.world.LawnmowerModule;
-import me.htrewrite.client.module.modules.world.SpeedmineModule;
+import me.htrewrite.client.module.modules.world.*;
 
 import java.util.ArrayList;
 
@@ -20,23 +18,27 @@ public class ModuleManager {
         this.modules = new ArrayList<Module>();
     }
 
+    public static NotificationsModule notificationsModule;
     public void setModules() {
         /* Combat */
         modules.add(new AutoCityModule());
         modules.add(new AutoTotemModule());
         modules.add(new AutoSelfShutdown());
+        modules.add(new FastXPModule());
         modules.add(new InstantBurrowModule());
         modules.add(new KillAuraModule());
         modules.add(new VelocityModule());
         /* Exploits */
         modules.add(new AntiChunkBanModule());
         modules.add(new AntiHungerModule());
+        modules.add(new AntiMapBanModule());
         modules.add(new AutoSelfCrashModule());
         modules.add(new BuildHeightModule());
         modules.add(new CoordExploitModule());
         modules.add(new PacketCancellerModule());
         /* Miscellaneous */
         modules.add(new AutoDupeModule());
+        modules.add(new AutoReplyModule());
         modules.add(new ChatModule());
         modules.add(new FakePlayerModule());
         modules.add(new MiddleClickModule());
@@ -49,11 +51,13 @@ public class ModuleManager {
         modules.add(new BlinkModule());
         modules.add(new ElytraFlyModule());
         modules.add(new EntityControlModule());
+        modules.add(new EntitySpeedModule());
         modules.add(new FreecamModule());
         modules.add(new NoSlowModule());
         modules.add(new SprintModule());
         modules.add(new StepModule());
         /* Render */
+        modules.add(new AntiEnchantmentTableLagModule());
         modules.add(new CityESPModule());
         modules.add(new FullbrightModule());
         modules.add(new HandProgressModule());
@@ -65,6 +69,7 @@ public class ModuleManager {
         /* World */
         modules.add(new AutoTunnelModule());
         modules.add(new EntityLoggerModule());
+        modules.add(new FastPlaceModule());
         modules.add(new LawnmowerModule());
         modules.add(new SpeedmineModule());
         /* Gui */
@@ -72,7 +77,7 @@ public class ModuleManager {
         modules.add(new DiscordRPCModule());
         modules.add(new HUDModule());
         modules.add(new MusicModule());
-        modules.add(new NotificationsModule());
+        modules.add(notificationsModule = new NotificationsModule());
     }
 
     public ArrayList<Module> getModules() {

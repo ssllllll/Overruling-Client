@@ -23,7 +23,7 @@ import org.lwjgl.input.Keyboard;
 public class NoSlowModule extends Module {
     public static final ToggleableSetting guiMove = new ToggleableSetting("GuiMove", null, true);
     public static final ToggleableSetting noSlow = new ToggleableSetting("NoSlow", null, true);
-    public static final ToggleableSetting soulSand = new ToggleableSetting("SoulSand", null, true);
+    public static final ToggleableSetting soulSand = new ToggleableSetting("SoulSand", null, false);
     public static final ToggleableSetting strict = new ToggleableSetting("Strict", null, false);
     public static final ToggleableSetting webs = new ToggleableSetting("Webs", null, false);
     public static final ValueSetting<Double> webHorizontalFactor = new ValueSetting<>("WebHSpeed", null, 2d, 0d, 100d);
@@ -36,7 +36,7 @@ public class NoSlowModule extends Module {
         super("NoSlow", "Move faster on things that slow you down.", ModuleType.Movement, 0);
         addOption(guiMove);
         addOption(noSlow);
-        addOption(soulSand);
+        // addOption(soulSand);
         addOption(strict);
         addOption(webs);
         addOption(webHorizontalFactor.setVisibility(v -> webs.isEnabled()));
@@ -61,7 +61,7 @@ public class NoSlowModule extends Module {
             }
         }
 
-        if(webs.isEnabled() && mc.player.isInWeb) { // TODO? Phobos.moduleManager.getModuleByClass(Flight.class).isDisabled() && Phobos.moduleManager.getModuleByClass(Phase.class).isDisabled()
+        if(webs.isEnabled() && mc.player.isInWeb) {
             mc.player.motionX *= webHorizontalFactor.getValue().doubleValue();
             mc.player.motionZ *= webHorizontalFactor.getValue().doubleValue();
             mc.player.motionY *= webVerticalFactor.getValue().doubleValue();

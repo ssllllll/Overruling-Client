@@ -12,8 +12,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ChatAPI {
+    public static final AtomicInteger lastKeepAliveUsers = new AtomicInteger(0);
     private static User user;
 
     public static KeepAliveResponse handshake(String username) {
@@ -46,6 +48,7 @@ public class ChatAPI {
                 Packet packet = (Packet)inputStream.readObject();
                 if(packet instanceof SCUpdatePacket) {
                     SCUpdatePacket updatePacket = (SCUpdatePacket)packet;
+                    lastKeepAliveUsers.set((int)updatePacket.users.stream().filter(v -> v.isAlive()).count());
                     return new KeepAliveResponse(updatePacket.users, updatePacket.messages);
                 }
                 socket.close();
