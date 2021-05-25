@@ -9,9 +9,13 @@ import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
 
 public class AutoWalkModule extends Module {
+    public static AutoWalkModule INSTANCE;
+
     public AutoWalkModule() {
         super("AutoWalk", "It makes you walk.", ModuleType.Movement, 0);
         endOption();
+
+        INSTANCE = this;
     }
 
     AutoTunnelModule autoTunnelModule;

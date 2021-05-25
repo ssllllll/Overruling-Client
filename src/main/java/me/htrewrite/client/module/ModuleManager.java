@@ -38,6 +38,7 @@ public class ModuleManager {
         modules.add(new PacketCancellerModule());
         /* Miscellaneous */
         modules.add(new AutoDupeModule());
+        modules.add(new AutoFrameDupeModule());
         modules.add(new AutoReplyModule());
         modules.add(new ChatModule());
         modules.add(new FakePlayerModule());
@@ -49,6 +50,7 @@ public class ModuleManager {
         modules.add(new AntiLevitateModule());
         modules.add(new AutoWalkModule());
         modules.add(new BlinkModule());
+        modules.add(new ElytraFly2Module());
         modules.add(new ElytraFlyModule());
         modules.add(new EntityControlModule());
         modules.add(new EntitySpeedModule());
