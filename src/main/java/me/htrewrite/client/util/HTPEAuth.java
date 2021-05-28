@@ -61,7 +61,7 @@ public class HTPEAuth {
         try {
             PostRequest.read(PostRequest.genGetCon("https://aurahardware.eu/ht/api/connectivity/connect.php?user=" + Wrapper.getMC().session.getUsername()));
 
-            URL url = new URL("https://aurahardware.eu/api/auth.php");
+            URL url = new URL("https://aurahardware.eu/api/user/auth.php");
             HttpURLConnection http = (HttpURLConnection)url.openConnection();
             http.setRequestMethod("POST");
             http.setDoOutput(true);
@@ -78,7 +78,7 @@ public class HTPEAuth {
             inputStream.close();
             http.disconnect();
 
-            if(response.contains("1122") || response.startsWith("1122") || response.endsWith("1122")) return; else {
+            if(response.contains("1")) return; else {
                 optionPane.createDialog("Invalid login, please try again!").setAlwaysOnTop(true);
                 String user = JOptionPane.showInputDialog(jFrame, "User: ");
                 String pass = JOptionPane.showInputDialog(jFrame, "Password: ");
@@ -87,7 +87,7 @@ public class HTPEAuth {
                 configUtils.save();
             }
 
-            URL url2 = new URL("https://aurahardware.eu/api/auth.php");
+            URL url2 = new URL("https://aurahardware.eu/api/user/auth.php");
             HttpURLConnection http2 = (HttpURLConnection)url.openConnection();
             http2.setRequestMethod("POST");
             http2.setDoOutput(true);
@@ -101,7 +101,7 @@ public class HTPEAuth {
             String response2 = http2.getResponseMessage();
             http.disconnect();
 
-            if(response2.contains("1122") || response2.startsWith("1122") || response2.endsWith("1122"))
+            if(response2.contains("1"))
                 return;
         } catch (Exception e) { e.printStackTrace(); }
 

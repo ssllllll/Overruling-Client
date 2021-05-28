@@ -21,9 +21,10 @@ public class ModuleManager {
     public static NotificationsModule notificationsModule;
     public void setModules() {
         /* Combat */
+        modules.add(new AutoAimModule());
         modules.add(new AutoCityModule());
         modules.add(new AutoTotemModule());
-        modules.add(new AutoSelfShutdown());
+        // modules.add(new AutoSelfShutdown());
         modules.add(new FastXPModule());
         modules.add(new InstantBurrowModule());
         modules.add(new KillAuraModule());
@@ -32,7 +33,7 @@ public class ModuleManager {
         modules.add(new AntiChunkBanModule());
         modules.add(new AntiHungerModule());
         modules.add(new AntiMapBanModule());
-        modules.add(new AutoSelfCrashModule());
+        // modules.add(new AutoSelfCrashModule());
         modules.add(new BuildHeightModule());
         modules.add(new CoordExploitModule());
         modules.add(new PacketCancellerModule());

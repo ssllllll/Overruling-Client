@@ -10,19 +10,20 @@ import me.zero.alpine.fork.listener.Listener;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItemFrame;
+import net.minecraft.init.Items;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.Comparator;
 
 public class AutoFrameDupeModule extends Module {
-    public static final ValueSetting<Double> tickDelay = new ValueSetting<>("TickDelay", null, 1d, 0d, 20d);
+    public static final ValueSetting<Double> tickDelay = new ValueSetting<>("TickDelay", null, 10d, 0d, 20d);
 
     private TickedTimer tickedTimer;
-    private boolean waiting = false;
     private boolean sending = false;
     private Entity entity;
     public AutoFrameDupeModule() {
@@ -50,19 +51,25 @@ public class AutoFrameDupeModule extends Module {
     private boolean isValidTileEntity(Entity entity) { return (entity instanceof EntityItemFrame)&&mc.player.getDistance(entity)<4f; }
 
     @EventHandler
-    private Listener<PlayerUpdateEvent> updateEventListener = new Listener<>(event -> {
-        if(!tickedTimer.passed(tickDelay.getValue().intValue()) || waiting)
+    private Listener<TickEvent.ClientTickEvent> updateEventListener = new Listener<>(event -> {
+        if(nullCheck() || !tickedTimer.passed(tickDelay.getValue().intValue()))
             return;
         entity = mc.world.loadedEntityList.stream()
                 .filter(loadedEntity -> isValidTileEntity(loadedEntity))
                 .min(Comparator.comparing(loadedEntity -> mc.player.getDistance(loadedEntity.getPosition().getX(), loadedEntity.getPosition().getY(), loadedEntity.getPosition().getZ())))
                 .orElse(null);
+        EntityItemFrame itemFrame = (EntityItemFrame)entity;
         if(entity == null) {
             sendMessage("&cItemFrame not found in a range of 4 blocks!");
             toggle();
             return;
         }
 
+        if(mc.player.getHeldItemMainhand() == null || mc.player.getHeldItemMainhand().getItem() == Items.AIR)
+            return;
+
+        if(sending && (itemFrame.getDisplayedItem() == null || itemFrame.getDisplayedItem().getItem()==Items.AIR))
+            sending = false;
         mc.player.connection.sendPacket(sending?new CPacketUseEntity(entity):new CPacketUseEntity(entity, EnumHand.MAIN_HAND));
         sending = !sending;
         tickedTimer.reset();

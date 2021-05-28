@@ -31,6 +31,7 @@ public class CommandManager {
         commands.add(new HTListCommand());
         commands.add(new ModuleCommand());
         commands.add(new PrefixCommand(this));
+        commands.add(new TestSoundCommand());
         commands.add(new VanishCommand());
     }
 

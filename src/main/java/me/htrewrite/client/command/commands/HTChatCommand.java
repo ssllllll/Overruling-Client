@@ -10,6 +10,8 @@ import me.htrewrite.client.util.ConfigUtils;
 import me.pk2.chatserver.ChatAPI;
 import me.pk2.chatserver.clientside.objects.KeepAliveResponse;
 import me.pk2.chatserver.message.Message;
+import net.minecraft.client.audio.Sound;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.text.TextComponentString;
 
 public class HTChatCommand extends Command {
@@ -25,9 +27,14 @@ public class HTChatCommand extends Command {
         thread = new Thread(()->{
             while (true) {
                 KeepAliveResponse aliveResponse = ChatAPI.keepAlive();
-                if(NotificationsModule.receiveChatNotifications.isEnabled())
+                if(NotificationsModule.receiveChatNotifications.isEnabled()) {
+                    if(mc.world == null || mc.player == null)
+                        continue;
+                    if(aliveResponse.queued_messages.size() > 0)
+                        mc.player.playSound(SoundEvents.ENTITY_ARROW_HIT_PLAYER, 1, 2);
                     for (Message msg : aliveResponse.queued_messages)
                         Wrapper.sendClientText("&d" + msg.user.username + " &7&l-> &r" + msg.message);
+                }
                 try { Thread.sleep(5000); } catch (Exception exception) {}
             }
         });
@@ -51,9 +58,14 @@ public class HTChatCommand extends Command {
         final String message = builder.toString();
         HTRewrite.executorService.submit(() -> {
             ChatAPI.sendMessage(message);
+            mc.player.playSound(SoundEvents.BLOCK_LEVER_CLICK, 1, 2);
+
             KeepAliveResponse aliveResponse = ChatAPI.keepAlive();
+            if(mc.world == null || mc.player == null)
+                return;
+            if(aliveResponse.queued_messages.size() > 1)
+                mc.player.playSound(SoundEvents.ENTITY_ARROW_HIT_PLAYER, 1, 2);
             for(Message msg : aliveResponse.queued_messages)
-                if(mc.world != null && mc.player != null)
                     mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', "&d" + msg.user.username + " &7&l-> &r" + msg.message)));
         });
     }
