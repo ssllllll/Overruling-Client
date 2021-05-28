@@ -1,5 +1,6 @@
 package me.htrewrite.client.module;
 
+import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.module.modules.combat.*;
 import me.htrewrite.client.module.modules.exploit.*;
 import me.htrewrite.client.module.modules.gui.*;

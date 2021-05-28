@@ -14,7 +14,7 @@ public class MixinLoaderForge implements IFMLLoadingPlugin {
     public MixinLoaderForge() {
         HTRewrite.logger.info("Mixins are loading...");
         MixinBootstrap.init();
-        Mixins.addConfigurations("mixins.kami.json", "mixins.baritone.json");
+        Mixins.addConfigurations("mixins.htrewrite.json");
         MixinEnvironment.getDefaultEnvironment().setObfuscationContext("searge");
         HTRewrite.logger.info(MixinEnvironment.getDefaultEnvironment().getObfuscationContext());
     }

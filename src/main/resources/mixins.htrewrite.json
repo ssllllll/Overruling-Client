@@ -19,10 +19,10 @@
     "MixinBlockSoulSand",
     "MixinKeyBinding",
     "MixinForgeSplashScreen",
-    "MixinNettyCompressionDecoder",
     "MixinEntityLlama",
     "MixinEntityPig",
     "MixinAbstractHorse",
-    "MixinTileEntityRendererDispatcher"
+    "MixinTileEntityRendererDispatcher",
+    "MixinNettyCompressionDecoder"
   ]
 }

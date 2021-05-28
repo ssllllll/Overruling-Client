@@ -81,6 +81,12 @@ public class HTRewrite {
 
         AudioEnum.Vocals.AUTH.play();
         me.htrewrite.client.util.ClientAuthenticator.auth();
+
+        Object obj = HTRewrite.configuration.get("antichunkban-loader");
+        if(obj == null) {
+            HTRewrite.configuration.set("antichunkban-loader", true);
+            HTRewrite.configuration.save();
+        }
     }
 
     @Mod.EventHandler
