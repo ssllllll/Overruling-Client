@@ -1,22 +1,15 @@
 package me.htrewrite.client.module.modules.combat;
 
-import me.htrewrite.client.clickgui.components.buttons.settings.bettermode.BetterMode;
 import me.htrewrite.client.event.custom.player.PlayerMotionUpdateEvent;
 import me.htrewrite.client.event.custom.player.PlayerUpdateEvent;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleType;
 import me.htrewrite.client.util.MathUtil;
-import me.htrewrite.client.util.TickedTimer;
-import me.htrewrite.exeterimports.mcapi.settings.ModeSetting;
 import me.htrewrite.exeterimports.mcapi.settings.ValueSetting;
 import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.play.client.CPacketEntityAction;
-import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.Comparator;
 

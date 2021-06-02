@@ -20,5 +20,5 @@ public class TickedTimer implements Listenable {
 
     public TickedTimer() { start(); }
 
-    @Override protected void finalize() throws Throwable { HTRewrite.EVENT_BUS.unsubscribe(this); }
+    @Override protected void finalize() { HTRewrite.EVENT_BUS.unsubscribe(this); }
 }

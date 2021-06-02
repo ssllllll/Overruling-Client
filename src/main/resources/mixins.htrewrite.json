@@ -23,6 +23,7 @@
     "MixinEntityPig",
     "MixinAbstractHorse",
     "MixinTileEntityRendererDispatcher",
-    "MixinNettyCompressionDecoder"
+    "MixinNettyCompressionDecoder",
+    "MixinAbstractClientPlayer"
   ]
 }

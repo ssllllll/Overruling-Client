@@ -2,12 +2,12 @@ package me.htrewrite.client;
 
 import me.htrewrite.client.audio.AudioEnum;
 import me.htrewrite.client.audio.StaticAudioDownloader;
+import me.htrewrite.client.capes.Capes;
 import me.htrewrite.client.clickgui.ClickGuiScreen;
 import me.htrewrite.client.command.CommandManager;
 import me.htrewrite.client.customgui.SplashProgressGui;
 import me.htrewrite.client.event.CEventProcessor;
 import me.htrewrite.client.event.EventProcessor;
-import me.htrewrite.client.event.hook.EventHook;
 import me.htrewrite.client.manager.FriendManager;
 import me.htrewrite.client.manager.TickRateManager;
 import me.htrewrite.client.module.Module;
@@ -49,6 +49,7 @@ public class HTRewrite {
 
     private EventProcessor eventProcessor;
 
+    private Capes capes;
     private KeybindManager keybindManager;
     private TickRateManager tickRateManager;
     private FriendManager friendManager;
@@ -116,16 +117,20 @@ public class HTRewrite {
         } catch (Exception exception) { FMLCommonHandler.instance().exitJava(-1, true); return; }
         AudioEnum.Vocals.AUTH_SUCCESS.play();
 
-        SplashProgressGui.setProgress(6, "Loading managers...");
+        SplashProgressGui.setProgress(6, "Loading capes...");
+
+        capes = new Capes();
+
+        SplashProgressGui.setProgress(7, "Loading managers...");
 
         keybindManager = new KeybindManager();
         tickRateManager = new TickRateManager();
 
-        SplashProgressGui.setProgress(7, "Adding friends...");
+        SplashProgressGui.setProgress(8, "Adding friends...");
 
         friendManager = new FriendManager();
 
-        SplashProgressGui.setProgress(8, "Setting modules...");
+        SplashProgressGui.setProgress(9, "Setting modules...");
 
         moduleManager = new ModuleManager();
         moduleManager.setModules();
@@ -133,15 +138,15 @@ public class HTRewrite {
             if(module.isEnabled())
                 module.onEnable();
 
-        SplashProgressGui.setProgress(9, "Baking modules...");
+        SplashProgressGui.setProgress(10, "Baking modules...");
 
         commandManager = new CommandManager();
 
-        SplashProgressGui.setProgress(10, "Cooking ClickGui...");
+        SplashProgressGui.setProgress(11, "Cooking ClickGui...");
 
         clickGuiScreen = new ClickGuiScreen();
 
-        SplashProgressGui.setProgress(11, "Forging events...");
+        SplashProgressGui.setProgress(12, "Forging events...");
 
         eventProcessor = new EventProcessor();
         MinecraftForge.EVENT_BUS.register(eventProcessor);
@@ -162,6 +167,7 @@ public class HTRewrite {
 
     public EventProcessor getEventProcessor() { return eventProcessor; }
 
+    public Capes getCapes() { return capes; }
     public KeybindManager getKeybindManager() { return keybindManager; }
     public TickRateManager getTickRateManager() { return tickRateManager; }
     public FriendManager getFriendManager() { return friendManager; }
