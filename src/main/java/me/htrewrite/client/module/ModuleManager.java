@@ -41,6 +41,7 @@ public class ModuleManager {
         modules.add(new ReachModule());
         /* Miscellaneous */
         modules.add(new AutoDupeModule());
+        modules.add(new AutoEatModule());
         modules.add(new AutoFrameDupeModule());
         modules.add(new AutoReplyModule());
         modules.add(new ChatModule());
