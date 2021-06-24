@@ -35,7 +35,7 @@ public class HTChatCommand extends Command {
                     for (Message msg : aliveResponse.queued_messages)
                         Wrapper.sendClientText("&d" + msg.user.username + " &7&l-> &r" + msg.message);
                 }
-                try { Thread.sleep(5000); } catch (Exception exception) {}
+                try { Thread.sleep(5000); } catch (Exception exception) { exception.printStackTrace(); }
             }
         });
         thread.start();

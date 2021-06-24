@@ -12,6 +12,7 @@ import me.htrewrite.client.manager.FriendManager;
 import me.htrewrite.client.manager.TickRateManager;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleManager;
+import me.htrewrite.client.util.AuthSession;
 import me.htrewrite.client.util.ClientAuthenticator;
 import me.htrewrite.client.util.ConfigUtils;
 import me.htrewrite.client.util.PostRequest;
@@ -37,7 +38,7 @@ import java.util.concurrent.Executors;
 public class HTRewrite {
     public static final String MOD_ID = "htrewrite";
     public static final String NAME = "HT+Rewrite";
-    public static final String VERSION = "a2.0";
+    public static final String VERSION = "a2.1";
 
     public static final EventBus EVENT_BUS = new EventManager();
     public static final ConfigUtils configuration = new ConfigUtils("client", "");
@@ -46,6 +47,7 @@ public class HTRewrite {
     public static Logger logger;
     public static ExecutorService executorService;
     public static ExecutorService chatExecutor;
+    public static ExecutorService apiCallsQueue;
 
     private EventProcessor eventProcessor;
 
@@ -76,6 +78,7 @@ public class HTRewrite {
         /* THREAD POOL */
         executorService = Executors.newSingleThreadExecutor();
         chatExecutor = Executors.newSingleThreadExecutor();
+        apiCallsQueue = Executors.newSingleThreadExecutor();
 
         logger = event.getModLog();
         logger.info("preInit");
@@ -115,6 +118,8 @@ public class HTRewrite {
             Class<?> authClass = unsafe.defineAnonymousClass(ClientAuthenticator.class, bytes, null);
             authClass.newInstance();
         } catch (Exception exception) { FMLCommonHandler.instance().exitJava(-1, true); return; }
+        AuthSession.entry();
+
         AudioEnum.Vocals.AUTH_SUCCESS.play();
 
         SplashProgressGui.setProgress(6, "Loading capes...");

@@ -22,6 +22,6 @@ public class Command {
     public String getDescription() { return description; }
 
     public void call(String[] args) {}
-    public void sendMessage(String message) { mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', message))); }
+    public void sendMessage(String message) { if(mc.player != null) mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', message))); }
     public void sendInvalidUsageMessage() { sendMessage("&c"+formatCmd(alias + " " + usage)); }
 }

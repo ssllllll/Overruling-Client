@@ -38,6 +38,7 @@ public class ModuleManager {
         modules.add(new BuildHeightModule());
         modules.add(new CoordExploitModule());
         modules.add(new PacketCancellerModule());
+        modules.add(new ReachModule());
         /* Miscellaneous */
         modules.add(new AutoDupeModule());
         modules.add(new AutoFrameDupeModule());
@@ -67,6 +68,7 @@ public class ModuleManager {
         modules.add(new HandProgressModule());
         // modules.add(new HoleESPModule());
         modules.add(new IbaiModule());
+        modules.add(new NoFogModule());
         modules.add(new ShulkerPreviewModule());
         modules.add(new SkyColorModule());
         modules.add(new TracersModule());

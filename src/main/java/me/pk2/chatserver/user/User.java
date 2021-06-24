@@ -9,6 +9,7 @@ public class User implements Serializable {
     private long alive;
     public final String username;
     public ArrayList<Message> messagesInQueue;
+    public String verification_serial = "";
     public User(String username) {
         this.username = username;
         this.messagesInQueue = new ArrayList<>();

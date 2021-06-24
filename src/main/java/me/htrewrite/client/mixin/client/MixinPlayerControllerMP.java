@@ -1,6 +1,7 @@
 package me.htrewrite.client.mixin.client;
 
 import me.htrewrite.client.HTRewrite;
+import me.htrewrite.client.event.custom.player.PlayerBlockReachEvent;
 import me.htrewrite.client.event.custom.world.BlockDestroyEvent;
 import me.htrewrite.client.event.custom.world.BlockEvent;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
@@ -13,6 +14,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerControllerMP.class)
 public class MixinPlayerControllerMP {
+    @Inject(method = "getBlockReachDistance", at = @At("HEAD"), cancellable = true)
+    public void getBlockReachDistance(CallbackInfoReturnable<Float> callbackInfoReturnable) {
+        PlayerBlockReachEvent event = new PlayerBlockReachEvent();
+        HTRewrite.EVENT_BUS.post(event);
+        if(event.reachDistance > 0f) {
+            callbackInfoReturnable.setReturnValue(event.reachDistance);
+            callbackInfoReturnable.cancel();
+        }
+    }
+
     @Inject(method = "onPlayerDestroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playEvent(ILnet/minecraft/util/math/BlockPos;I)V"), cancellable = true)
     private void onPlayerDestroyBlock(BlockPos blockPos, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         HTRewrite.EVENT_BUS.post(new BlockDestroyEvent(blockPos));

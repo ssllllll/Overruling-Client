@@ -1,6 +1,8 @@
 package me.htrewrite.client.mixin.client;
 
 import me.htrewrite.client.HTRewrite;
+import me.htrewrite.client.capes.obj.CapeObj;
+import me.htrewrite.client.command.commands.CapeReloadCommand;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.util.ResourceLocation;
@@ -20,8 +22,15 @@ public abstract class MixinAbstractClientPlayer {
 
     @Inject(method = {"getLocationCape"}, at = {@At("HEAD")}, cancellable = true)
     public void getLocationCape(CallbackInfoReturnable<ResourceLocation> callbackInfoReturnable) {
-        NetworkPlayerInfo info = getPlayerInfo();
-        if(HTRewrite.INSTANCE.getCapes().wCapes.containsKey(info.getGameProfile().getName()))
-            callbackInfoReturnable.setReturnValue(HTRewrite.INSTANCE.getCapes().wCapes.get(info.getGameProfile().getName()).resourceLocation);
+        if(!CapeReloadCommand.reloading.get()) {
+            NetworkPlayerInfo info = getPlayerInfo();
+            CapeObj capeObj = HTRewrite.INSTANCE.getCapes().getWCapeByUsername(info.getGameProfile().getName());
+            HTRewrite.INSTANCE.getCapes().debug_name = capeObj.name;
+            HTRewrite.INSTANCE.getCapes().debug_fileName = capeObj.file_name;
+            HTRewrite.INSTANCE.getCapes().debug_id = capeObj.id;
+            HTRewrite.INSTANCE.getCapes().debug_url = capeObj.url;
+            if(capeObj != null)
+                callbackInfoReturnable.setReturnValue(capeObj.resourceLocation);
+        }
     }
 }

@@ -3,6 +3,7 @@ package me.htrewrite.client.util;
 import me.htrewrite.client.Wrapper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import javax.swing.*;
 import java.io.InputStream;
@@ -67,7 +68,7 @@ public class HTPEAuth {
             http.setDoOutput(true);
             http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             http.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            String data = "user=" + ((String)configUtils.get("u")).replaceAll("&", "") + "&pass=" + ((String)configUtils.get("p")).replaceAll("&", "") + "&hwid=" + h;
+            String data = "user=" + StringEscapeUtils.escapeHtml4((String)configUtils.get("u")) + "&pass=" + StringEscapeUtils.escapeHtml4((String)configUtils.get("p")) + "&hwid=" + StringEscapeUtils.escapeHtml4(h);
 
             byte[] out = data.getBytes(StandardCharsets.UTF_8);
             OutputStream stream = http.getOutputStream();
@@ -93,7 +94,7 @@ public class HTPEAuth {
             http2.setDoOutput(true);
             http2.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             http2.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            String data2 = "user=" + ((String)configUtils.get("u")).replaceAll("&", "") + "&pass=" + ((String)configUtils.get("p")).replaceAll("&", "") + "&hwid=" + h;
+            String data2 = "user=" + StringEscapeUtils.escapeHtml4((String)configUtils.get("u")) + "&pass=" + StringEscapeUtils.escapeHtml4((String)configUtils.get("p")) + "&hwid=" + StringEscapeUtils.escapeHtml4(h);
 
             byte[] out2 = data2.getBytes(StandardCharsets.UTF_8);
             OutputStream stream2 = http2.getOutputStream();
