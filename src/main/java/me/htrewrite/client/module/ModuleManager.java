@@ -51,6 +51,7 @@ public class ModuleManager {
         modules.add(new FakePlayerModule());
         modules.add(new MiddleClickModule());
         modules.add(new MobOwnerModule());
+        modules.add(new NoFallModule());
         modules.add(new SpammerModule());
         modules.add(new XCarryModule());
         /* Movement */
