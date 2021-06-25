@@ -4,14 +4,26 @@ import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.modules.gui.hud.HUDModule;
 import me.htrewrite.client.module.modules.gui.hud.component.HUDComponent;
+import me.htrewrite.client.module.modules.gui.hud.component.components.util.ListUtil;
+import me.htrewrite.client.module.modules.gui.hud.component.components.util.ModuleComparator;
 import me.htrewrite.client.util.ChatColor;
 import me.htrewrite.client.util.ColorUtils;
 import me.htrewrite.client.util.RenderUtils;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import java.awt.*;
+import java.util.Collections;
+import java.util.List;
 
 public class HUDArrayListComponent implements HUDComponent {
+    public List<Module> ordered_modules;
+
+    public HUDArrayListComponent() {
+        ListUtil<Module> listUtil = new ListUtil<>();
+        ordered_modules = listUtil.copyArray(HTRewrite.INSTANCE.getModuleManager().getModules());
+        Collections.sort(ordered_modules, new ModuleComparator());
+    }
+
     @Override
     public void render(RenderGameOverlayEvent.Text event, int x, int y) {
         int colorRect = ColorUtils.color(0.0F, 0.0F, 0.0F, 0.0F);
@@ -19,7 +31,7 @@ public class HUDArrayListComponent implements HUDComponent {
 
         int yPos = (int)((y/1.5)*getScale());
         int xPos = x;
-        for(Module module : HTRewrite.INSTANCE.getModuleManager().getModules()) {
+        for(Module module : ordered_modules) {
             if(!module.isEnabled()) continue;
             RenderUtils.drawStringWithRect(
                     module.getName() + ((module.getMeta().contentEquals("") ? "" : (" " + ChatColor.parse('&', "&7" + module.getMeta())))),

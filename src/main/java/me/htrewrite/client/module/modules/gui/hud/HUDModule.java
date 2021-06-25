@@ -42,7 +42,7 @@ public class HUDModule extends Module {
     public static final ValueSetting<Double> htUsersX = new ValueSetting<>("HT+UsersX", null, 0d, 0d, 1000d);
     public static final ValueSetting<Double> htUsersY = new ValueSetting<>("HT+UsersY", null, 0d, 0d, 1000d);
 
-    public final HUDComponentManager hudComponentManager;
+    public HUDComponentManager hudComponentManager;
     private HUDWatermarkComponent hudWatermarkComponent;
     private HUDPositionComponent hudPositionComponent;
     private HUDFPSComponent hudfpsComponent;
@@ -82,6 +82,11 @@ public class HUDModule extends Module {
         addOption(htUsersY.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==5));
 
         endOption();
+    }
+
+    @Override
+    public void onEnable() {
+        super.onEnable();
 
         this.hudComponentManager = new HUDComponentManager();
         this.hudWatermarkComponent = (HUDWatermarkComponent)hudComponentManager.getComponentByClass(HUDWatermarkComponent.class);
