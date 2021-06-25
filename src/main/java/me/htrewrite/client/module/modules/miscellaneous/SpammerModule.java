@@ -24,7 +24,7 @@ public class SpammerModule extends Module {
     public static final ToggleableSetting usePackets = new ToggleableSetting("UsePackets", null, false);
     public static final ValueSetting<Double> delay = new ValueSetting<>("Delay", null, 5d, 1d, 60d);
 
-    private final String directory = "htRewrite\\modules\\Miscellaneous\\Spammer\\";
+    private final String directory = "htRewrite\\spammer\\";
     private File currentFile = null;
     private String[] lines = null;
     private TickedTimer tickedTimer;
@@ -36,6 +36,7 @@ public class SpammerModule extends Module {
         addOption(delay);
         endOption();
 
+        new File(directory).mkdirs();
         File file = new File(directory+"spammer.txt");
         if(!file.exists()) {
             try {
