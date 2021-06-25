@@ -43,6 +43,8 @@ public class ModuleManager {
         modules.add(new AutoDupeModule());
         modules.add(new AutoEatModule());
         modules.add(new AutoFrameDupeModule());
+        // modules.add(new AutoGearModule());
+        modules.add(new AutoRacismModule());
         modules.add(new AutoReplyModule());
         modules.add(new ChatModule());
         modules.add(new FakePlayerModule());
