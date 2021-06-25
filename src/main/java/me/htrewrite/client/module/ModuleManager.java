@@ -37,6 +37,7 @@ public class ModuleManager {
         // modules.add(new AutoSelfCrashModule());
         modules.add(new BuildHeightModule());
         modules.add(new CoordExploitModule());
+        modules.add(new KnockbackPlusModule());
         modules.add(new PacketCancellerModule());
         modules.add(new ReachModule());
         /* Miscellaneous */
