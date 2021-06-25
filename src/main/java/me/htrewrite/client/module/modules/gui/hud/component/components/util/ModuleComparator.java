@@ -5,5 +5,5 @@ import me.htrewrite.client.module.Module;
 import java.util.Comparator;
 
 public class ModuleComparator implements Comparator<Module> {
-    public int compare(Module m1, Module m2) { return m1.getName().length() - m2.getName().length(); }
+    public int compare(Module m1, Module m2) { return m2.getName().length() - m1.getName().length(); }
 }
