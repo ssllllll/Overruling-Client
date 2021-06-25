@@ -38,7 +38,7 @@ import java.util.concurrent.Executors;
 public class HTRewrite {
     public static final String MOD_ID = "htrewrite";
     public static final String NAME = "HT+Rewrite";
-    public static final String VERSION = "a2.1";
+    public static final String VERSION = "a2.2";
 
     public static final EventBus EVENT_BUS = new EventManager();
     public static final ConfigUtils configuration = new ConfigUtils("client", "");
