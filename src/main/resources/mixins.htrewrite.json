@@ -24,6 +24,7 @@
     "MixinAbstractHorse",
     "MixinTileEntityRendererDispatcher",
     "MixinNettyCompressionDecoder",
-    "MixinEntityRenderer"
+    "MixinEntityRenderer",
+    "MixinBlock"
   ]
 }
