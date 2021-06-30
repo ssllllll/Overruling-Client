@@ -38,6 +38,7 @@ public class CommandManager {
         commands.add(new PrefixCommand(this));
         commands.add(new TestSoundCommand());
         commands.add(new VanishCommand());
+        commands.add(new XRayCommand());
     }
 
     public Command get(String alias) {
