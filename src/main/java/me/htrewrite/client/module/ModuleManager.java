@@ -49,7 +49,7 @@ public class ModuleManager {
         modules.add(new AutoReplyModule());
         modules.add(new ChatModule());
         modules.add(new FakePlayerModule());
-        modules.add(new JesusModule());
+        // modules.add(new JesusModule()); // TODO: Fix module.
         modules.add(new MiddleClickModule());
         modules.add(new MobOwnerModule());
         modules.add(new NoFallModule());
