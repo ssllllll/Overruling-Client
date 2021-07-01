@@ -24,6 +24,7 @@ public class CommandManager {
         else prefix = (String)object;
 
         commands = new ArrayList<Command>();
+        commands.add(new BlockHighlightCommand());
         commands.add(new CapeClaimCommand());
         commands.add(new CapeDebugCommand());
         commands.add(new CapeListCommand());
@@ -38,7 +39,6 @@ public class CommandManager {
         commands.add(new PrefixCommand(this));
         commands.add(new TestSoundCommand());
         commands.add(new VanishCommand());
-        commands.add(new XRayCommand());
     }
 
     public Command get(String alias) {

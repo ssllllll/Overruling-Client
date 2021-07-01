@@ -70,6 +70,7 @@ public class ModuleManager {
         modules.add(new StepModule());
         /* Render */
         modules.add(new AntiEnchantmentTableLagModule());
+        modules.add(new BlockHighlightModule());
         modules.add(new CityESPModule());
         modules.add(new FullbrightModule());
         modules.add(new HandProgressModule());
@@ -79,7 +80,6 @@ public class ModuleManager {
         modules.add(new ShulkerPreviewModule());
         modules.add(new SkyColorModule());
         modules.add(new TracersModule());
-        modules.add(new XRayModule());
         /* World */
         modules.add(new AutoTunnelModule());
         modules.add(new EntityLoggerModule());

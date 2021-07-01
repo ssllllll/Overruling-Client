@@ -8,9 +8,9 @@ import me.htrewrite.client.command.CommandManager;
 import me.htrewrite.client.customgui.SplashProgressGui;
 import me.htrewrite.client.event.CEventProcessor;
 import me.htrewrite.client.event.EventProcessor;
+import me.htrewrite.client.manager.BlockHighlightManager;
 import me.htrewrite.client.manager.FriendManager;
 import me.htrewrite.client.manager.TickRateManager;
-import me.htrewrite.client.manager.XRayManager;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleManager;
 import me.htrewrite.client.util.AuthSession;
@@ -55,7 +55,7 @@ public class HTRewrite {
     private Capes capes;
     private KeybindManager keybindManager;
     private TickRateManager tickRateManager;
-    private XRayManager xRayManager;
+    private BlockHighlightManager blockHighlightManager;
     private FriendManager friendManager;
     private ModuleManager moduleManager;
     private CommandManager commandManager;
@@ -132,7 +132,7 @@ public class HTRewrite {
 
         keybindManager = new KeybindManager();
         tickRateManager = new TickRateManager();
-        xRayManager = new XRayManager();
+        blockHighlightManager = new BlockHighlightManager();
 
         SplashProgressGui.setProgress(8, "Adding friends...");
 
@@ -178,7 +178,7 @@ public class HTRewrite {
     public Capes getCapes() { return capes; }
     public KeybindManager getKeybindManager() { return keybindManager; }
     public TickRateManager getTickRateManager() { return tickRateManager; }
-    public XRayManager getxRayManager() { return xRayManager; }
+    public BlockHighlightManager getBlockHighlightManager() { return blockHighlightManager; }
     public FriendManager getFriendManager() { return friendManager; }
     public ModuleManager getModuleManager() { return moduleManager; }
     public CommandManager getCommandManager() { return commandManager; }

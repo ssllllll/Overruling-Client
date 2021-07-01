@@ -13,7 +13,7 @@ public class BlockUtil {
     public static BlockPos[] nearbyBlocks(EntityLivingBase entity, int distance) {
         List<BlockPos> blocks = new ArrayList<>();
         for(int x = (int)mc.player.posX - distance; x <= (int)mc.player.posX + distance; ++x)
-            for(int z = (int)mc.player.posZ - distance; z <= (int)mc.player.posZ; ++z) {
+            for(int z = (int)mc.player.posZ - distance; z <= (int)mc.player.posZ + distance; ++z) {
                 int height = mc.world.getHeight(x, z);
                 for(int y = 0; y <= height; ++y)
                     blocks.add(new BlockPos(x, y, z));
