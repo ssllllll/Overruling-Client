@@ -79,6 +79,7 @@ public class ModuleManager {
         modules.add(new ShulkerPreviewModule());
         modules.add(new SkyColorModule());
         modules.add(new TracersModule());
+        modules.add(new XRayModule());
         /* World */
         modules.add(new AutoTunnelModule());
         modules.add(new EntityLoggerModule());

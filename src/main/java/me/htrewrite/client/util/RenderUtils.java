@@ -124,8 +124,7 @@ public class RenderUtils {
         GlStateManager.popMatrix();
     }
 
-    public static void drawSelectionBoundingBox(AxisAlignedBB boundingBox)
-    {
+    public static void drawSelectionBoundingBox(AxisAlignedBB boundingBox) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(3, DefaultVertexFormats.POSITION);
