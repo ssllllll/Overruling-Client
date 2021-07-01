@@ -72,6 +72,8 @@ public class ModuleManager {
         /* Render */
         modules.add(new AntiEnchantmentTableLagModule());
         modules.add(new BlockHighlightModule());
+        // modules.add(new ChamsModule());
+        modules.add(new ChestESPModule());
         modules.add(new CityESPModule());
         modules.add(new FullbrightModule());
         modules.add(new HandProgressModule());
