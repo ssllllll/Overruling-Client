@@ -5,62 +5,40 @@ import me.htrewrite.client.event.custom.render.RenderEvent;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleType;
 import me.htrewrite.client.util.*;
-import me.htrewrite.exeterimports.mcapi.settings.ToggleableSetting;
 import me.htrewrite.exeterimports.mcapi.settings.ValueSetting;
 import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEnderChest;
-import net.minecraft.block.BlockFurnace;
-import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.culling.ICamera;
+import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.item.EntityMinecartChest;
 import net.minecraft.entity.item.EntityMinecartFurnace;
 import net.minecraft.entity.item.EntityMinecartHopper;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.math.BlockPos;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 
 public class ChestESPModule extends Module {
     public static final ValueSetting<Double> delay = new ValueSetting<>("TickDelay", null, 1d, 0d, 20d);
-    public static final ToggleableSetting renderChest = new ToggleableSetting("Chest", null, true);
-    public static final ToggleableSetting renderShulkerBox = new ToggleableSetting("ShulkerBox", null, true);
-    public static final ToggleableSetting renderHopper = new ToggleableSetting("Hopper", null, true);
-    public static final ToggleableSetting renderFurnace = new ToggleableSetting("Furnace", null, true);
 
-    private ArrayList<Entry<BlockPos, SColor>> storages;
-    private ICamera camera;
+    private ArrayList<Entry<BlockPos, Color>> storages;
     private TickedTimer tickedTimer;
-
-    private AtomicBoolean isThreadRunning;
-    private ExecutorService executorService;
 
     public ChestESPModule() {
         super("ChestESP", "Highlight storages.", ModuleType.Render, 0);
         addOption(delay);
-        addOption(renderChest);
-        addOption(renderShulkerBox);
-        addOption(renderHopper);
-        addOption(renderFurnace);
         endOption();
 
         this.storages = new ArrayList<>();
-        this.camera = new Frustum();
 
         this.tickedTimer = new TickedTimer();
         this.tickedTimer.stop();
-
-        this.isThreadRunning = new AtomicBoolean(false);
-        this.executorService = Executors.newFixedThreadPool(1);
     }
 
     @Override
@@ -79,55 +57,39 @@ public class ChestESPModule extends Module {
     }
 
     @EventHandler
-    private Listener<PlayerUpdateEvent> updateEventListener = new Listener<>(event -> { // TODO: FIX LAG
+    private Listener<PlayerUpdateEvent> updateEventListener = new Listener<>(event -> {
         if(!tickedTimer.passed(delay.getValue().intValue()))
             return;
 
-        executorService.submit(() -> {
-            isThreadRunning.set(true);
-            if(nullCheck()) {
-                isThreadRunning.set(false);
-                return;
-            }
-
-            storages.clear();
-            for(TileEntity entity : mc.world.loadedTileEntityList)
-                if(entity instanceof TileEntityEnderChest && renderChest.isEnabled())
-                    storages.add(new Entry<>(entity.getPos(), SColor.SHULKERBOX));
-                else if(entity instanceof TileEntityChest && renderChest.isEnabled())
-                    storages.add(new Entry<>(entity.getPos(), SColor.CHEST));
-                else if(entity instanceof TileEntityShulkerBox && renderShulkerBox.isEnabled())
-                    storages.add(new Entry<>(entity.getPos(), SColor.SHULKERBOX));
-                else if(entity instanceof TileEntityHopper && renderHopper.isEnabled())
-                    storages.add(new Entry<>(entity.getPos(), SColor.CHEST));
-                else if(entity instanceof TileEntityFurnace && renderFurnace.isEnabled())
-                    storages.add(new Entry<>(entity.getPos(), SColor.CHEST));
-            for(Entity entity : mc.world.loadedEntityList)
-                if(entity instanceof EntityMinecartChest && renderChest.isEnabled())
-                    storages.add(new Entry<>(entity.getPosition(), SColor.CHEST));
-                else if(entity instanceof EntityMinecartHopper && renderHopper.isEnabled())
-                    storages.add(new Entry<>(entity.getPosition(), SColor.CHEST));
-                else if(entity instanceof EntityMinecartFurnace && renderFurnace.isEnabled())
-                    storages.add(new Entry<>(entity.getPosition(), SColor.CHEST));
-            for(BlockPos blockPos : BlockUtil.nearbyBlocks(mc.player, 80)) {
-                Block block = mc.world.getBlockState(blockPos).getBlock();
-                if(block instanceof BlockEnderChest && renderChest.isEnabled())
-                    storages.add(new Entry<>(blockPos, SColor.CHEST));
-                else if(block instanceof BlockFurnace)
-                    storages.add(new Entry<>(blockPos, SColor.SHULKERBOX));
-            }
-
-            isThreadRunning.set(false);
-        });
+        storages.clear();
+        for(TileEntity entity : mc.world.loadedTileEntityList)
+            if(entity instanceof TileEntityChest)
+                storages.add(new Entry<>(entity.getPos(), new Color(255, 165, 0, 200)));
+            else if(entity instanceof TileEntityDispenser)
+                storages.add(new Entry<>(entity.getPos(), new Color(255, 165, 0, 200)));
+            else if(entity instanceof TileEntityShulkerBox)
+                storages.add(new Entry<>(entity.getPos(), new Color(255, 255, 0, 200)));
+            else if(entity instanceof TileEntityEnderChest)
+                storages.add(new Entry<>(entity.getPos(), new Color(128, 0, 128, 200)));
+            else if(entity instanceof TileEntityFurnace)
+                storages.add(new Entry<>(entity.getPos(), new Color(128, 128, 128, 200)));
+            else if(entity instanceof TileEntityHopper)
+                storages.add(new Entry<>(entity.getPos(), new Color(128, 128, 128, 200)));
+        for(Entity entity : mc.world.loadedEntityList)
+            if(entity instanceof EntityMinecartChest)
+                storages.add(new Entry<>(entity.getPosition(), new Color(255, 165, 0, 200)));
+            else if(entity instanceof EntityMinecartFurnace)
+                storages.add(new Entry<>(entity.getPosition(), new Color(128, 128, 128, 200)));
+            else if(entity instanceof EntityMinecartHopper)
+                storages.add(new Entry<>(entity.getPosition(), new Color(128, 128, 128, 200)));
+            else if(entity instanceof EntityItemFrame && ((EntityItemFrame)entity).getDisplayedItem().getItem() instanceof ItemBlock && ((ItemBlock)((EntityItemFrame)entity).getDisplayedItem().getItem()).getBlock() instanceof BlockShulkerBox)
+                storages.add(new Entry<>(entity.getPosition().add(0, -1, 0), new Color(255, 255, 0, 200)));
 
         tickedTimer.reset();
     });
 
     @EventHandler
     private Listener<RenderEvent> renderEventListener = new Listener<>(event -> {
-        if(isThreadRunning.get())
-            return;
-
         glPushMatrix();
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -138,17 +100,12 @@ public class ChestESPModule extends Module {
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_LIGHTING);
 
-        if(!isThreadRunning.get()) {
-            Entry<BlockPos, SColor>[] entries = storages.toArray((Entry<BlockPos, SColor>[]) new EntryBlockSColor[0]);
-            for (Entry<BlockPos, SColor> entry : storages) {
-                SColor sColor = entry.getValue();
-
-                double x = mc.player.lastTickPosX + (mc.player.posX - mc.player.lastTickPosX) * (double) event.getPartialTicks();
-                double y = mc.player.lastTickPosY + (mc.player.posY - mc.player.lastTickPosY) * (double) event.getPartialTicks();
-                double z = mc.player.lastTickPosZ + (mc.player.posZ - mc.player.lastTickPosZ) * (double) event.getPartialTicks();
-                GLUtils.glColor(new Color(sColor.red, sColor.green, sColor.blue, sColor.alpha));
-                RenderUtils.drawSelectionBoundingBox(mc.world.getBlockState(entry.getKey()).getSelectedBoundingBox(mc.world, entry.getKey()).grow(0.0020000000949949026D).offset(-x, -y, -z));
-            }
+        for (Entry<BlockPos, Color> entry : storages) {
+            double x = mc.player.lastTickPosX + (mc.player.posX - mc.player.lastTickPosX) * (double) event.getPartialTicks();
+            double y = mc.player.lastTickPosY + (mc.player.posY - mc.player.lastTickPosY) * (double) event.getPartialTicks();
+            double z = mc.player.lastTickPosZ + (mc.player.posZ - mc.player.lastTickPosZ) * (double) event.getPartialTicks();
+            GLUtils.glColor(entry.getValue());
+            RenderUtils.drawSelectionBoundingBox(mc.world.getBlockState(entry.getKey()).getSelectedBoundingBox(mc.world, entry.getKey()).grow(0.0020000000949949026D).offset(-x, -y, -z));
         }
 
         glEnable(GL_LIGHTING);
@@ -159,21 +116,8 @@ public class ChestESPModule extends Module {
         glPopMatrix();
     });
 
-    public enum SColor {
-        CHEST(.94f, 1f, 0f, .6f),
-        SHULKERBOX(1f, 0f, .59f, .6f);
-
-        public final float red, green, blue, alpha;
-        SColor(float red, float green, float blue, float alpha) {
-            this.red = red;
-            this.green = green;
-            this.blue = blue;
-            this.alpha = alpha;
-        }
-    }
-
-    public class EntryBlockSColor extends Entry<BlockPos, SColor> {
-        public EntryBlockSColor(BlockPos key, SColor value) {
+    public class EntryBlockSColor extends Entry<BlockPos, Color> {
+        public EntryBlockSColor(BlockPos key, Color value) {
             super(key, value);
         }
     }
