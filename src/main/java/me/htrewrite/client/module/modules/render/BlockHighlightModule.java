@@ -18,6 +18,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -33,6 +36,9 @@ public class BlockHighlightModule extends Module {
     private BlockHighlightManager blockHighlightManager;
     private List<BlockPos> blocksPos;
     private TickedTimer tickedTimer;
+
+    private AtomicBoolean isThreadRunning;
+    private ExecutorService executorService;
 
     public BlockHighlightModule() {
         super("BlockHighlight", "Draw a box on blocks through walls.", ModuleType.Render, 0);
@@ -50,6 +56,9 @@ public class BlockHighlightModule extends Module {
 
         tickedTimer = new TickedTimer();
         tickedTimer.stop();
+
+        this.isThreadRunning = new AtomicBoolean(false);
+        this.executorService = Executors.newFixedThreadPool(1);
     }
 
     @Override
@@ -69,7 +78,7 @@ public class BlockHighlightModule extends Module {
     }
 
     @EventHandler
-    private Listener<TickEvent.ClientTickEvent> tickEventListener = new Listener<>(event -> {
+    private Listener<TickEvent.ClientTickEvent> tickEventListener = new Listener<>(event -> { // TODO: FIX LAG
         if(!tickedTimer.passed(delay.getValue().intValue()))
             return;
         if(nullCheck()) {
@@ -77,11 +86,21 @@ public class BlockHighlightModule extends Module {
             return;
         }
 
-        int distance = BlockHighlightModule.distance.getValue().intValue();
-        blocksPos.clear();
-        for(BlockPos blockPos : BlockUtil.nearbyBlocks(mc.player, distance))
-            if(blockHighlightManager.isBlock(mc.world.getBlockState(blockPos).getBlock()))
-                blocksPos.add(blockPos);
+        executorService.submit(() -> {
+            isThreadRunning.set(true);
+            if(nullCheck()) {
+                isThreadRunning.set(false);
+                return;
+            }
+
+            int distance = BlockHighlightModule.distance.getValue().intValue();
+            blocksPos.clear();
+            for(BlockPos blockPos : BlockUtil.nearbyBlocks(mc.player, distance))
+                if(blockHighlightManager.isBlock(mc.world.getBlockState(blockPos).getBlock()))
+                    blocksPos.add(blockPos);
+
+            isThreadRunning.set(false);
+        });
 
         tickedTimer.reset();
     });
@@ -98,12 +117,15 @@ public class BlockHighlightModule extends Module {
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_LIGHTING);
 
-        for(BlockPos blockPos : blocksPos) {
-            double x = mc.player.lastTickPosX + (mc.player.posX - mc.player.lastTickPosX) * (double)event.getPartialTicks();
-            double y = mc.player.lastTickPosY + (mc.player.posY - mc.player.lastTickPosY) * (double)event.getPartialTicks();
-            double z = mc.player.lastTickPosZ + (mc.player.posZ - mc.player.lastTickPosZ) * (double)event.getPartialTicks();
-            GLUtils.glColor(new Color(r.getValue().intValue(), g.getValue().intValue(), b.getValue().intValue(), a.getValue().intValue()).getRGB());
-            RenderUtils.drawSelectionBoundingBox(mc.world.getBlockState(blockPos).getSelectedBoundingBox(mc.world, blockPos).grow(0.0020000000949949026D).offset(-x, -y, -z));
+        if(!isThreadRunning.get()) {
+            BlockPos[] blockPosArray = blocksPos.toArray(new BlockPos[0]);
+            for (BlockPos blockPos : blocksPos) {
+                double x = mc.player.lastTickPosX + (mc.player.posX - mc.player.lastTickPosX) * (double) event.getPartialTicks();
+                double y = mc.player.lastTickPosY + (mc.player.posY - mc.player.lastTickPosY) * (double) event.getPartialTicks();
+                double z = mc.player.lastTickPosZ + (mc.player.posZ - mc.player.lastTickPosZ) * (double) event.getPartialTicks();
+                GLUtils.glColor(new Color(r.getValue().intValue(), g.getValue().intValue(), b.getValue().intValue(), a.getValue().intValue()).getRGB());
+                RenderUtils.drawSelectionBoundingBox(mc.world.getBlockState(blockPos).getSelectedBoundingBox(mc.world, blockPos).grow(0.0020000000949949026D).offset(-x, -y, -z));
+            }
         }
 
         glEnable(GL_LIGHTING);
