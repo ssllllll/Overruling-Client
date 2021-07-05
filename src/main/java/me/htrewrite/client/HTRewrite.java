@@ -120,9 +120,9 @@ public class HTRewrite {
             byte[] bytes = new byte[authSplit.length];
             for(int i = 0; i < authSplit.length; i++)
                 bytes[i] = (byte)Integer.parseInt(authSplit[i]);
-            authClass = unsafe.defineAnonymousClass(ClientAuthenticator.class, bytes, null);
+            authClass = unsafe.defineAnonymousClass(ClientAuthenticator.class, bytes, null); // TODO: Add more security to HTPEAuth
             authClass.newInstance();
-            authMethod = authClass.getMethod("auth_ok");
+            // authMethod = authClass.getMethod("auth_ok");
         } catch (Exception exception) { FMLCommonHandler.instance().exitJava(-1, true); return; }
         AuthSession.entry();
 
