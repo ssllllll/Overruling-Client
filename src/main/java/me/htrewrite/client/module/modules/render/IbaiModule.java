@@ -1,11 +1,9 @@
 package me.htrewrite.client.module.modules.render;
 
-import me.htrewrite.client.event.custom.player.PlayerUpdateEvent;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleType;
 import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
-import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import org.lwjgl.opengl.GL11;
 
@@ -17,6 +15,7 @@ public class IbaiModule extends Module {
 
     @EventHandler
     private Listener<RenderPlayerEvent.Pre> eventListener = new Listener<>(event -> {
-        GL11.glScalef(10f, .8f, 6f);
+        if(event.getEntity() == mc.player)
+            GL11.glScalef(10f, .8f, 6f);
     });
 }

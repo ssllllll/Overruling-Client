@@ -6,6 +6,7 @@ import club.minnced.discord.rpc.DiscordRichPresence;
 import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.customgui.CustomMainMenuGui;
 import me.htrewrite.client.module.modules.gui.DiscordRPCModule;
+import me.htrewrite.client.module.modules.render.IbaiModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 
@@ -28,7 +29,7 @@ public class DiscordPresence {
     public static void setPresence() {
         richPresence.details = (Minecraft.getMinecraft().currentScreen instanceof CustomMainMenuGui || Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu)?"On the Main Menu!":"Playing " + (Minecraft.getMinecraft().getCurrentServerData() == null?"on a singleplayer world!":"on a multiplayer server!");
         richPresence.state = generateState();
-        richPresence.largeImageKey = "logo";
+        richPresence.largeImageKey = HTRewrite.INSTANCE.getModuleManager().getModuleByClass(IbaiModule.class).isEnabled() ? "ibai_truco" : "logo";
         richPresence.largeImageText = HTRewrite.NAME+" "+HTRewrite.VERSION;
         richPresence.smallImageKey = "nomason";
         richPresence.smallImageText = "PK2Technology";

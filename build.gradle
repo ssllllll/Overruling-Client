@@ -20,16 +20,17 @@ buildscript {
         }
         maven {
             name = 'Jahia'
-            url = 'http://maven.jahia.org/maven2/'
+            url = 'https://maven.jahia.org/maven2/' //
         }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+        // classpath 'net.minecraftforge.gradle:ForgeGradle:5.0.24'
+        // classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
         classpath 'com.google.code.gson:gson:2.8.6'
         classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.0.9'
-
         classpath 'com.sun.tools.btrace:btrace-client:1.2.3'
         classpath 'com.sun:tools:1.5.0'
         classpath 'org.jboss.logging:jboss-logging:3.4.1.Final'
@@ -40,6 +41,7 @@ buildscript {
     }
 }
 
+// apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
@@ -81,7 +83,7 @@ repositories {
     }
     maven {
         name = 'swt-repo'
-        url = "http://maven-eclipse.github.io/maven"
+        url = "https://maven-eclipse.github.io/maven" //
     }
     maven {
         name = "jitpack.io"
@@ -89,7 +91,7 @@ repositories {
     }
     maven {
         name = 'Jahia'
-        url = 'http://maven.jahia.org/maven2/'
+        url = 'https://maven.jahia.org/maven2/' //
     }
     mavenCentral()
     jcenter()
@@ -97,7 +99,13 @@ repositories {
 
 dependencies {
     //mixin needs to be distributed with the mod, very important
+    /* FUCK THAT IM JUST TESTING LOL 12894389H1213HNUI UIFWEF NEIOFWN IEFNJIWFNKJFWENJFKWEKJFEWNFKJWEFNKWEJFNWEJKNFWEKJFNWEJKFWENKJFWJEKFNEJWKFJKNEWFNJKFNKJEW2
     compile("org.spongepowered:mixin:0.7.11-SNAPSHOT") { // do NOT update this to 8.0 or above, it breaks compatibility with future client
+        exclude module: 'launchwrapper'
+        exclude module: 'guava'
+        exclude module: 'commons-io'
+    }*/
+    compile("org.spongepowered:mixin:0.8.3-SNAPSHOT") {
         exclude module: 'launchwrapper'
         exclude module: 'guava'
         exclude module: 'commons-io'

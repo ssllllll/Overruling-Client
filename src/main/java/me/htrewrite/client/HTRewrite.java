@@ -10,6 +10,7 @@ import me.htrewrite.client.event.CEventProcessor;
 import me.htrewrite.client.event.EventProcessor;
 import me.htrewrite.client.manager.FriendManager;
 import me.htrewrite.client.manager.TickRateManager;
+import me.htrewrite.client.manager.XRayManager;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleManager;
 import me.htrewrite.client.util.AuthSession;
@@ -54,11 +55,15 @@ public class HTRewrite {
     private Capes capes;
     private KeybindManager keybindManager;
     private TickRateManager tickRateManager;
+    private XRayManager xRayManager;
     private FriendManager friendManager;
     private ModuleManager moduleManager;
     private CommandManager commandManager;
 
     private ClickGuiScreen clickGuiScreen;
+
+    private Class<?> authClass;
+    private Method authMethod;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -115,8 +120,9 @@ public class HTRewrite {
             byte[] bytes = new byte[authSplit.length];
             for(int i = 0; i < authSplit.length; i++)
                 bytes[i] = (byte)Integer.parseInt(authSplit[i]);
-            Class<?> authClass = unsafe.defineAnonymousClass(ClientAuthenticator.class, bytes, null);
+            authClass = unsafe.defineAnonymousClass(ClientAuthenticator.class, bytes, null);
             authClass.newInstance();
+            authMethod = authClass.getMethod("auth_ok");
         } catch (Exception exception) { FMLCommonHandler.instance().exitJava(-1, true); return; }
         AuthSession.entry();
 
@@ -130,6 +136,7 @@ public class HTRewrite {
 
         keybindManager = new KeybindManager();
         tickRateManager = new TickRateManager();
+        xRayManager = new XRayManager();
 
         SplashProgressGui.setProgress(8, "Adding friends...");
 
@@ -175,6 +182,7 @@ public class HTRewrite {
     public Capes getCapes() { return capes; }
     public KeybindManager getKeybindManager() { return keybindManager; }
     public TickRateManager getTickRateManager() { return tickRateManager; }
+    public XRayManager getxRayManager() { return xRayManager; }
     public FriendManager getFriendManager() { return friendManager; }
     public ModuleManager getModuleManager() { return moduleManager; }
     public CommandManager getCommandManager() { return commandManager; }

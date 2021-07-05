@@ -76,5 +76,15 @@
       <option name="name" value="forge" />
       <option name="url" value="https://maven.minecraftforge.net" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="Jahia" />
+      <option name="name" value="Jahia" />
+      <option name="url" value="https://maven.jahia.org/maven2/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="swt-repo" />
+      <option name="name" value="swt-repo" />
+      <option name="url" value="https://maven-eclipse.github.io/maven" />
+    </remote-repository>
   </component>
 </project>
