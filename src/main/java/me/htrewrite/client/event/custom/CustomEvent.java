@@ -9,6 +9,7 @@ public class CustomEvent extends Cancellable {
 
     public CustomEvent() {
         partialTicks = Wrapper.getMC().getRenderPartialTicks();
+        era = Era.PRE;
     }
     public CustomEvent(float partialTicks) {
         this.partialTicks = partialTicks;

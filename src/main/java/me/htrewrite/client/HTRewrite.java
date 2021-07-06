@@ -31,15 +31,18 @@ import org.lwjgl.opengl.Display;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Mod(modid = HTRewrite.MOD_ID, name = HTRewrite.NAME, version = HTRewrite.VERSION)
+@Mod(modid = HTRewrite.MOD_ID, name = HTRewrite.NAME, version = HTRewrite.VERSION_FINAL)
 public class HTRewrite {
     public static final String MOD_ID = "htrewrite";
     public static final String NAME = "HT+Rewrite";
-    public static final String VERSION = "a2.2";
+    public static final String VERSION_FINAL = "a2.2";
+
+    public static String VERSION = VERSION_FINAL;
 
     public static final EventBus EVENT_BUS = new EventManager();
     public static final ConfigUtils configuration = new ConfigUtils("client", "");
@@ -62,8 +65,9 @@ public class HTRewrite {
 
     private ClickGuiScreen clickGuiScreen;
 
-    private Class<?> authClass;
-    private Method authMethod;
+    private Thread susthread;
+    private Object authClassInstance;
+    private Method authClassMethod;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -120,10 +124,24 @@ public class HTRewrite {
             byte[] bytes = new byte[authSplit.length];
             for(int i = 0; i < authSplit.length; i++)
                 bytes[i] = (byte)Integer.parseInt(authSplit[i]);
-            authClass = unsafe.defineAnonymousClass(ClientAuthenticator.class, bytes, null); // TODO: Add more security to HTPEAuth
-            authClass.newInstance();
-            // authMethod = authClass.getMethod("auth_ok");
+            Class<?> authClass = unsafe.defineAnonymousClass(ClientAuthenticator.class, bytes, null); // TODO: Add more security to HTPEAuth
+            authClassInstance = authClass.newInstance();
+            authClassMethod = authClass.getDeclaredMethod("auth_ok", String.class, String.class);
         } catch (Exception exception) { FMLCommonHandler.instance().exitJava(-1, true); return; }
+        susthread = new Thread(() -> {
+            while(!susthread.isInterrupted()) {
+                try {
+                    if(!((boolean)authClassMethod.invoke(authClassInstance))) {
+                        FMLCommonHandler.instance().exitJava(-1, true);
+                        susthread.interrupt();
+                        break;
+                    }
+                } catch(IllegalAccessException | InvocationTargetException exception) {}
+                try { Thread.sleep(5*60000); } catch (InterruptedException exception) {}
+            }
+        });
+        susthread.start();
+
         AuthSession.entry();
 
         AudioEnum.Vocals.AUTH_SUCCESS.play();

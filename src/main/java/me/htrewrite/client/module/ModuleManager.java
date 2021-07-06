@@ -88,6 +88,7 @@ public class ModuleManager {
         modules.add(new EntityLoggerModule());
         modules.add(new FastPlaceModule());
         modules.add(new LawnmowerModule());
+        modules.add(new PhaseModule());
         modules.add(new SpeedmineModule());
         /* Gui */
         modules.add(new ClickGuiModule());

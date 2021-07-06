@@ -1,112 +1,94 @@
 package me.htrewrite.client.util;
 
+import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.Wrapper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import javax.swing.*;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 public class HTPEAuth {
     public static ConfigUtils configUtils = new ConfigUtils("auth", "");
 
+    private String[] showInvalidGUI(JFrame jFrame) {
+        JOptionPane.showMessageDialog(jFrame, "Invalid login, please login now!", "HT+Auth System " + AVERSION + "(client=" + VERSION + ")", JOptionPane.ERROR_MESSAGE);
+        String user = JOptionPane.showInputDialog(jFrame, "User: ", "HT+Auth System " + AVERSION + "(client=" + VERSION + ")", JOptionPane.QUESTION_MESSAGE);
+        String pass = JOptionPane.showInputDialog(jFrame, "Password: ", "HT+Auth System " + AVERSION + "(client=" + VERSION + ")", JOptionPane.QUESTION_MESSAGE);
+        configUtils.set("u", user);
+        configUtils.set("p", pass);
+        configUtils.save();
+
+        return new String[] {user, pass};
+    }
+    private String obtainHWID() {
+        String h = "HWID!!";
+
+        try {
+            String fullHWID = System.getenv("COMPUTERNAME") + System.getProperty("user.name") + System.getenv("PROCESSOR_IDENTIFIER") + System.getenv("PROCESSOR_LEVEL");
+            StringBuffer buffer = new StringBuffer();
+
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            md5.update(fullHWID.getBytes());
+
+            for (byte md5Byte : md5.digest()) {
+                String hex = Integer.toHexString(0xff & md5Byte);
+                buffer.append(hex.length() == 1 ? '0' : hex);
+            } h+=buffer.toString();
+        } catch (Exception exception) { exception.printStackTrace(); }
+
+        return h.equalsIgnoreCase("HWID!!")?"NOHWID":h;
+    }
+    public boolean auth_ok(String username, String password) {
+        String user = StringEscapeUtils.escapeHtml4(username);
+        String pass = StringEscapeUtils.escapeHtml4(password);
+        String hwid = StringEscapeUtils.escapeHtml4(obtainHWID());
+
+        String response = PostRequest.urlEncodedPostRequest("https://aurahardware.eu/api/user/auth.php", "" +
+                "user=" + user + "&" +
+                "pass=" + pass + "&" +
+                "hwid=" + hwid);
+        return response.contains("1");
+    }
+
+    public String VERSION = HTRewrite.VERSION;
+    public String AVERSION = "a2.2";
     public HTPEAuth() {
         JOptionPane optionPane = new JOptionPane();
         JFrame jFrame = new JFrame();
         jFrame.setAlwaysOnTop(true);
+
+        if(!VERSION.contentEquals(AVERSION))
+            JOptionPane.showMessageDialog(jFrame, "It seems your client is outdated!\nThe client will continue running but please download the latest update from the discord!", "HT+Auth System " + AVERSION + "(client=" + VERSION + ")", JOptionPane.ERROR_MESSAGE);
 
         Object[] objects = {
                 configUtils.get("u"),
                 configUtils.get("p")
         };
         boolean yes = false;
-        for(Object object : objects)
-            if(object == null)
+        for (Object object : objects)
+            if (object == null)
                 yes = true;
-        if(yes) {
+        if (yes) {
             configUtils.set("u", "INVALID");
             configUtils.set("p", "INVALID");
             configUtils.save();
 
-            JOptionPane.showMessageDialog(jFrame, "Invalid login, please login now!");
-            String user = JOptionPane.showInputDialog(jFrame, "User: ");
-            String pass = JOptionPane.showInputDialog(jFrame, "Password: ");
-            configUtils.set("u", user);
-            configUtils.set("p", pass);
-            configUtils.save();
+            showInvalidGUI(jFrame);
         }
 
-        String h = "NOHWID";
-
-        try {
-            String fullHWID = System.getenv("COMPUTERNAME") + System.getProperty("user.name") + System.getenv("PROCESSOR_IDENTIFIER") + System.getenv("PROCESSOR_LEVEL");
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            md5.update(fullHWID.getBytes());
-
-            StringBuffer buffer = new StringBuffer();
-
-            byte[] md5Bytes = md5.digest();
-            for (byte md5Byte : md5Bytes) {
-                String hex = Integer.toHexString(0xff & md5Byte);
-                buffer.append(hex.length() == 1 ? '0' : hex);
+        try { PostRequest.read(PostRequest.genGetCon("https://aurahardware.eu/ht/api/connectivity/connect.php?user=" + Wrapper.getMC().session.getUsername())); } catch (Exception exception) { }
+        if (!auth_ok((String) configUtils.get("u"), (String) configUtils.get("p"))) {
+            String[] details = showInvalidGUI(jFrame);
+            if (!auth_ok(details[0], details[1])) {
+                details = showInvalidGUI(jFrame);
+                if (!auth_ok(details[0], details[1])) {
+                    FMLCommonHandler.instance().exitJava(-1, true);
+                    return;
+                }
             }
-            h = "HWID!!" + buffer.toString();
-        } catch (Exception exception) {}
+        }
 
-        try {
-            PostRequest.read(PostRequest.genGetCon("https://aurahardware.eu/ht/api/connectivity/connect.php?user=" + Wrapper.getMC().session.getUsername()));
-
-            URL url = new URL("https://aurahardware.eu/api/user/auth.php");
-            HttpURLConnection http = (HttpURLConnection)url.openConnection();
-            http.setRequestMethod("POST");
-            http.setDoOutput(true);
-            http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            http.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            String data = "user=" + StringEscapeUtils.escapeHtml4((String)configUtils.get("u")) + "&pass=" + StringEscapeUtils.escapeHtml4((String)configUtils.get("p")) + "&hwid=" + StringEscapeUtils.escapeHtml4(h);
-
-            byte[] out = data.getBytes(StandardCharsets.UTF_8);
-            OutputStream stream = http.getOutputStream();
-            stream.write(out);
-
-            InputStream inputStream = http.getInputStream();
-            String response = IOUtils.toString(inputStream);
-            inputStream.close();
-            http.disconnect();
-
-            if(response.contains("1")) return; else {
-                optionPane.createDialog("Invalid login, please try again!").setAlwaysOnTop(true);
-                String user = JOptionPane.showInputDialog(jFrame, "User: ");
-                String pass = JOptionPane.showInputDialog(jFrame, "Password: ");
-                configUtils.set("u", user);
-                configUtils.set("p", pass);
-                configUtils.save();
-            }
-
-            URL url2 = new URL("https://aurahardware.eu/api/user/auth.php");
-            HttpURLConnection http2 = (HttpURLConnection)url.openConnection();
-            http2.setRequestMethod("POST");
-            http2.setDoOutput(true);
-            http2.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            http2.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-            String data2 = "user=" + StringEscapeUtils.escapeHtml4((String)configUtils.get("u")) + "&pass=" + StringEscapeUtils.escapeHtml4((String)configUtils.get("p")) + "&hwid=" + StringEscapeUtils.escapeHtml4(h);
-
-            byte[] out2 = data2.getBytes(StandardCharsets.UTF_8);
-            OutputStream stream2 = http2.getOutputStream();
-            stream2.write(out2);
-            String response2 = http2.getResponseMessage();
-            http.disconnect();
-
-            if(response2.contains("1"))
-                return;
-        } catch (Exception e) { e.printStackTrace(); }
-
-        FMLCommonHandler.instance().exitJava(-1, true);
-        return;
+        JOptionPane.showMessageDialog(jFrame, "Login was OK!", "HT+Auth System " + AVERSION + "(client=" + VERSION + ")", JOptionPane.INFORMATION_MESSAGE);
     }
 }

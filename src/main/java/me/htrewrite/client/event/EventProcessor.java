@@ -158,4 +158,5 @@ public class EventProcessor {
     @SubscribeEvent public void fogDensity(EntityViewRenderEvent.FogDensity event) { EVENT_BUS.post(event); }
 
     @SubscribeEvent public void chatReceive(ClientChatReceivedEvent event) { EVENT_BUS.post(event); }
+    @SubscribeEvent public void renderBlockOverlayEvent(RenderBlockOverlayEvent event) { EVENT_BUS.post(event); }
 }

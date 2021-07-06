@@ -4,6 +4,7 @@ import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.event.custom.CustomEvent;
 import me.htrewrite.client.event.custom.player.*;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.MoverType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -65,5 +66,13 @@ public abstract class MixinEntityPlayerSP {
     private void postUpdateWalkingPlayer(CallbackInfo callbackInfo) {
         UpdateWalkingPlayerEvent event = new UpdateWalkingPlayerEvent(CustomEvent.Era.POST);
         HTRewrite.EVENT_BUS.post(event);
+    }
+
+    @Inject(method = "move", at = @At("HEAD"), cancellable = true)
+    public void move(MoverType type, double x, double y, double z, CallbackInfo callbackInfo) {
+        PlayerMoveEvent event = new PlayerMoveEvent(type, x, y, z);
+        HTRewrite.EVENT_BUS.post(event);
+        if(event.isCancelled())
+            callbackInfo.cancel();
     }
 }

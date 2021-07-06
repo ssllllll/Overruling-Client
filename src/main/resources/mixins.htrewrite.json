@@ -27,6 +27,7 @@
     "MixinEntityRenderer",
     "MixinBlockRendererDispatcher",
     "MixinVisGraph",
-    "MixinBlockStateContainer"
+    "MixinBlockStateContainer",
+    "MixinGuiIngameForge"
   ]
 }
