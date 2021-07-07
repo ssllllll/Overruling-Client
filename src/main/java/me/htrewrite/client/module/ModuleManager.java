@@ -79,6 +79,7 @@ public class ModuleManager {
         modules.add(new HandProgressModule());
         // modules.add(new HoleESPModule());
         modules.add(new IbaiModule());
+        // modules.add(new NametagsModule());
         modules.add(new NoFogModule());
         modules.add(new ShulkerPreviewModule());
         modules.add(new SkyColorModule());

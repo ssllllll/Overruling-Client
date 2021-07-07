@@ -16,7 +16,7 @@ import java.awt.*;
 public class SplashProgressGui {
 
     // Max amount of progress updates
-    private static final int DEFAULT_MAX = 12;
+    private static final int DEFAULT_MAX = 13;
 
     // Current progress
     private static int PROGRESS;

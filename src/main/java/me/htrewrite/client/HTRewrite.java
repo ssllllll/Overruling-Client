@@ -17,10 +17,12 @@ import me.htrewrite.client.util.AuthSession;
 import me.htrewrite.client.util.ClientAuthenticator;
 import me.htrewrite.client.util.ConfigUtils;
 import me.htrewrite.client.util.PostRequest;
+import me.htrewrite.client.util.font.CFonts;
 import me.htrewrite.exeterimports.keybind.KeybindManager;
 import me.zero.alpine.fork.bus.EventBus;
 import me.zero.alpine.fork.bus.EventManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.SplashProgress;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -146,21 +148,25 @@ public class HTRewrite {
 
         AudioEnum.Vocals.AUTH_SUCCESS.play();
 
-        SplashProgressGui.setProgress(6, "Loading capes...");
+        SplashProgressGui.setProgress(6, "Loading fonts...");
+
+        CFonts.load();
+
+        SplashProgressGui.setProgress(7, "Loading capes...");
 
         capes = new Capes();
 
-        SplashProgressGui.setProgress(7, "Loading managers...");
+        SplashProgressGui.setProgress(8, "Loading managers...");
 
         keybindManager = new KeybindManager();
         tickRateManager = new TickRateManager();
         xRayManager = new XRayManager();
 
-        SplashProgressGui.setProgress(8, "Adding friends...");
+        SplashProgressGui.setProgress(9, "Adding friends...");
 
         friendManager = new FriendManager();
 
-        SplashProgressGui.setProgress(9, "Setting modules...");
+        SplashProgressGui.setProgress(10, "Setting modules...");
 
         moduleManager = new ModuleManager();
         moduleManager.setModules();
@@ -168,15 +174,15 @@ public class HTRewrite {
             if(module.isEnabled())
                 module.onEnable();
 
-        SplashProgressGui.setProgress(10, "Baking modules...");
+        SplashProgressGui.setProgress(11, "Baking modules...");
 
         commandManager = new CommandManager();
 
-        SplashProgressGui.setProgress(11, "Cooking ClickGui...");
+        SplashProgressGui.setProgress(12, "Cooking ClickGui...");
 
         clickGuiScreen = new ClickGuiScreen();
 
-        SplashProgressGui.setProgress(12, "Forging events...");
+        SplashProgressGui.setProgress(13, "Forging events...");
 
         eventProcessor = new EventProcessor();
         MinecraftForge.EVENT_BUS.register(eventProcessor);
