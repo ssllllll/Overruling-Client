@@ -13,6 +13,10 @@ public class StringSetting extends Setting {
         this.value = value;
     }
 
+    public StringSetting(String label, String value) {
+        this(label, null, value);
+    }
+
     public void setValue(String value) {
         this.value = value.replaceAll("\"", "");
         HTRewrite.EVENT_BUS.post(new ClientSettingChangeEvent(this));

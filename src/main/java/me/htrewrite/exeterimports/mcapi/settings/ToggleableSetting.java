@@ -14,6 +14,10 @@ public class ToggleableSetting extends Setting implements Toggleable {
         this.enabled = value;
     }
 
+    public ToggleableSetting(String label, boolean value) {
+        this(label, null, value);
+    }
+
     @Override
     public boolean isEnabled() {
         return enabled;

@@ -16,6 +16,8 @@ public class ModeSetting extends Setting {
         this.i = defaultIndex;
     }
 
+    public ModeSetting(String label, int defaultIndex, BetterMode[] modes) { this(label, null, defaultIndex, modes); }
+
     public String getValue() {
         return modes[i].mode;
     }

@@ -18,6 +18,10 @@ public class ValueSetting<T extends Number> extends Setting {
         this.maximum = maximum;
     }
 
+    public ValueSetting(String label, T value, T minimum, T maximum) {
+        this(label, null, value, minimum, maximum);
+    }
+
     public ValueSetting(String label, String[] aliases, T value) {
         this(label, aliases, value, null, null);
         clamp = false;
