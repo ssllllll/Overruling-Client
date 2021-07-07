@@ -71,7 +71,7 @@ public class ModuleManager {
         modules.add(new StepModule());
         /* Render */
         modules.add(new AntiEnchantmentTableLagModule());
-        // modules.add(new ChamsModule());
+        modules.add(new ChamsModule());
         modules.add(new ChestESPModule());
         modules.add(new CityESPModule());
         modules.add(new FullbrightModule());
