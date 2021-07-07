@@ -119,6 +119,9 @@ public class ChamsModule extends Module {
     }
 
     private boolean validEntity(Entity entity) {
+        if(entity == null)
+            return false;
+
         boolean ret = false;
         if(players_enabled.isEnabled() && entity instanceof EntityPlayer && entity != mc.player)
             ret = true;
@@ -134,11 +137,11 @@ public class ChamsModule extends Module {
             ret = true;
         if(mc.player.getRidingEntity() != null && entity == mc.player.getRidingEntity())
             ret = false;
-        if(entity instanceof EntityLivingBase && ((EntityLivingBase)entity).ticksExisted <= 0)
+        if(entity instanceof EntityLivingBase && entity.ticksExisted <= 0)
             ret = false;
         return ret;
     }
-    private int getColor(Entity entity ) {
+    private int getColor(Entity entity) {
         int ret = 0xFFFFFFFF;
         if(entity instanceof IAnimals && !(entity instanceof IMob))
             ret = new Color(animals_red.getValue().intValue(), animals_green.getValue().intValue(), animals_blue.getValue().intValue()).getRGB();
@@ -171,7 +174,7 @@ public class ChamsModule extends Module {
 
     @EventHandler
     private Listener<RenderEntityEvent> entityEventListener = new Listener<>(event -> {
-        if(!(event.entity != null && validEntity(event.entity)))
+        if(!validEntity(event.entity))
             return;
 
         boolean shadow = mc.getRenderManager().isRenderShadow();

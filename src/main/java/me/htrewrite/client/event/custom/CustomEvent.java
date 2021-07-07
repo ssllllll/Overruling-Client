@@ -7,13 +7,11 @@ public class CustomEvent extends Cancellable {
     private final float partialTicks;
     private Era era;
 
-    public CustomEvent() {
-        partialTicks = Wrapper.getMC().getRenderPartialTicks();
-        era = Era.PRE;
-    }
     public CustomEvent(float partialTicks) {
         this.partialTicks = partialTicks;
+        era = Era.PRE;
     }
+    public CustomEvent() { this(Wrapper.getMC().getRenderPartialTicks()); }
 
     public Era getEra() { return era; }
     public void setEra(Era era) { this.era = era; }
