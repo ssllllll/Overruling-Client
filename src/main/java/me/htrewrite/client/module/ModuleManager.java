@@ -66,6 +66,7 @@ public class ModuleManager {
         modules.add(new EntityControlModule());
         modules.add(new EntitySpeedModule());
         modules.add(new FreecamModule());
+        modules.add(new LongJumpModule());
         modules.add(new NoSlowModule());
         modules.add(new SprintModule());
         modules.add(new StepModule());
