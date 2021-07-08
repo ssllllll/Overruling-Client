@@ -50,9 +50,7 @@ public class AutoEatModule extends Module {
                     break;
                 }
 
-                if(mc.currentScreen == null)
-                    mc.gameSettings.keyBindUseItem.pressed = true;
-                else mc.playerController.processRightClick(mc.player, mc.world, EnumHand.MAIN_HAND);
+                mc.playerController.processRightClick(mc.player, mc.world, EnumHand.MAIN_HAND);
                 wasEating = true;
             }
             return;

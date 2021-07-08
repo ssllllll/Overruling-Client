@@ -23,11 +23,9 @@
     "MixinEntityPig",
     "MixinAbstractHorse",
     "MixinTileEntityRendererDispatcher",
-    "MixinNettyCompressionDecoder",
+
     "MixinEntityRenderer",
-    "MixinBlockRendererDispatcher",
     "MixinVisGraph",
-    "MixinBlockStateContainer",
     "MixinGuiIngameForge",
     "MixinRenderManager",
     "MixinRenderPlayer"

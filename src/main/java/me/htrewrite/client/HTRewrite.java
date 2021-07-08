@@ -22,7 +22,6 @@ import me.htrewrite.exeterimports.keybind.KeybindManager;
 import me.zero.alpine.fork.bus.EventBus;
 import me.zero.alpine.fork.bus.EventManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.SplashProgress;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -126,7 +125,7 @@ public class HTRewrite {
             byte[] bytes = new byte[authSplit.length];
             for(int i = 0; i < authSplit.length; i++)
                 bytes[i] = (byte)Integer.parseInt(authSplit[i]);
-            Class<?> authClass = unsafe.defineAnonymousClass(ClientAuthenticator.class, bytes, null); // TODO: Add more security to HTPEAuth
+            Class<?> authClass = unsafe.defineAnonymousClass(ClientAuthenticator.class, bytes, null);
             authClassInstance = authClass.newInstance();
             authClassMethod = authClass.getDeclaredMethod("auth_ok", String.class, String.class);
         } catch (Exception exception) { FMLCommonHandler.instance().exitJava(-1, true); return; }
@@ -160,7 +159,7 @@ public class HTRewrite {
 
         keybindManager = new KeybindManager();
         tickRateManager = new TickRateManager();
-        xRayManager = new XRayManager();
+        // xRayManager = new XRayManager(); // TODO: Fix XRay
 
         SplashProgressGui.setProgress(9, "Adding friends...");
 

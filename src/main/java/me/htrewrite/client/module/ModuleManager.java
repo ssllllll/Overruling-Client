@@ -31,7 +31,7 @@ public class ModuleManager {
         modules.add(new KillAuraModule());
         modules.add(new VelocityModule());
         /* Exploits */
-        modules.add(new AntiChunkBanModule());
+        // modules.add(new AntiChunkBanModule());
         modules.add(new AntiHungerModule());
         modules.add(new AntiMapBanModule());
         // modules.add(new AutoSelfCrashModule());
@@ -84,7 +84,7 @@ public class ModuleManager {
         modules.add(new ShulkerPreviewModule());
         modules.add(new SkyColorModule());
         modules.add(new TracersModule());
-        modules.add(new XRayModule());
+        // modules.add(new XRayModule());
         /* World */
         modules.add(new AutoTunnelModule());
         modules.add(new EntityLoggerModule());

@@ -25,7 +25,6 @@ public class Module implements Listenable, Labeled {
     private boolean enabled;
     private ConfigUtils configUtils;
 
-
     public final BindSetting bindSetting;
     public Module(String name, String description, ModuleType category, int default_key) {
         this.name = name;

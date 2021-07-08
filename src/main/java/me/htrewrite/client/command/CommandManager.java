@@ -24,11 +24,11 @@ public class CommandManager {
         else prefix = (String)object;
 
         commands = new ArrayList<Command>();
-        commands.add(new CapeClaimCommand());
+        /*commands.add(new CapeClaimCommand());
         commands.add(new CapeDebugCommand());
-        commands.add(new CapeListCommand());
+        commands.add(new CapeListCommand());    DISABLED CAPES UNTIL FIX
         commands.add(new CapeReloadCommand());
-        commands.add(new CapeUseCommand());
+        commands.add(new CapeUseCommand());*/
         commands.add(new ChatExceptCommand());
         commands.add(new FriendCommand());
         commands.add(new HelpCommand());
@@ -38,7 +38,7 @@ public class CommandManager {
         commands.add(new PrefixCommand(this));
         commands.add(new TestSoundCommand());
         commands.add(new VanishCommand());
-        commands.add(new XRayCommand());
+        // commands.add(new XRayCommand());
     }
 
     public Command get(String alias) {

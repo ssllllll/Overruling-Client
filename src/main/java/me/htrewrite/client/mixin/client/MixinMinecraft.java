@@ -20,9 +20,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {
     private HTMinecraft htMinecraft = new HTMinecraft((Minecraft) (Object) this);
+    private boolean alreadyCrashed = false;
 
     @Redirect(method={"run"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/Minecraft;displayCrashReport(Lnet/minecraft/crash/CrashReport;)V"))
     public void displayCrashReportHook(Minecraft minecraft, CrashReport crashReport) {
+        if(alreadyCrashed)
+            return;
+
+        System.out.println("\n\nDetected CrashReport! \n" + crashReport.getCompleteReport());
         HTRewrite.INSTANCE.saveEverything();
         HTRewrite.EVENT_BUS.post(new ClientShutdownEvent(ClientShutdownEvent.ShutdownType.CRASH));
     }
