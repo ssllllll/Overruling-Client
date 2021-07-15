@@ -20,12 +20,12 @@ public final class ClickGuiScreen extends GuiScreen {
     public ClickGuiScreen() {
         int positionX = 30;
         for (ModuleType modType : ModuleType.values()) {
-            panels.add(new PanelComponent(modType.name(), positionX, 20, 85, 20) {
+            panels.add(new PanelComponent(modType.name(), positionX, 20, 85, StaticGuiConfig.CATEGORY_PANEL_HEIGHT) {
                 @Override
                 public void registerComponents() {
                     for (Module mod : HTRewrite.INSTANCE.getModuleManager().getModules()) {
                         if (mod.getCategory().equals(modType)) {
-                            getComponents().add(new ModComponent(mod, mod.getLabel(), getPositionX(), getPositionY(), 85, 20));
+                            getComponents().add(new ModComponent(mod, mod.getLabel(), getPositionX(), getPositionY(), 85, StaticGuiConfig.MOD_COMPONENT_HEIGHT));
                         }
                     }
                 }

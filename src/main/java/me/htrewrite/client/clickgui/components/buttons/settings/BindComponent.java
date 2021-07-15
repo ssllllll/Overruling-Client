@@ -2,6 +2,7 @@ package me.htrewrite.client.clickgui.components.buttons.settings;
 
 import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.Wrapper;
+import me.htrewrite.client.clickgui.StaticGuiConfig;
 import me.htrewrite.client.clickgui.StaticScrollOffset;
 import me.htrewrite.client.clickgui.components.Colors;
 import me.htrewrite.client.clickgui.components.Component;
@@ -17,7 +18,7 @@ public class BindComponent extends Component {
 
     @Override
     public void onClicked(int mouseX, int mouseY, int mouseButton) {
-        if(isHovering(mouseX, mouseY, 20) && mouseButton == 0 && Wrapper.binding == null)
+        if(isHovering(mouseX, mouseY, StaticGuiConfig.MOD_CONFIG_COMPONENT_HEIGHT) && mouseButton == 0 && Wrapper.binding == null)
             Wrapper.binding = bindSetting;
     }
 

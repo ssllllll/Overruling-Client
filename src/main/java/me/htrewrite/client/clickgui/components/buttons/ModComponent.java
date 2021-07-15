@@ -1,5 +1,6 @@
 package me.htrewrite.client.clickgui.components.buttons;
 
+import me.htrewrite.client.clickgui.StaticGuiConfig;
 import me.htrewrite.client.clickgui.StaticScrollOffset;
 import me.htrewrite.client.clickgui.components.Colors;
 import me.htrewrite.client.clickgui.components.Component;
@@ -41,7 +42,7 @@ public class ModComponent extends Component {
 
     @Override
     public void onClicked(int mouseX, int mouseY, int mouseButton) {
-        if (isHovering(mouseX, mouseY, 20)) {
+        if (isHovering(mouseX, mouseY, StaticGuiConfig.MOD_CONFIG_COMPONENT_HEIGHT)) {
             switch (mouseButton) {
                 case 0:
                     mod.toggle();
@@ -79,14 +80,14 @@ public class ModComponent extends Component {
 
             drawComponents.add(comp);
         }
-        setHeight(!open ? 20 : 20 + drawComponents.size() * 20);
+        setHeight(!open ? StaticGuiConfig.MOD_COMPONENT_HEIGHT : StaticGuiConfig.MOD_COMPONENT_HEIGHT + drawComponents.size() * StaticGuiConfig.MOD_CONFIG_COMPONENT_HEIGHT);
         if (open) {
-            int positionY = getPositionY() + 20;
+            int positionY = getPositionY() + StaticGuiConfig.MOD_COMPONENT_HEIGHT;
             for (Component component : drawComponents) {
                 component.drawComponent(mouseX, mouseY);
                 component.setPositionX(getPositionX());
                 component.setPositionY(positionY);
-                positionY += 20;
+                positionY += StaticGuiConfig.MOD_CONFIG_COMPONENT_HEIGHT;
             }
         }
     }

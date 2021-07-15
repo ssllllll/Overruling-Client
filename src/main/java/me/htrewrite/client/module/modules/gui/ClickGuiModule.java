@@ -83,76 +83,84 @@ public class ClickGuiModule extends Module {
         super("ClickGUI", "Opens a gui.", ModuleType.Gui, Keyboard.KEY_P);
         addOption(color);
         /* BUTTON */
-        /*
         addOption(b_r.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON.name())));
         addOption(b_g.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON.name())));
         addOption(b_b.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON.name())));
-        addOption(b_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON.name())));*/
-        /* BUTTON_ENABLED *//*
+        addOption(b_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON.name())));
+        /* BUTTON_ENABLED */
         addOption(be_r.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name())));
         addOption(be_g.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name())));
         addOption(be_b.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name())));
-        addOption(be_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name())));*/
-        /* BUTTON_HOVER *//*
+        addOption(be_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name())));
+        /* BUTTON_HOVER */
         addOption(bh_r.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_HOVER.name())));
         addOption(bh_g.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_HOVER.name())));
         addOption(bh_b.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_HOVER.name())));
-        addOption(bh_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_HOVER.name())));*/
-        /* BUTTON_ENABLED_HOVER *//*
+        addOption(bh_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_HOVER.name())));
+        /* BUTTON_ENABLED_HOVER */
         addOption(beh_r.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED_HOVER.name())));
         addOption(beh_g.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED_HOVER.name())));
         addOption(beh_b.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED_HOVER.name())));
-        addOption(beh_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED_HOVER.name())));*/
-        /* BUTTON_COMPONENT *//*
+        addOption(beh_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED_HOVER.name())));
+        /* BUTTON_COMPONENT */
         addOption(bc_r.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_COMPONENT.name())));
         addOption(bc_g.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_COMPONENT.name())));
         addOption(bc_b.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_COMPONENT.name())));
         addOption(bc_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_COMPONENT.name())));
-        /* BUTTON_COMPONENT_ENABLED *//*
+        /* BUTTON_COMPONENT_ENABLED */
         addOption(bce_r.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_COMPONENT_ENABLED.name())));
         addOption(bce_g.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_COMPONENT_ENABLED.name())));
         addOption(bce_b.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_COMPONENT_ENABLED.name())));
         addOption(bce_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_COMPONENT_ENABLED.name())));
-        /* BUTTON_LABEL *//*
+        /* BUTTON_LABEL */
         addOption(bl_r.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_LABEL.name())));
         addOption(bl_g.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_LABEL.name())));
         addOption(bl_b.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_LABEL.name())));
         addOption(bl_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_LABEL.name())));
-        /* BUTTON_LABEL_ENABLED *//*
+        /* BUTTON_LABEL_ENABLED */
         addOption(ble_r.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_LABEL_ENABLED.name())));
         addOption(ble_g.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_LABEL_ENABLED.name())));
         addOption(ble_b.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_LABEL_ENABLED.name())));
         addOption(ble_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_LABEL_ENABLED.name())));
-        /* BUTTON_LABEL_HOVER *//*
+        /* BUTTON_LABEL_HOVER */
         addOption(blh_r.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_LABEL_HOVER.name())));
         addOption(blh_g.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_LABEL_HOVER.name())));
         addOption(blh_b.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_LABEL_HOVER.name())));
         addOption(blh_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_LABEL_HOVER.name())));
-        /* PANEL_INSIDE *//*
+        /* PANEL_INSIDE */
         addOption(pi_r.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_INSIDE.name())));
         addOption(pi_g.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_INSIDE.name())));
         addOption(pi_b.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_INSIDE.name())));
         addOption(pi_a.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_INSIDE.name())));
-        /* PANEL_BORDER *//*
+        /* PANEL_BORDER */
         addOption(pb_r.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_BORDER.name())));
         addOption(pb_g.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_BORDER.name())));
         addOption(pb_b.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_BORDER.name())));
         addOption(pb_a.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_BORDER.name())));
-        /* PANEL_LABEL *//*
+        /* PANEL_LABEL */
         addOption(pl_r.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_LABEL.name())));
         addOption(pl_g.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_LABEL.name())));
         addOption(pl_b.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_LABEL.name())));
-        addOption(pl_a.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_LABEL.name())));*/
+        addOption(pl_a.setVisibility(v -> color.getValue().contentEquals(Colors.PANEL_LABEL.name())));
 
         endOption();
     }
+
+    private boolean isBusInitialized = false;
 
     @Override
     public void onEnable() {
         if(Wrapper.getPlayer() != null && Wrapper.getMC().world != null && !(Wrapper.getMC().currentScreen instanceof ClickGuiScreen))
             mc.displayGuiScreen(HTRewrite.INSTANCE.getClickGuiScreen());
         toggle();
+
+        if(!isBusInitialized) {
+            HTRewrite.EVENT_BUS.subscribe(this);
+            isBusInitialized = true;
+        }
     }
+
+    @Override public void onDisable() { }
 
     @EventHandler
     private Listener<ClientSettingChangeEvent> settingChangeEventListener = new Listener<>(event -> {
@@ -160,9 +168,7 @@ public class ClickGuiModule extends Module {
             if(!getSettings().contains(event.setting))
                 return;
 
-            ValueSetting<Double> setting = (ValueSetting<Double>)event.setting;
-            String name = setting.getLabel();
-            System.out.println(name);
+            String name = event.setting.getLabel();
             if(name.startsWith("B_"))            /* BUTTON */
                 Colors.BUTTON.setColor(StaticClickGuiColor.newColor(b_r.getValue().intValue(), b_g.getValue().intValue(), b_b.getValue().intValue(), b_a.getValue().intValue()));
             else if(name.startsWith("BE_"))      /* BUTTON_ENABLED */

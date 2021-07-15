@@ -2,8 +2,10 @@ package me.htrewrite.client.mixin.client;
 
 import me.htrewrite.client.HTMinecraft;
 import me.htrewrite.client.HTRewrite;
+import me.htrewrite.client.Wrapper;
 import me.htrewrite.client.customgui.SplashProgressGui;
 import me.htrewrite.client.event.custom.client.ClientShutdownEvent;
+import me.htrewrite.client.util.PostRequest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.crash.CrashReport;
@@ -26,16 +28,19 @@ public abstract class MixinMinecraft {
     public void displayCrashReportHook(Minecraft minecraft, CrashReport crashReport) {
         if(alreadyCrashed)
             return;
-
+        alreadyCrashed = true;
+        
         System.out.println("\n\nDetected CrashReport! \n" + crashReport.getCompleteReport());
         HTRewrite.INSTANCE.saveEverything();
         HTRewrite.EVENT_BUS.post(new ClientShutdownEvent(ClientShutdownEvent.ShutdownType.CRASH));
+        HTRewrite.INSTANCE.disconnectHandler();
     }
 
     @Inject(method={"shutdown"}, at={@At(value="HEAD")})
     public void shutdownHook(CallbackInfo info) {
         HTRewrite.INSTANCE.saveEverything();
         HTRewrite.EVENT_BUS.post(new ClientShutdownEvent(ClientShutdownEvent.ShutdownType.SHUTDOWN));
+        HTRewrite.INSTANCE.disconnectHandler();
     }
 
     @Overwrite

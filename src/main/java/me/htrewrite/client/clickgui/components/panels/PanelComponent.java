@@ -1,5 +1,6 @@
 package me.htrewrite.client.clickgui.components.panels;
 
+import me.htrewrite.client.clickgui.StaticGuiConfig;
 import me.htrewrite.client.clickgui.StaticScrollOffset;
 import me.htrewrite.client.clickgui.components.Colors;
 import me.htrewrite.client.clickgui.components.Component;
@@ -23,7 +24,7 @@ public abstract class PanelComponent extends Component {
 
     @Override
     public void onClicked(int mouseX, int mouseY, int mouseButton) {
-        if (isHovering(mouseX, mouseY, 20)) {
+        if (isHovering(mouseX, mouseY, StaticGuiConfig.CATEGORY_PANEL_HEIGHT)) {
             switch (mouseButton) {
                 case 0:
                     setDragging(true);
@@ -47,11 +48,11 @@ public abstract class PanelComponent extends Component {
             setPositionY(getDraggingPositionY() + mouseY);
         }
         drawBorderedRectReliant(getPositionX(), StaticScrollOffset.offset + getPositionY(), getPositionX() + getWidth(),
-                StaticScrollOffset.offset + getPositionY() + (open ? getHeight() : 20), 1.7F,
+                StaticScrollOffset.offset + getPositionY() + (open ? getHeight() : StaticGuiConfig.MOD_COMPONENT_HEIGHT), 1.7F,
                 Colors.PANEL_INSIDE.getColor(), Colors.PANEL_BORDER.getColor());
         font.drawString(getLabel(), getPositionX() + 4, StaticScrollOffset.offset + getPositionY() + 1, Colors.PANEL_LABEL.getColor());
         if (open) {
-            int componentPositionY = getPositionY() + 20;
+            int componentPositionY = getPositionY() + StaticGuiConfig.MOD_COMPONENT_HEIGHT;
             for (Component component : components) {
                 if((component instanceof ModeComponent) && !(((ModeComponent)component).modeSetting.isVisible()))
                     continue;
@@ -72,7 +73,7 @@ public abstract class PanelComponent extends Component {
 
     @Override
     public int getHeight() {
-        int height = 20;
+        int height = StaticGuiConfig.MOD_COMPONENT_HEIGHT;
         for (Component component : components) {
             height += component.getHeight();
         }

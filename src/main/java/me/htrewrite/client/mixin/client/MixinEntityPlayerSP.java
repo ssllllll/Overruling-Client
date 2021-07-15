@@ -3,16 +3,19 @@ package me.htrewrite.client.mixin.client;
 import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.event.custom.CustomEvent;
 import me.htrewrite.client.event.custom.player.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.MoverType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityPlayerSP.class)
-public abstract class MixinEntityPlayerSP {
+public abstract class MixinEntityPlayerSP extends MixinAbstractClientPlayer {
     @Inject(method = "onUpdate", at = @At("HEAD"), cancellable = true)
     public void onUpdate(CallbackInfo callbackInfo) {
         PlayerUpdateEvent playerUpdateEvent = new PlayerUpdateEvent();
@@ -74,5 +77,14 @@ public abstract class MixinEntityPlayerSP {
         HTRewrite.EVENT_BUS.post(event);
         if(event.isCancelled())
             callbackInfo.cancel();
+    }
+
+    @Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;closeScreen()V"))
+    public void closeScreen(EntityPlayerSP entityPlayerSP) {
+    }
+
+    @Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;displayGuiScreen(Lnet/minecraft/client/gui/GuiScreen;)V"))
+    public void closeScreen(Minecraft minecraft, GuiScreen guiScreen) {
+
     }
 }

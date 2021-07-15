@@ -4,14 +4,13 @@ import me.htrewrite.client.Wrapper;
 import me.zero.alpine.fork.event.type.Cancellable;
 
 public class CustomEvent extends Cancellable {
-    private final float partialTicks;
+    private float partialTicks = Wrapper.getMC().getRenderPartialTicks();
     private Era era;
 
     public CustomEvent(float partialTicks) {
         this.partialTicks = partialTicks;
-        era = Era.PRE;
     }
-    public CustomEvent() { this(Wrapper.getMC().getRenderPartialTicks()); }
+    public CustomEvent() {}
 
     public Era getEra() { return era; }
     public void setEra(Era era) { this.era = era; }

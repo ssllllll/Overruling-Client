@@ -200,6 +200,13 @@ public class HTRewrite {
         System.out.println("Config saved!");
     }
 
+    public void disconnectHandler() {
+        try {
+            PostRequest.read(PostRequest.genGetCon("https://aurahardware.eu/ht/api/connectivity/disconnect.php?user=" + Wrapper.getMC().session.getUsername()));
+        } catch (Exception exception) {
+        }
+    }
+
     public EventProcessor getEventProcessor() { return eventProcessor; }
 
     public Capes getCapes() { return capes; }

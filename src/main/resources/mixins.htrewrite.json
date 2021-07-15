@@ -23,7 +23,7 @@
     "MixinEntityPig",
     "MixinAbstractHorse",
     "MixinTileEntityRendererDispatcher",
-
+    "MixinNettyCompressionDecoder",
     "MixinEntityRenderer",
     "MixinVisGraph",
     "MixinGuiIngameForge",
