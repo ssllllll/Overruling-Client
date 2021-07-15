@@ -6,10 +6,12 @@ import me.htrewrite.client.event.custom.client.ClientSettingChangeEvent;
 import java.util.function.Predicate;
 
 public class StringSetting extends Setting {
+    public final String defaultValue;
     private String value;
 
     public StringSetting(String label, String[] aliases, String value) {
         super(label, aliases);
+        this.defaultValue = value;
         this.value = value;
     }
 

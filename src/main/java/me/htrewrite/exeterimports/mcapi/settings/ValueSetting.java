@@ -6,6 +6,7 @@ import me.htrewrite.client.event.custom.client.ClientSettingChangeEvent;
 import java.util.function.Predicate;
 
 public class ValueSetting<T extends Number> extends Setting {
+    public final T defaultValue;
     private final T minimum, maximum;
     private T value;
 
@@ -14,6 +15,7 @@ public class ValueSetting<T extends Number> extends Setting {
     public ValueSetting(String label, String[] aliases, T value, T minimum, T maximum) {
         super(label, aliases);
         this.value = value;
+        this.defaultValue = value;
         this.minimum = minimum;
         this.maximum = maximum;
     }
@@ -27,7 +29,7 @@ public class ValueSetting<T extends Number> extends Setting {
         clamp = false;
     }
 
-    public void setValue(T value) {
+    public void setValue(Number value) {
         if (clamp) {
             if (this.value instanceof Float) {
                 if (value.floatValue() > this.getMaximum().floatValue()) {
@@ -49,7 +51,7 @@ public class ValueSetting<T extends Number> extends Setting {
                 }
             }
         }
-        this.value = value;
+        this.value = (T)value;
         HTRewrite.EVENT_BUS.post(new ClientSettingChangeEvent(this));
     }
 

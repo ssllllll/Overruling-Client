@@ -7,11 +7,13 @@ import me.htrewrite.exeterimports.mcapi.interfaces.Toggleable;
 import java.util.function.Predicate;
 
 public class ToggleableSetting extends Setting implements Toggleable {
+    public final boolean defaultValue;
     private boolean enabled;
 
     public ToggleableSetting(String label, String[] aliases, boolean value) {
         super(label, aliases);
         this.enabled = value;
+        this.defaultValue = value;
     }
 
     public ToggleableSetting(String label, boolean value) {

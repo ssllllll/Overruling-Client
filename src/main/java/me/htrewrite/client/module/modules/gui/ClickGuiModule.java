@@ -19,60 +19,60 @@ import org.lwjgl.input.Keyboard;
 public class ClickGuiModule extends Module {
     public static final ModeSetting color = new ModeSetting("Color", null, 0, BetterMode.construct(ChatColor.enumToStringArray(Colors.values())));
 
-    public static final ValueSetting<Double> b_r = new ValueSetting<>("B_R", null, 102d, 0D, 255D);
+    public static final ValueSetting<Double> b_r = new ValueSetting<>("B_R", null, 86d, 0D, 255D);
     public static final ValueSetting<Double> b_g = new ValueSetting<>("B_G", null, 86d, 0D, 255D);
     public static final ValueSetting<Double> b_b = new ValueSetting<>("B_B", null, 86d, 0D, 255D);
-    public static final ValueSetting<Double> b_a = new ValueSetting<>("B_A", null, 86d, 0D, 255D);
+    public static final ValueSetting<Double> b_a = new ValueSetting<>("B_A", null, 102d, 0D, 255D);
 
-    public static final ValueSetting<Double> be_r = new ValueSetting<>("BE_R", null, 186d, 0D, 255D);
-    public static final ValueSetting<Double> be_g = new ValueSetting<>("BE_G", null, 178d, 0D, 255D);
+    public static final ValueSetting<Double> be_r = new ValueSetting<>("BE_R", null, 178d, 0D, 255D);
+    public static final ValueSetting<Double> be_g = new ValueSetting<>("BE_G", null, 13d, 0D, 255D);
     public static final ValueSetting<Double> be_b = new ValueSetting<>("BE_B", null, 30d, 0D, 255D);
-    public static final ValueSetting<Double> be_a = new ValueSetting<>("BE_A", null, 13d, 0D, 255D);
+    public static final ValueSetting<Double> be_a = new ValueSetting<>("BE_A", null, 186d, 0D, 255D);
 
-    public static final ValueSetting<Double> bh_r = new ValueSetting<>("BH_R", null, 170d, 0D, 255D);
+    public static final ValueSetting<Double> bh_r = new ValueSetting<>("BH_R", null, 196d, 0D, 255D);
     public static final ValueSetting<Double> bh_g = new ValueSetting<>("BH_G", null, 196d, 0D, 255D);
     public static final ValueSetting<Double> bh_b = new ValueSetting<>("BH_B", null, 196d, 0D, 255D);
-    public static final ValueSetting<Double> bh_a = new ValueSetting<>("BH_A", null, 196d, 0D, 255D);
+    public static final ValueSetting<Double> bh_a = new ValueSetting<>("BH_A", null, 170d, 0D, 255D);
 
-    public static final ValueSetting<Double> beh_r = new ValueSetting<>("BEH_R", null, 170d, 0D, 255D);
-    public static final ValueSetting<Double> beh_g = new ValueSetting<>("BEH_G", null, 234d, 0D, 255D);
-    public static final ValueSetting<Double> beh_b = new ValueSetting<>("BEH_B", null, 171d, 0D, 255D);
-    public static final ValueSetting<Double> beh_a = new ValueSetting<>("BEH_A", null, 25d, 0D, 255D);
+    public static final ValueSetting<Double> beh_r = new ValueSetting<>("BEH_R", null, 234d, 0D, 255D);
+    public static final ValueSetting<Double> beh_g = new ValueSetting<>("BEH_G", null, 171d, 0D, 255D);
+    public static final ValueSetting<Double> beh_b = new ValueSetting<>("BEH_B", null, 25d, 0D, 255D);
+    public static final ValueSetting<Double> beh_a = new ValueSetting<>("BEH_A", null, 170d, 0D, 255D);
 
-    public static final ValueSetting<Double> bc_r = new ValueSetting<>("BC_R", null, 46d, 0D, 255D);
+    public static final ValueSetting<Double> bc_r = new ValueSetting<>("BC_R", null, 86d, 0D, 255D);
     public static final ValueSetting<Double> bc_g = new ValueSetting<>("BC_G", null, 86d, 0D, 255D);
     public static final ValueSetting<Double> bc_b = new ValueSetting<>("BC_B", null, 86d, 0D, 255D);
-    public static final ValueSetting<Double> bc_a = new ValueSetting<>("BC_A", null, 86d, 0D, 255D);
+    public static final ValueSetting<Double> bc_a = new ValueSetting<>("BC_A", null, 46d, 0D, 255D);
 
-    public static final ValueSetting<Double> bce_r = new ValueSetting<>("BCE_R", null, 46d, 0D, 255D);
-    public static final ValueSetting<Double> bce_g = new ValueSetting<>("BCE_G", null, 178d, 0D, 255D);
-    public static final ValueSetting<Double> bce_b = new ValueSetting<>("BCE_B", null, 30d, 0D, 255D);
-    public static final ValueSetting<Double> bce_a = new ValueSetting<>("BCE_A", null, 13d, 0D, 255D);
+    public static final ValueSetting<Double> bce_r = new ValueSetting<>("BCE_R", null, 178d, 0D, 255D);
+    public static final ValueSetting<Double> bce_g = new ValueSetting<>("BCE_G", null, 30d, 0D, 255D);
+    public static final ValueSetting<Double> bce_b = new ValueSetting<>("BCE_B", null, 13d, 0D, 255D);
+    public static final ValueSetting<Double> bce_a = new ValueSetting<>("BCE_A", null, 46d, 0D, 255D);
 
-    public static final ValueSetting<Double> bl_r = new ValueSetting<>("BL_R", null, 255d, 0D, 255D);
+    public static final ValueSetting<Double> bl_r = new ValueSetting<>("BL_R", null, 221d, 0D, 255D);
     public static final ValueSetting<Double> bl_g = new ValueSetting<>("BL_G", null, 221d, 0D, 255D);
     public static final ValueSetting<Double> bl_b = new ValueSetting<>("BL_B", null, 221d, 0D, 255D);
-    public static final ValueSetting<Double> bl_a = new ValueSetting<>("BL_A", null, 221d, 0D, 255D);
+    public static final ValueSetting<Double> bl_a = new ValueSetting<>("BL_A", null, 255d, 0D, 255D);
 
-    public static final ValueSetting<Double> ble_r = new ValueSetting<>("BLE_R", null, 255d, 0D, 255D);
+    public static final ValueSetting<Double> ble_r = new ValueSetting<>("BLE_R", null, 221d, 0D, 255D);
     public static final ValueSetting<Double> ble_g = new ValueSetting<>("BLE_G", null, 221d, 0D, 255D);
     public static final ValueSetting<Double> ble_b = new ValueSetting<>("BLE_B", null, 221d, 0D, 255D);
-    public static final ValueSetting<Double> ble_a = new ValueSetting<>("BLE_A", null, 221d, 0D, 255D);
+    public static final ValueSetting<Double> ble_a = new ValueSetting<>("BLE_A", null, 255d, 0D, 255D);
 
-    public static final ValueSetting<Double> blh_r = new ValueSetting<>("BLH_R", null, 255d, 0D, 255D);
+    public static final ValueSetting<Double> blh_r = new ValueSetting<>("BLH_R", null, 204d, 0D, 255D);
     public static final ValueSetting<Double> blh_g = new ValueSetting<>("BLH_G", null, 204d, 0D, 255D);
     public static final ValueSetting<Double> blh_b = new ValueSetting<>("BLH_B", null, 204d, 0D, 255D);
-    public static final ValueSetting<Double> blh_a = new ValueSetting<>("BLH_A", null, 204d, 0D, 255D);
+    public static final ValueSetting<Double> blh_a = new ValueSetting<>("BLH_A", null, 255d, 0D, 255D);
 
-    public static final ValueSetting<Double> pi_r = new ValueSetting<>("PI_R", null, 136d, 0D, 255D);
+    public static final ValueSetting<Double> pi_r = new ValueSetting<>("PI_R", null, 0d, 0D, 255D);
     public static final ValueSetting<Double> pi_g = new ValueSetting<>("PI_G", null, 0d, 0D, 255D);
     public static final ValueSetting<Double> pi_b = new ValueSetting<>("PI_B", null, 0d, 0D, 255D);
-    public static final ValueSetting<Double> pi_a = new ValueSetting<>("PI_A", null, 0d, 0D, 255D);
+    public static final ValueSetting<Double> pi_a = new ValueSetting<>("PI_A", null, 136d, 0D, 255D);
 
-    public static final ValueSetting<Double> pb_r = new ValueSetting<>("PB_R", null, 85d, 0D, 255D);
+    public static final ValueSetting<Double> pb_r = new ValueSetting<>("PB_R", null, 0d, 0D, 255D);
     public static final ValueSetting<Double> pb_g = new ValueSetting<>("PB_G", null, 0d, 0D, 255D);
     public static final ValueSetting<Double> pb_b = new ValueSetting<>("PB_B", null, 0d, 0D, 255D);
-    public static final ValueSetting<Double> pb_a = new ValueSetting<>("PB_A", null, 0d, 0D, 255D);
+    public static final ValueSetting<Double> pb_a = new ValueSetting<>("PB_A", null, 85d, 0D, 255D);
 
     public static final ValueSetting<Double> pl_r = new ValueSetting<>("PL_R", null, 255d, 0D, 255D);
     public static final ValueSetting<Double> pl_g = new ValueSetting<>("PL_G", null, 255d, 0D, 255D);

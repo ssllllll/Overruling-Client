@@ -10,7 +10,7 @@ import org.lwjgl.input.Keyboard;
 
 public class ModuleCommand extends Command {
     public ModuleCommand() {
-        super("module", "<module> {[config] [value]} {['toggle']} {['bind'] [key_name]} {'unbind'}", "Useful for setting module config.");
+        super("module", "<module> {['reset']} {[config] [value]} {['toggle']} {['bind'] [key_name]} {'unbind'}", "Useful for setting module config.");
     }
 
     @Override
@@ -61,6 +61,20 @@ public class ModuleCommand extends Command {
         if(args[1].equalsIgnoreCase("unbind")) {
             module.setKey(0);
             mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', "&aUnbinded the key of " + module.getName())));
+            return;
+        }
+        if(args[1].equalsIgnoreCase("reset")) {
+            for(Setting setting : module.getOptions())
+                if(setting instanceof ModeSetting)
+                    ((ModeSetting) setting).setValue(((ModeSetting) setting).defaultIndex);
+                else if(setting instanceof ToggleableSetting)
+                    ((ToggleableSetting) setting).setEnabled(((ToggleableSetting) setting).defaultValue);
+                else if(setting instanceof ValueSetting)
+                    ((ValueSetting<?>) setting).setValue(((ValueSetting<?>) setting).defaultValue);
+                else if(setting instanceof StringSetting)
+                    ((StringSetting) setting).setValue(((StringSetting) setting).getValue());
+
+            sendMessage("&cChanged all config to default!");
             return;
         }
         if(args.length == 3) {

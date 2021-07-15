@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityPlayerSP.class)
-public abstract class MixinEntityPlayerSP extends MixinAbstractClientPlayer {
+public abstract class MixinEntityPlayerSP {
     @Inject(method = "onUpdate", at = @At("HEAD"), cancellable = true)
     public void onUpdate(CallbackInfo callbackInfo) {
         PlayerUpdateEvent playerUpdateEvent = new PlayerUpdateEvent();
@@ -77,14 +77,5 @@ public abstract class MixinEntityPlayerSP extends MixinAbstractClientPlayer {
         HTRewrite.EVENT_BUS.post(event);
         if(event.isCancelled())
             callbackInfo.cancel();
-    }
-
-    @Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;closeScreen()V"))
-    public void closeScreen(EntityPlayerSP entityPlayerSP) {
-    }
-
-    @Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;displayGuiScreen(Lnet/minecraft/client/gui/GuiScreen;)V"))
-    public void closeScreen(Minecraft minecraft, GuiScreen guiScreen) {
-
     }
 }

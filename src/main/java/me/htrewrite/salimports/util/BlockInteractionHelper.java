@@ -1,17 +1,19 @@
 package me.htrewrite.salimports.util;
 
+import me.htrewrite.client.HTRewrite;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.init.Blocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.block.Block;
+import net.minecraft.network.play.client.CPacketAnimation;
+import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 
 import static java.lang.Double.isNaN;
 
@@ -274,5 +276,84 @@ public class BlockInteractionHelper
         }
 
         return angle;
+    }
+
+    public static PlaceResult place(BlockPos pos, float p_Distance, boolean p_Rotate, boolean p_UseSlabRule)
+    {
+        return place(pos, p_Distance, p_Rotate, p_UseSlabRule, false);
+    }
+
+    public static PlaceResult place(BlockPos pos, float p_Distance, boolean p_Rotate, boolean p_UseSlabRule, boolean packetSwing)
+    {
+        IBlockState l_State = mc.world.getBlockState(pos);
+
+        boolean l_Replaceable = l_State.getMaterial().isReplaceable();
+
+        boolean l_IsSlabAtBlock = l_State.getBlock() instanceof BlockSlab;
+
+        if (!l_Replaceable && !l_IsSlabAtBlock)
+            return PlaceResult.NotReplaceable;
+        if (!BlockInteractionHelper.checkForNeighbours(pos))
+            return PlaceResult.Neighbors;
+
+        if (!l_IsSlabAtBlock)
+        {
+            ValidResult l_Result = valid(pos);
+
+            if (l_Result != ValidResult.Ok && !l_Replaceable)
+                return PlaceResult.CantPlace;
+        }
+
+        if (p_UseSlabRule)
+        {
+            if (l_IsSlabAtBlock && !l_State.isFullCube())
+                return PlaceResult.CantPlace;
+        }
+
+        final Vec3d eyesPos = new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ);
+
+        for (final EnumFacing side : EnumFacing.values())
+        {
+            final BlockPos neighbor = pos.offset(side);
+            final EnumFacing side2 = side.getOpposite();
+
+            boolean l_IsWater = mc.world.getBlockState(neighbor).getBlock() == Blocks.WATER;
+
+            if (mc.world.getBlockState(neighbor).getBlock().canCollideCheck(mc.world.getBlockState(neighbor), false)
+                    || (l_IsWater))
+            {
+                final Vec3d hitVec = new Vec3d((Vec3i) neighbor).add(0.5, 0.5, 0.5).add(new Vec3d(side2.getDirectionVec()).scale(0.5));
+                if (eyesPos.distanceTo(hitVec) <= p_Distance)
+                {
+                    final Block neighborPos = mc.world.getBlockState(neighbor).getBlock();
+
+                    final boolean activated = neighborPos.onBlockActivated(mc.world, pos, mc.world.getBlockState(pos), mc.player, EnumHand.MAIN_HAND, side, 0, 0, 0);
+
+                    if (BlockInteractionHelper.blackList.contains(neighborPos) || BlockInteractionHelper.shulkerList.contains(neighborPos) || activated)
+                    {
+                        mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
+                    }
+                    if (p_Rotate)
+                    {
+                        BlockInteractionHelper.faceVectorPacketInstant(hitVec);
+                    }
+                    EnumActionResult l_Result2 = mc.playerController.processRightClickBlock(mc.player, mc.world, neighbor, side2, hitVec, EnumHand.MAIN_HAND);
+
+                    if (l_Result2 != EnumActionResult.FAIL)
+                    {
+                        if (packetSwing)
+                            mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
+                        else
+                            mc.player.swingArm(EnumHand.MAIN_HAND);
+                        if (activated)
+                        {
+                            mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
+                        }
+                        return PlaceResult.Placed;
+                    }
+                }
+            }
+        }
+        return PlaceResult.CantPlace;
     }
 }

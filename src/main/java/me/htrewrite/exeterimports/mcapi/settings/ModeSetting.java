@@ -8,11 +8,13 @@ import java.util.function.Predicate;
 
 public class ModeSetting extends Setting {
     public final BetterMode[] modes;
+    public final int defaultIndex;
     private int i = 0;
 
     public ModeSetting(String label, String[] aliases, int defaultIndex, BetterMode[] modes) {
         super(label, aliases);
         this.modes = modes;
+        this.defaultIndex = defaultIndex;
         this.i = defaultIndex;
     }
 
