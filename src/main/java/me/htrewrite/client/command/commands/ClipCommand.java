@@ -7,7 +7,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class ClipCommand extends Command {
     public ClipCommand() {
-        super("Clip", "<horizontal/vertical> <blocks>", "Allows you to clip blocks.");
+        super("clip", "<horizontal/vertical> <blocks>", "Allows you to clip blocks.");
     }
 
     @Override
