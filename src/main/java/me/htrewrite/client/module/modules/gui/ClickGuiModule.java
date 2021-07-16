@@ -43,15 +43,15 @@ public class ClickGuiModule extends Module {
     public static final ValueSetting<Double> beh_b = new ValueSetting<>("BEH_B", null, 25d, 0D, 255D);
     public static final ValueSetting<Double> beh_a = new ValueSetting<>("BEH_A", null, 170d, 0D, 255D);
 
-    public static final ValueSetting<Double> bc_r = new ValueSetting<>("BC_R", null, 86d, 0D, 255D);
-    public static final ValueSetting<Double> bc_g = new ValueSetting<>("BC_G", null, 86d, 0D, 255D);
-    public static final ValueSetting<Double> bc_b = new ValueSetting<>("BC_B", null, 86d, 0D, 255D);
-    public static final ValueSetting<Double> bc_a = new ValueSetting<>("BC_A", null, 46d, 0D, 255D);
+    public static final ValueSetting<Double> bc_r = new ValueSetting<>("BC_R", null, 255d, 0D, 255D);
+    public static final ValueSetting<Double> bc_g = new ValueSetting<>("BC_G", null, 255d, 0D, 255D);
+    public static final ValueSetting<Double> bc_b = new ValueSetting<>("BC_B", null, 255d, 0D, 255D);
+    public static final ValueSetting<Double> bc_a = new ValueSetting<>("BC_A", null, 45d, 0D, 255D);
 
-    public static final ValueSetting<Double> bce_r = new ValueSetting<>("BCE_R", null, 178d, 0D, 255D);
-    public static final ValueSetting<Double> bce_g = new ValueSetting<>("BCE_G", null, 30d, 0D, 255D);
-    public static final ValueSetting<Double> bce_b = new ValueSetting<>("BCE_B", null, 13d, 0D, 255D);
-    public static final ValueSetting<Double> bce_a = new ValueSetting<>("BCE_A", null, 46d, 0D, 255D);
+    public static final ValueSetting<Double> bce_r = new ValueSetting<>("BCE_R", null, 69d, 0D, 255D);
+    public static final ValueSetting<Double> bce_g = new ValueSetting<>("BCE_G", null, 177d, 0D, 255D);
+    public static final ValueSetting<Double> bce_b = new ValueSetting<>("BCE_B", null, 21d, 0D, 255D);
+    public static final ValueSetting<Double> bce_a = new ValueSetting<>("BCE_A", null, 141d, 0D, 255D);
 
     public static final ValueSetting<Double> bl_r = new ValueSetting<>("BL_R", null, 221d, 0D, 255D);
     public static final ValueSetting<Double> bl_g = new ValueSetting<>("BL_G", null, 221d, 0D, 255D);
@@ -206,5 +206,8 @@ public class ClickGuiModule extends Module {
             else if(name.startsWith("PL_"))      /* PANEL_LABEL */
                 Colors.PANEL_LABEL.setColor(StaticClickGuiColor.newColor(pl_r.getValue().intValue(), pl_g.getValue().intValue(), pl_b.getValue().intValue(), pl_a.getValue().intValue()));
         }
+
+        if(event.setting == be_rainbow && !be_rainbow.isEnabled())
+            Colors.BUTTON_ENABLED.setColor(StaticClickGuiColor.newColor(be_r.getValue().intValue(), be_g.getValue().intValue(), be_b.getValue().intValue(), be_a.getValue().intValue()));
     });
 }

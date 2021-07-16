@@ -28,9 +28,11 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -159,4 +161,6 @@ public class EventProcessor {
 
     @SubscribeEvent public void chatReceive(ClientChatReceivedEvent event) { EVENT_BUS.post(event); }
     @SubscribeEvent public void renderBlockOverlayEvent(RenderBlockOverlayEvent event) { EVENT_BUS.post(event); }
+
+    @SubscribeEvent public void onCameraSetup(EntityViewRenderEvent.CameraSetup event) { EVENT_BUS.post(event); }
 }
