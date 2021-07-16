@@ -36,6 +36,8 @@ public class ModuleManager {
         modules.add(new AntiMapBanModule());
         // modules.add(new AutoSelfCrashModule());
         modules.add(new BuildHeightModule());
+        modules.add(new CoordExploit2Module());
+        modules.add(new CoordExploit3Module());
         modules.add(new CoordExploitModule());
         // modules.add(new KnockbackPlusModule());
         modules.add(new NewChunksModule());
@@ -61,6 +63,7 @@ public class ModuleManager {
         modules.add(new AntiLevitateModule());
         modules.add(new AutoWalkModule());
         modules.add(new BlinkModule());
+        modules.add(new BoatFlyModule());
         modules.add(new ElytraFly2Module());
         modules.add(new ElytraFlyModule());
         modules.add(new EntityControlModule());
@@ -91,7 +94,7 @@ public class ModuleManager {
         modules.add(new FastPlaceModule());
         modules.add(new LawnmowerModule());
         modules.add(new PhaseModule());
-        modules.add(new ScaffoldModule());
+        // modules.add(new ScaffoldModule()); /* TODO: Remake Scaffold */
         modules.add(new SpeedmineModule());
         /* Gui */
         modules.add(new ClickGuiModule());

@@ -10,10 +10,13 @@ import me.htrewrite.client.event.custom.client.ClientSettingChangeEvent;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleType;
 import me.htrewrite.client.util.ChatColor;
+import me.htrewrite.client.util.RainbowUtil;
 import me.htrewrite.exeterimports.mcapi.settings.ModeSetting;
+import me.htrewrite.exeterimports.mcapi.settings.ToggleableSetting;
 import me.htrewrite.exeterimports.mcapi.settings.ValueSetting;
 import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 
 public class ClickGuiModule extends Module {
@@ -24,6 +27,7 @@ public class ClickGuiModule extends Module {
     public static final ValueSetting<Double> b_b = new ValueSetting<>("B_B", null, 86d, 0D, 255D);
     public static final ValueSetting<Double> b_a = new ValueSetting<>("B_A", null, 102d, 0D, 255D);
 
+    public static final ToggleableSetting be_rainbow = new ToggleableSetting("BE_Rainbow", null, false);
     public static final ValueSetting<Double> be_r = new ValueSetting<>("BE_R", null, 178d, 0D, 255D);
     public static final ValueSetting<Double> be_g = new ValueSetting<>("BE_G", null, 13d, 0D, 255D);
     public static final ValueSetting<Double> be_b = new ValueSetting<>("BE_B", null, 30d, 0D, 255D);
@@ -79,6 +83,7 @@ public class ClickGuiModule extends Module {
     public static final ValueSetting<Double> pl_b = new ValueSetting<>("PL_B", null, 255d, 0D, 255D);
     public static final ValueSetting<Double> pl_a = new ValueSetting<>("PL_A", null, 255d, 0D, 255D);
 
+    private final RainbowUtil rainbowUtil = new RainbowUtil();
     public ClickGuiModule() {
         super("ClickGUI", "Opens a gui.", ModuleType.Gui, Keyboard.KEY_P);
         addOption(color);
@@ -88,9 +93,10 @@ public class ClickGuiModule extends Module {
         addOption(b_b.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON.name())));
         addOption(b_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON.name())));
         /* BUTTON_ENABLED */
-        addOption(be_r.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name())));
-        addOption(be_g.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name())));
-        addOption(be_b.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name())));
+        addOption(be_rainbow.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name())));
+        addOption(be_r.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name()) && !be_rainbow.isEnabled()));
+        addOption(be_g.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name()) && !be_rainbow.isEnabled()));
+        addOption(be_b.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name()) && !be_rainbow.isEnabled()));
         addOption(be_a.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_ENABLED.name())));
         /* BUTTON_HOVER */
         addOption(bh_r.setVisibility(v -> color.getValue().contentEquals(Colors.BUTTON_HOVER.name())));
@@ -147,6 +153,12 @@ public class ClickGuiModule extends Module {
     }
 
     private boolean isBusInitialized = false;
+
+    @EventHandler
+    private Listener<TickEvent.ClientTickEvent> clientTickEventListener = new Listener<>(event -> {
+        if(be_rainbow.isEnabled())
+            Colors.BUTTON_ENABLED.setColor(StaticClickGuiColor.newColor(rainbowUtil.getR(), rainbowUtil.getG(), rainbowUtil.getB(), be_a.getValue().intValue()));
+    });
 
     @Override
     public void onEnable() {

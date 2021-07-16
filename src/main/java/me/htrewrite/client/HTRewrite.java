@@ -129,10 +129,11 @@ public class HTRewrite {
             authClassInstance = authClass.newInstance();
             authClassMethod = authClass.getDeclaredMethod("auth_ok", String.class, String.class);
         } catch (Exception exception) { FMLCommonHandler.instance().exitJava(-1, true); return; }
+        /*
         susthread = new Thread(() -> {
             while(!susthread.isInterrupted()) {
                 try {
-                    if(!((boolean)authClassMethod.invoke(authClassInstance))) {
+                    if(!((boolean)authClassMethod.invoke(authClassInstance, AuthSession.USERNAME, AuthSession.PASSWORD))) {
                         FMLCommonHandler.instance().exitJava(-1, true);
                         susthread.interrupt();
                         break;
@@ -141,7 +142,7 @@ public class HTRewrite {
                 try { Thread.sleep(5*60000); } catch (InterruptedException exception) {}
             }
         });
-        susthread.start();
+        susthread.start();*/
 
         AuthSession.entry();
 
