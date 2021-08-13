@@ -51,7 +51,7 @@ public class ModuleManager {
         modules.add(new AutoReplyModule());
         modules.add(new ChatModule());
         modules.add(new FakePlayerModule());
-        // modules.add(new JesusModule()); // TODO: Fix module.
+        modules.add(new JesusModule()); // TODO: Fix module.
         modules.add(new MiddleClickModule());
         modules.add(new MobOwnerModule());
         modules.add(new NoFallModule());
@@ -79,7 +79,7 @@ public class ModuleManager {
         modules.add(new CityESPModule());
         modules.add(new FullbrightModule());
         modules.add(new HandProgressModule());
-        modules.add(new HoleESPModule()); // TODO: Fix
+        // modules.add(new HoleESPModule()); // TODO: Fix
         modules.add(new IbaiModule());
         // modules.add(new NametagsModule());
         modules.add(new NoFogModule());

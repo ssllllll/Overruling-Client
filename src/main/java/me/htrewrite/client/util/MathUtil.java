@@ -291,4 +291,6 @@ public final class MathUtil {
 
         return angle;
     }
+
+    public static double transform(double x1, double y1, double x2) { return (x2*y1)/x1; }
 }
