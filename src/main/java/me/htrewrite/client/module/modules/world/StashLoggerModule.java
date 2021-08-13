@@ -34,7 +34,7 @@ public class StashLoggerModule extends Module {
     /* File */
     public static final ToggleableSetting logToFile = new ToggleableSetting("LogToFile", false);
 
-    private Executor executor;
+    private final Executor executor;
 
     public StashLoggerModule() {
         super("StashLogger", "Log donkeys, chests and shulkers around you.", ModuleType.World, 0);

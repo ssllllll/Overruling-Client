@@ -15,6 +15,7 @@ public class MixinRenderManager {
     @Inject(method = "renderEntity", at = @At("HEAD"), cancellable = true)
     public void renderEntity(Entity entityIn, double x, double y, double z, float yaw, float partialTicks, boolean p_188391_10_, CallbackInfo callbackInfo) {
         RenderEntityEvent event = new RenderEntityEvent(entityIn, x, y, z, yaw, partialTicks, p_188391_10_);
+        event.setEra(CustomEvent.Era.PRE);
         HTRewrite.EVENT_BUS.post(event);
         if(event.isCancelled())
             callbackInfo.cancel();

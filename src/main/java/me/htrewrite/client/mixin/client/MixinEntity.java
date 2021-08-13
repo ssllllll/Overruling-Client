@@ -1,16 +1,9 @@
 package me.htrewrite.client.mixin.client;
 
-import me.htrewrite.client.Wrapper;
-import me.htrewrite.client.event.custom.entity.EntityLookDirectionEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 
@@ -71,12 +64,6 @@ public abstract class MixinEntity
     public double motionZ;
 
     @Shadow
-    private Entity ridingEntity;
-
-    @Shadow
-    private int entityId;
-
-    @Shadow
     public abstract boolean isSprinting();
 
     @Shadow
@@ -87,22 +74,4 @@ public abstract class MixinEntity
     {
 
     }
-
-/*
-    @Overwrite
-    public void turn(float yaw, float pitch) {
-        float f = this.rotationPitch;
-        float f1 = this.rotationYaw;
-        this.rotationYaw = (float)((double)this.rotationYaw + (double)yaw * 0.15D);
-        this.rotationPitch = (float)((double)this.rotationPitch - (double)pitch * 0.15D);
-
-        EntityLookDirectionEvent event = new EntityLookDirectionEvent(rotationYaw, rotationPitch);
-        this.rotationYaw = event.yaw;
-        this.rotationPitch = event.pitch;
-
-        this.prevRotationPitch += this.rotationPitch - f;
-        this.prevRotationYaw += this.rotationYaw - f1;
-        if(this.ridingEntity != null)
-            this.ridingEntity.applyOrientationToEntity(Objects.requireNonNull(Wrapper.getMC().world.getEntityByID(entityId)));
-    }*/
 }
