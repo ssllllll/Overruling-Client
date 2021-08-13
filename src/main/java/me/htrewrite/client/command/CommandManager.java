@@ -31,6 +31,7 @@ public class CommandManager {
         commands.add(new CapeUseCommand());*/
         commands.add(new ChatExceptCommand());
         commands.add(new ClipCommand());
+        commands.add(new CoordExploitCommand());
         commands.add(new FriendCommand());
         commands.add(new HelpCommand());
         commands.add(chatCommand = new HTChatCommand());

@@ -6,6 +6,8 @@ import me.htrewrite.client.module.ModuleType;
 import me.htrewrite.client.module.modules.render.HoleESPModule;
 import me.htrewrite.exeterimports.mcapi.settings.ToggleableSetting;
 import me.htrewrite.exeterimports.mcapi.settings.ValueSetting;
+import me.htrewrite.salimports.util.ESPUtil;
+import me.htrewrite.salimports.util.Hole;
 import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +19,7 @@ public class AnchorModule extends Module {
 
     public static boolean AnchorING;
     int holeBlocks;
-    public boolean isBlockHole(BlockPos blockpos) { return HoleESPModule.INSTANCE.isBlockHole(blockpos); }
+    public boolean isBlockHole(BlockPos blockpos) { return ESPUtil.isBlockValid(mc.world.getBlockState(blockpos), blockpos) != Hole.HoleTypes.None; }
 
     public AnchorModule() {
         super("Anchor", "Stops movements if player above hole.", ModuleType.Movement, 0);

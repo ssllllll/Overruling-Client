@@ -79,7 +79,7 @@ public class ModuleManager {
         modules.add(new CityESPModule());
         modules.add(new FullbrightModule());
         modules.add(new HandProgressModule());
-        // modules.add(new HoleESPModule());
+        modules.add(new HoleESPModule()); // TODO: Fix
         modules.add(new IbaiModule());
         // modules.add(new NametagsModule());
         modules.add(new NoFogModule());

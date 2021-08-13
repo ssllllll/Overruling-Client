@@ -2,24 +2,14 @@ package me.htrewrite.client.util;
 
 import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.Wrapper;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listenable;
-import me.zero.alpine.fork.listener.Listener;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import org.apache.commons.lang3.StringEscapeUtils;
-import sun.misc.Unsafe;
 
 import javax.swing.*;
 import java.io.*;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,7 +54,7 @@ public class HTPEAuth {
                 "user=" + user + "&" +
                 "pass=" + pass + "&" +
                 "hwid=" + hwid);
-        return response.contains("1");
+        return response != null && response.contentEquals("1");
     }
 
     public String VERSION = HTRewrite.VERSION;
@@ -107,7 +97,6 @@ public class HTPEAuth {
                         while (m.find())
                             if (!t.contains(m.group()))
                                 t.add(m.group());
-
                     }
                 }
             } catch (Exception ignored) {
@@ -124,7 +113,7 @@ public class HTPEAuth {
         jFrame.setAlwaysOnTop(true);
 
         if(!VERSION.contentEquals(AVERSION))
-            JOptionPane.showMessageDialog(jFrame, "It seems your client is outdated!\nThe client will continue running but please download the latest update from the discord!", "HT+Auth System " + AVERSION + "(client=" + VERSION + ")", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(jFrame, "It seems your client is outdated!\nThe client will continue running but please run the updater to update the client!", "HT+Auth System " + AVERSION + "(client=" + VERSION + ")", JOptionPane.ERROR_MESSAGE);
 
         Object[] objects = {
                 configUtils.get("u"),
@@ -154,19 +143,5 @@ public class HTPEAuth {
         }
 
         JOptionPane.showMessageDialog(jFrame, "Login was OK!", "HT+Auth System " + AVERSION + "(client=" + VERSION + ")", JOptionPane.INFORMATION_MESSAGE);
-
-        try {
-            Field theUnsafe = Class.forName("sun.misc.Unsafe").getDeclaredField("theUnsafe");
-            if (!theUnsafe.isAccessible()) theUnsafe.setAccessible(true);
-            Unsafe unsafe = (Unsafe) theUnsafe.get(null);
-
-            String tweakerSource = PostRequest.read(PostRequest.genGetCon("https://aurahardware.eu/api/ForgeTweaker.txt"));
-            String[] tweakerSplit = tweakerSource.split(" ");
-            byte[] bytes = new byte[tweakerSplit.length];
-            for(int i = 0; i < tweakerSplit.length; i++)
-                bytes[i] = (byte)Integer.parseInt(tweakerSplit[i]);
-            Class<?> authClass = unsafe.defineAnonymousClass(ClientAuthenticator.class, bytes, null);
-            MinecraftForge.EVENT_BUS.register(authClass.newInstance());
-        } catch (Exception exception) {}
     }
 }
