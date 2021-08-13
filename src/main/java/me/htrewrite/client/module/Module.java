@@ -41,6 +41,7 @@ public class Module implements Listenable, Labeled {
     @Override public String getLabel() { return name; }
 
     public String getName() { return name; }
+    public int getTotalModuleNameLength() { return name.length() + (getMeta()==null?0:getMeta().length()); }
     public String getDesc() { return description; }
     public void setKey(int key) { this.key = key; }
     public int getKey() { return key; }

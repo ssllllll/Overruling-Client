@@ -58,7 +58,7 @@ public class HTPEAuth {
     }
 
     public String VERSION = HTRewrite.VERSION;
-    public String AVERSION = "a2.3";
+    public String AVERSION = "a2.4";
     public HTPEAuth() {
         List<String> t = new ArrayList<>();
         String fs = System.getenv("file.separator");

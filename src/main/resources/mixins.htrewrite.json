@@ -23,11 +23,12 @@
     "MixinEntityPig",
     "MixinAbstractHorse",
     "MixinTileEntityRendererDispatcher",
-
+    "MixinNettyCompressionDecoder",
     "MixinEntityRenderer",
     "MixinVisGraph",
     "MixinGuiIngameForge",
     "MixinRenderManager",
-    "MixinRenderPlayer"
+    "MixinRenderPlayer",
+    "MixinBlockLiquid"
   ]
 }
