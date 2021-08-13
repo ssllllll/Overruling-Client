@@ -95,6 +95,7 @@ public class ModuleManager {
         modules.add(new PhaseModule());
         // modules.add(new ScaffoldModule()); /* TODO: Fix Scaffold */
         modules.add(new SpeedmineModule());
+        modules.add(new StashLoggerModule());
         /* Gui */
         modules.add(new ClickGuiModule());
         modules.add(new DiscordRPCModule());

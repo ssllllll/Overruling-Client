@@ -133,7 +133,7 @@ public class Module implements Listenable, Labeled {
         configUtils.save();
     }
 
-    public void sendMessage(String message) { mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', "&e[" + getName() + "] &b" + message))); }
+    public void sendMessage(String message) { if(!nullCheck()) mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', "&e[" + getName() + "] &b" + message))); }
     public boolean nullCheck() { return mc.player == null || mc.world == null; }
     public ArrayList<Setting> getSettings() { return options; }
 }

@@ -9,6 +9,7 @@ import me.htrewrite.client.module.modules.gui.hud.component.components.util.Modu
 import me.htrewrite.client.util.ChatColor;
 import me.htrewrite.client.util.ColorUtils;
 import me.htrewrite.client.util.RenderUtils;
+import me.htrewrite.client.util.Timer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import java.awt.*;
@@ -17,15 +18,25 @@ import java.util.List;
 
 public class HUDArrayListComponent implements HUDComponent {
     public List<Module> ordered_modules;
+    private ModuleComparator moduleComparator;
+    private Timer timer;
 
     public HUDArrayListComponent() {
+        this.moduleComparator = new ModuleComparator();
+        this.timer = new Timer();
+
         ListUtil<Module> listUtil = new ListUtil<>();
         ordered_modules = listUtil.copyArray(HTRewrite.INSTANCE.getModuleManager().getModules());
-        Collections.sort(ordered_modules, new ModuleComparator());
+        Collections.sort(ordered_modules, moduleComparator);
     }
 
     @Override
     public void render(RenderGameOverlayEvent.Text event, int x, int y) {
+        if(timer.passed(100)) {
+            Collections.sort(ordered_modules, moduleComparator);
+            timer.reset();
+        }
+
         int colorRect = ColorUtils.color(0.0F, 0.0F, 0.0F, 0.0F);
         int colorRect2 = ColorUtils.color(0.0F, 0.0F, 0.0F, 0.5F);
 
