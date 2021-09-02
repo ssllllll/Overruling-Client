@@ -3,6 +3,7 @@ package me.htrewrite.client.mixin.client;
 import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.event.custom.CustomEvent;
 import me.htrewrite.client.event.custom.player.*;
+import me.htrewrite.client.module.modules.world.PortalModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
@@ -77,5 +78,17 @@ public abstract class MixinEntityPlayerSP {
         HTRewrite.EVENT_BUS.post(event);
         if(event.isCancelled())
             callbackInfo.cancel();
+    }
+
+    @Redirect(method = {"onLivingUpdate"}, at=@At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;closeScreen()V"))
+    public void closeScreenRedirect(EntityPlayerSP entityPlayerSP) {
+        if(!PortalModule.INSTANCE.isEnabled() || !PortalModule.chat.isEnabled())
+            entityPlayerSP.closeScreen();
+    }
+
+    @Redirect(method={"onLivingUpdate"}, at=@At(value="INVOKE", target="Lnet/minecraft/client/Minecraft;displayGuiScreen(Lnet/minecraft/client/gui/GuiScreen;)V"))
+    public void displayGuiScreenRedirect(Minecraft mc, GuiScreen screen) {
+        if(!PortalModule.INSTANCE.isEnabled() || !PortalModule.chat.isEnabled())
+            mc.displayGuiScreen(screen);
     }
 }

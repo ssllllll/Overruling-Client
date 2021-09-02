@@ -94,6 +94,7 @@ public class ModuleManager {
         modules.add(new FastPlaceModule());
         modules.add(new LawnmowerModule());
         modules.add(new PhaseModule());
+        modules.add(new PortalModule());
         // modules.add(new ScaffoldModule()); /* TODO: Fix Scaffold */
         modules.add(new SpeedmineModule());
         modules.add(new StashLoggerModule());
