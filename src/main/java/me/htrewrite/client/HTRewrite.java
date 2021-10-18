@@ -18,10 +18,12 @@ import me.htrewrite.client.util.ClientAuthenticator;
 import me.htrewrite.client.util.ConfigUtils;
 import me.htrewrite.client.util.PostRequest;
 import me.htrewrite.client.util.font.CFonts;
+import me.htrewrite.client.waypoints.Waypoints;
 import me.htrewrite.exeterimports.keybind.KeybindManager;
 import me.zero.alpine.fork.bus.EventBus;
 import me.zero.alpine.fork.bus.EventManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.SplashProgress;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -32,7 +34,6 @@ import org.lwjgl.opengl.Display;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -57,6 +58,7 @@ public class HTRewrite {
     private EventProcessor eventProcessor;
 
     private Capes capes;
+    private Waypoints waypoints;
     private KeybindManager keybindManager;
     private TickRateManager tickRateManager;
     private XRayManager xRayManager;
@@ -156,17 +158,21 @@ public class HTRewrite {
 
         capes = new Capes();
 
-        SplashProgressGui.setProgress(8, "Loading managers...");
+        SplashProgressGui.setProgress(8, "Loading waypoints...");
+
+        waypoints = new Waypoints();
+
+        SplashProgressGui.setProgress(9, "Loading managers...");
 
         keybindManager = new KeybindManager();
         tickRateManager = new TickRateManager();
         // xRayManager = new XRayManager(); // TODO: Fix XRay
 
-        SplashProgressGui.setProgress(9, "Adding friends...");
+        SplashProgressGui.setProgress(10, "Adding friends...");
 
         friendManager = new FriendManager();
 
-        SplashProgressGui.setProgress(10, "Setting modules...");
+        SplashProgressGui.setProgress(11, "Setting modules...");
 
         moduleManager = new ModuleManager();
         moduleManager.setModules();
@@ -174,15 +180,15 @@ public class HTRewrite {
             if(module.isEnabled())
                 module.onEnable();
 
-        SplashProgressGui.setProgress(11, "Baking modules...");
+        SplashProgressGui.setProgress(12, "Baking modules...");
 
         commandManager = new CommandManager();
 
-        SplashProgressGui.setProgress(12, "Cooking ClickGui...");
+        SplashProgressGui.setProgress(13, "Cooking ClickGui...");
 
         clickGuiScreen = new ClickGuiScreen();
 
-        SplashProgressGui.setProgress(13, "Forging events...");
+        SplashProgressGui.setProgress(14, "Forging events...");
 
         eventProcessor = new EventProcessor();
         MinecraftForge.EVENT_BUS.register(eventProcessor);
@@ -211,6 +217,7 @@ public class HTRewrite {
     public EventProcessor getEventProcessor() { return eventProcessor; }
 
     public Capes getCapes() { return capes; }
+    public Waypoints getWaypoints() { return waypoints; }
     public KeybindManager getKeybindManager() { return keybindManager; }
     public TickRateManager getTickRateManager() { return tickRateManager; }
     public XRayManager getxRayManager() { return xRayManager; }

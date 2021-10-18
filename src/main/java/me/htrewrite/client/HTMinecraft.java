@@ -25,4 +25,6 @@ public class HTMinecraft {
     public void onLoadTexture() {
         SplashProgressGui.setProgress(4, "Initializing Textures...");
     }
+
+    public static String getServer() { return Minecraft.getMinecraft().getCurrentServerData() == null ? "singleplayer":Minecraft.getMinecraft().getCurrentServerData().serverIP; }
 }
