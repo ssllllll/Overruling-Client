@@ -24,3 +24,7 @@
     3. It will open a Installation menu. Click more options.
     4. At the end of the JVM Arguments add a space and the following: `-noverify`.
     5. Save the configuration and run the game with that configuration.
+
+
+
+SSL is a dev omg!11!
