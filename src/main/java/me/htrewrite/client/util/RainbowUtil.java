@@ -30,4 +30,9 @@ public class RainbowUtil implements Listenable {
     public int getR() { return r; }
     public int getG() { return g; }
     public int getB() { return b; }
+    
+    public static Color getRainbow(int Offset) {
+        return Colour.fromHSB((System.currentTimeMillis() + Offset % (360 * 32)) / (360f * 32), 1, 1);
+    }
+    
 }
