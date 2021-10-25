@@ -57,6 +57,10 @@ public class CFontRenderer extends FontRenderer {
             drawString(s, x - getStringWidth(s) / 2, y, color);
     }
 
+    public void drawGradient() {
+
+    }
+
     public void drawCenteredStringXY(final String s, final int x, final int y,
                                      final int color, final boolean shadow)
     {

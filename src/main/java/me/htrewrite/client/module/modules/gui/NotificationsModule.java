@@ -1,6 +1,7 @@
 package me.htrewrite.client.module.modules.gui;
 
 import me.htrewrite.client.HTRewrite;
+import me.htrewrite.client.clickgui.components.buttons.settings.bettermode.BetterMode;
 import me.htrewrite.client.event.custom.CustomEvent;
 import me.htrewrite.client.event.custom.module.ModuleToggleEvent;
 import me.htrewrite.client.event.custom.networkmanager.NetworkPacketEvent;
@@ -8,7 +9,9 @@ import me.htrewrite.client.event.custom.player.PlayerUpdateEvent;
 import me.htrewrite.client.manager.FriendManager;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleType;
+import me.htrewrite.client.module.modules.world.PortalModule;
 import me.htrewrite.client.util.ChatColor;
+import me.htrewrite.exeterimports.mcapi.settings.ModeSetting;
 import me.htrewrite.exeterimports.mcapi.settings.ToggleableSetting;
 import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
@@ -24,19 +27,23 @@ public class NotificationsModule extends Module {
     private FriendManager friendManager;
 
     public static final ToggleableSetting toggleNotifications = new ToggleableSetting("ModuleToggle", null, true);
-    public static final ModeSetting rainbowNotifications = new ModeSetting("Rainbow", null, 0, BetterMode.construct("NONE", "RAINBOW", "GRADIENT"));
+    public static final ModeSetting rainbowNotifications = new ModeSetting("Rainbow", null, 0, BetterMode.construct("NONE", "NORMAL", "GRADIENT"));
     public static final ToggleableSetting totemNotifications = new ToggleableSetting("TotemPop",null,false);
     public static final ToggleableSetting receiveChatNotifications = new ToggleableSetting("HT+Chat(%)", null, true);
     public static final HashMap<String, Integer> totem_pop_counter = new HashMap<String, Integer>();
 
+    public static volatile NotificationsModule INSTANCE;
+
     public NotificationsModule() {
         super("Notifications", "Notifications", ModuleType.Gui, 0);
         addOption(toggleNotifications);
-        addOption(rainbowNotifications.setVisibility(a -> toggleNotifications.getValue()));
+        addOption(rainbowNotifications.setVisibility(a -> toggleNotifications.isEnabled()));
         addOption(totemNotifications);
         addOption(receiveChatNotifications);
         endOption();
         this.friendManager = HTRewrite.INSTANCE.getFriendManager();
+
+        INSTANCE = this;
     }
 
     @EventHandler
