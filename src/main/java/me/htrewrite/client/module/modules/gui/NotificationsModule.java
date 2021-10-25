@@ -24,7 +24,7 @@ public class NotificationsModule extends Module {
     private FriendManager friendManager;
 
     public static final ToggleableSetting toggleNotifications = new ToggleableSetting("ModuleToggle", null, true);
-    public static final ModeSetting NotigicationsRainbow = new ModeSetting("Rainbow", null, 0, BetterMode.construct("NONE", "RAINBOW", "GRADIENT"));
+    public static final ModeSetting rainbowNotifications = new ModeSetting("Rainbow", null, 0, BetterMode.construct("NONE", "RAINBOW", "GRADIENT"));
     public static final ToggleableSetting totemNotifications = new ToggleableSetting("TotemPop",null,false);
     public static final ToggleableSetting receiveChatNotifications = new ToggleableSetting("HT+Chat(%)", null, true);
     public static final HashMap<String, Integer> totem_pop_counter = new HashMap<String, Integer>();
@@ -32,7 +32,7 @@ public class NotificationsModule extends Module {
     public NotificationsModule() {
         super("Notifications", "Notifications", ModuleType.Gui, 0);
         addOption(toggleNotifications);
-        addOption(NotificationsRainbow.setVisibility(a -> toggleNotifications.getI() == 0));
+        addOption(rainbowNotifications.setVisibility(a -> toggleNotifications.getValue()));
         addOption(totemNotifications);
         addOption(receiveChatNotifications);
         endOption();
