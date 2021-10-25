@@ -35,7 +35,7 @@ public class MixinGuiNewChat {
         } else if (NotificationsModule.rainbowNotifications.getValue() == "NORMAL"){
             CFonts.roboto18.drawString(message, x, y, RainbowUtil.getRainbow(0).hashCode());
         } else if ((NotificationsModule.rainbowNotifications.getValue() == "NONE")) {
-            fontRenderer.drawStringWithShadow(message, x, y, color);
+            mc.fontRenderer.drawStringWithShadow(message, x, y, color);
         }
       
         return 0;
