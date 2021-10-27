@@ -9,7 +9,6 @@ import me.htrewrite.client.event.custom.player.PlayerUpdateEvent;
 import me.htrewrite.client.manager.FriendManager;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleType;
-import me.htrewrite.client.module.modules.world.PortalModule;
 import me.htrewrite.client.util.ChatColor;
 import me.htrewrite.exeterimports.mcapi.settings.ModeSetting;
 import me.htrewrite.exeterimports.mcapi.settings.ToggleableSetting;
@@ -19,7 +18,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.util.text.TextComponentString;
-import scala.reflect.internal.Trees;
 
 import java.util.HashMap;
 
@@ -51,9 +49,15 @@ public class NotificationsModule extends Module {
         if(!toggleNotifications.isEnabled() || mc.player == null || mc.world == null)
             return;
 
-        mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', event.toggled ?
-                "&a&l" + event.module.getName() + " &ais now ON!":
-                "&c&l" + event.module.getName() + " &cis now OFF!")));
+        if (NotificationsModule.rainbowNotifications.getValue() == "NONE") {
+            mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', event.toggled ?
+                    "&a&l" + event.module.getName() + " &ais now ON!" :
+                    "&c&l" + event.module.getName() + " &cis now OFF!")));
+        } else if (NotificationsModule.rainbowNotifications.getValue() == "NORMAL" || rainbowNotifications.getValue() == "GRADIENT") {
+            mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse_rainbow('&', event.toggled ?
+                    "&a&l" + event.module.getName() + " &ais now ON!" :
+                    "&c&l" + event.module.getName() + " &cis now OFF!")));
+        }
     });
 
 
