@@ -74,6 +74,7 @@ public class ModuleManager {
         modules.add(new FreecamModule());
         modules.add(new LongJumpModule());
         modules.add(new NoSlowModule());
+        modules.add(new ReverseStepModule());
         modules.add(new SprintModule());
         modules.add(new StepModule());
         /* Render */
