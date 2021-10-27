@@ -29,6 +29,7 @@
     "MixinGuiIngameForge",
     "MixinRenderManager",
     "MixinRenderPlayer",
-    "MixinBlockLiquid"
+    "MixinBlockLiquid",
+    "MixinGuiPlayerTabOverlay"
   ]
 }
