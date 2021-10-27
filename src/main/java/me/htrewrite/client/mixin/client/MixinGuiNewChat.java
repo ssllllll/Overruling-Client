@@ -13,29 +13,25 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(GuiNewChat.class)
 public class MixinGuiNewChat extends Gui {
-
     private final Minecraft mc = Minecraft.getMinecraft();
 
     @Redirect(method = "drawChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/FontRenderer;drawStringWithShadow(Ljava/lang/String;FFI)I"))
     int drawStringWithShadow(FontRenderer fontRenderer, String message, float x, float y, int color) {
-        if (!NotificationsModule.INSTANCE.isEnabled()) return mc.fontRenderer.drawStringWithShadow(message, x, y, color);
+        if (!NotificationsModule.INSTANCE.isEnabled())
+            return mc.fontRenderer.drawStringWithShadow(message, x, y, color);
 
-        if (NotificationsModule.rainbowNotifications.getValue() == "GRADIENT") {
-
-            CFonts.roboto32.drawRainbowGradientString(message, x, y, 150.0f, false);
-
-        } else if (NotificationsModule.rainbowNotifications.getValue() == "NORMAL") {
-
-            this.mc.fontRenderer.drawString(message, (int) x, (int) y, RainbowUtil.getRainbow(0).hashCode());
-
-        } else if (NotificationsModule.rainbowNotifications.getValue() == "NONE") {
-
-            mc.fontRenderer.drawStringWithShadow(message, x, y, color);
-
-        }
-      
-        return 0;
+        switch(NotificationsModule.rainbowNotifications.getValue()) {
+            case "GRADIENT":
+                CFonts.roboto32.drawRainbowGradientString(message, x, y, 150.0f, false);
+                break;
+            case "NORMAL":
+                this.mc.fontRenderer.drawString(message, (int) x, (int) y, RainbowUtil.getRainbow(0).hashCode());
+                break;
+            case "NONE":
+                mc.fontRenderer.drawStringWithShadow(message, x, y, color);
+                break;
+            default:
+                break;
+        } return 0;
     }
-
 }
-
