@@ -58,6 +58,7 @@ public class ModuleManager {
         modules.add(new MobOwnerModule());
         modules.add(new NoFallModule());
         modules.add(new SpammerModule());
+        modules.add(new TabExpanderModule());
         modules.add(new TimestampsModule());
         modules.add(new XCarryModule());
         /* Movement */
