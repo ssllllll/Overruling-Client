@@ -2,6 +2,7 @@ package me.htrewrite.client.module.modules.gui;
 
 import me.htrewrite.client.HTRewrite;
 import me.htrewrite.client.clickgui.components.buttons.settings.bettermode.BetterMode;
+import me.htrewrite.client.customgui.GuiChat;
 import me.htrewrite.client.event.custom.CustomEvent;
 import me.htrewrite.client.event.custom.module.ModuleToggleEvent;
 import me.htrewrite.client.event.custom.networkmanager.NetworkPacketEvent;
@@ -14,10 +15,13 @@ import me.htrewrite.exeterimports.mcapi.settings.ModeSetting;
 import me.htrewrite.exeterimports.mcapi.settings.ToggleableSetting;
 import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
+import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.util.HashMap;
 
@@ -102,12 +106,16 @@ public class NotificationsModule extends Module {
 
     @Override
     public void onDisable() {
+        //GuiNewChat guiChat = new GuiNewChat(mc);
+        //ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (mc).ingameGUI, guiChat, "field_73840_e");
         super.onDisable();
         totem_pop_counter.clear();
     }
 
     @Override
     public void onEnable() {
+        //GuiChat guiChat = new GuiChat(mc);
+        //ObfuscationReflectionHelper.setPrivateValue(GuiIngame.class, (mc).ingameGUI, guiChat, "field_73840_e");
         super.onEnable();
         totem_pop_counter.clear();
     }

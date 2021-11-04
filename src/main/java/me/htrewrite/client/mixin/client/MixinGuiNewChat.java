@@ -17,6 +17,7 @@ public class MixinGuiNewChat extends Gui {
 
     @Redirect(method = "drawChat", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/FontRenderer;drawStringWithShadow(Ljava/lang/String;FFI)I"))
     int drawStringWithShadow(FontRenderer fontRenderer, String message, float x, float y, int color) {
+<<<<<<< Updated upstream
         if (!NotificationsModule.INSTANCE.isEnabled())
             return mc.fontRenderer.drawStringWithShadow(message, x, y, color);
 
@@ -33,5 +34,23 @@ public class MixinGuiNewChat extends Gui {
             default:
                 break;
         } return 0;
+=======
+        if (!NotificationsModule.INSTANCE.isEnabled()) return mc.fontRenderer.drawStringWithShadow(message, x, y, color);
+        if (NotificationsModule.rainbowNotifications.getValue() == "GRADIENT" && message.startsWith("[H")) {
+
+            CFonts.roboto32.drawRainbowGradientString(message, x, y, 150.0f, false);
+
+        } else if (NotificationsModule.rainbowNotifications.getValue() == "NORMAL" && message.startsWith("[H")) {
+
+            this.mc.fontRenderer.drawString(message, (int) x, (int) y, RainbowUtil.getRainbow(0).hashCode());
+
+        } else if (NotificationsModule.rainbowNotifications.getValue() == "NONE") {
+
+            mc.fontRenderer.drawStringWithShadow(message, x, y, color);
+
+        }
+      
+        return 0;
+>>>>>>> Stashed changes
     }
 }
