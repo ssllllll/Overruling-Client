@@ -31,7 +31,7 @@ public class ModuleManager {
         modules.add(new KillAuraModule());
         modules.add(new VelocityModule());
         /* Exploits */
-        modules.add(new FastProjectileModule())
+        modules.add(new FastProjectileModule());
         modules.add(new AntiChunkBanModule());
         modules.add(new AntiHungerModule());
         modules.add(new AntiMapBanModule());
