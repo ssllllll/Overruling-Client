@@ -31,7 +31,6 @@ public class ModuleManager {
         modules.add(new KillAuraModule());
         modules.add(new VelocityModule());
         /* Exploits */
-        modules.add(new FastProjectileModule());
         modules.add(new AntiChunkBanModule());
         modules.add(new AntiHungerModule());
         modules.add(new AntiMapBanModule());
@@ -40,6 +39,7 @@ public class ModuleManager {
         modules.add(new CoordExploit2Module());
         modules.add(new CoordExploit3Module());
         modules.add(new CoordExploitModule());
+        // modules.add(new FastProjectileModule()); //TODO: @Drifty, please fix your module
         modules.add(new HandshakeSpoofModule());
         // modules.add(new KnockbackPlusModule());
         modules.add(new NewChunksModule());
