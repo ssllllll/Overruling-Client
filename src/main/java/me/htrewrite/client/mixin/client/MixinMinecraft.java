@@ -6,12 +6,15 @@ import me.htrewrite.client.Wrapper;
 import me.htrewrite.client.customgui.SplashProgressGui;
 import me.htrewrite.client.event.custom.client.ClientShutdownEvent;
 import me.htrewrite.client.util.PostRequest;
+import me.htrewrite.client.util.shader.FramebufferShader;
+import me.htrewrite.client.util.shader.Shader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.crash.CrashReport;
 import net.minecraftforge.fml.client.FMLConfigGuiFactory;
 import net.minecraftforge.fml.client.SplashProgress;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import org.lwjgl.Sys;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
@@ -67,5 +70,15 @@ public abstract class MixinMinecraft {
     @Inject(method = "init", at = @At(value = "INVOKE", target = "net/minecraft/client/renderer/OpenGlHelper.initializeTextures()V", shift = At.Shift.BEFORE))
     private void onLoadTexture(CallbackInfo ci) {
         htMinecraft.onLoadTexture();
+    }
+
+    private long lastFrame = (Sys.getTime() * 1000) / Sys.getTimerResolution();
+
+    @Inject(method = "runGameLoop", at = @At("HEAD"))
+    private void runGameLoop(final CallbackInfo callbackInfo) {
+        final long currentTime = (Sys.getTime() * 1000) / Sys.getTimerResolution();
+        final int deltaTime = (int) (currentTime - lastFrame);
+        lastFrame = currentTime;
+        FramebufferShader.deltaTime = deltaTime;
     }
 }
