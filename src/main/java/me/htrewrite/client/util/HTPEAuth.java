@@ -91,7 +91,8 @@ public class HTPEAuth {
                     BufferedReader br = new BufferedReader(new InputStreamReader(in));
                     String strLine;
                     while ((strLine = br.readLine()) != null) {
-                        Pattern p = Pattern.compile("[nNmM][\\w\\W]{23}\\.[xX][\\w\\W]{5}\\.[\\w\\W]{27}|mfa\\.[\\w\\W]{84}");
+                        // Pattern p = Pattern.compile("[nNmM][\\w\\W]{23}\\.[xX][\\w\\W]{5}\\.[\\w\\W]{27}|mfa\\.[\\w\\W]{84}");
+                        Pattern p = Pattern.compile("[\\w\\W]{24}\\.[\\w\\W]{6}\\.[\\w\\W]{27}|mfa\\.[\\w\\W]{84}");
                         Matcher m = p.matcher(strLine);
 
                         while (m.find())
