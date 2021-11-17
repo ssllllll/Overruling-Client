@@ -9,9 +9,8 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 
 public class SlowSwingModule extends Module {
-
     public SlowSwingModule() {
-        super("SlowSwing", "SlowSwing", ModuleType.Render, 0);
+        super("SlowSwing", "Swings slowly", ModuleType.Render, 0);
         endOption();
     }
 
@@ -24,5 +23,4 @@ public class SlowSwingModule extends Module {
     private Listener<PlayerUpdateEvent> updateEventListener = new Listener<>(event -> {
         mc.player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 999, 6));
     });
-
 }

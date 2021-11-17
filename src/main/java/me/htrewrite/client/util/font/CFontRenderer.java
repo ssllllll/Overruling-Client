@@ -59,34 +59,6 @@ public class CFontRenderer extends FontRenderer {
             drawString(s, x - getStringWidth(s) / 2, y, color);
     }
 
-    public void drawRainbowGradientString(String text, float x, float y, float factor, boolean shadow) {
-        Minecraft mc = Minecraft.getMinecraft();
-        float currentFactor = 0;
-        int currentWidth = 0;
-        boolean shouldRainbow = true;
-        boolean shouldContinue = false;
-        for (int i = 0; i < text.length(); ++i) {
-            char currentChar = text.charAt(i);
-            char nextChar = text.charAt((int) MathUtil.clamp(i + 1, 0, text.length() - 1));
-            if (shouldContinue) {
-                shouldContinue = false;
-                continue;
-            }
-            if ((String.valueOf(currentChar) + nextChar).equals("\u00a7r")) {
-                String escapeString = text.substring(i);
-                mc.fontRenderer.drawString(escapeString, x + (float) currentWidth, y, Color.WHITE.getRGB(), shadow);
-                break;
-            }
-            mc.fontRenderer.drawString(String.valueOf(currentChar).equals("\u00a7") ? "" : String.valueOf(currentChar), x + (float) currentWidth, y, shouldRainbow ? RainbowUtil.getRainbow((int) currentFactor).getRGB() : Color.WHITE.getRGB(), shadow);
-            if (String.valueOf(currentChar).equals("\u00a7")) {
-                shouldContinue = true;
-            }
-            currentWidth += this.getStringWidth(String.valueOf(currentChar));
-            if (String.valueOf(currentChar).equals(" ")) continue;
-            currentFactor = currentFactor+factor;
-        }
-    }
-
     public void drawCenteredStringXY(final String s, final int x, final int y,
                                      final int color, final boolean shadow)
     {

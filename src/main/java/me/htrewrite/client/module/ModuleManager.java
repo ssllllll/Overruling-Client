@@ -91,6 +91,7 @@ public class ModuleManager {
         modules.add(new NoFogModule());
         modules.add(new ShulkerPreviewModule());
         modules.add(new SkyColorModule());
+        modules.add(new SlowSwingModule());
         modules.add(new TracersModule());
         // modules.add(new XRayModule());
         /* World */

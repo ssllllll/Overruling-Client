@@ -8,7 +8,6 @@
     "MixinWorld",
     "MixinEntityPlayerSP",
     "MixinNetworkManager",
-    "MixinGuiNewChat",
     "MixinMovementInputFromOptions",
     "MixinEntity",
     "MixinEntityLivingBase",

@@ -1,8 +1,6 @@
 package me.htrewrite.client.module.modules.gui;
 
 import me.htrewrite.client.HTRewrite;
-import me.htrewrite.client.clickgui.components.buttons.settings.bettermode.BetterMode;
-import me.htrewrite.client.customgui.GuiChat;
 import me.htrewrite.client.event.custom.CustomEvent;
 import me.htrewrite.client.event.custom.module.ModuleToggleEvent;
 import me.htrewrite.client.event.custom.networkmanager.NetworkPacketEvent;
@@ -11,17 +9,13 @@ import me.htrewrite.client.manager.FriendManager;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleType;
 import me.htrewrite.client.util.ChatColor;
-import me.htrewrite.exeterimports.mcapi.settings.ModeSetting;
 import me.htrewrite.exeterimports.mcapi.settings.ToggleableSetting;
 import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
-import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.util.HashMap;
 
@@ -29,7 +23,6 @@ public class NotificationsModule extends Module {
     private FriendManager friendManager;
 
     public static final ToggleableSetting toggleNotifications = new ToggleableSetting("ModuleToggle", null, true);
-    public static final ModeSetting rainbowNotifications = new ModeSetting("Rainbow", null, 0, BetterMode.construct("NONE", "NORMAL", "GRADIENT"));
     public static final ToggleableSetting totemNotifications = new ToggleableSetting("TotemPop",null,false);
     public static final ToggleableSetting receiveChatNotifications = new ToggleableSetting("HT+Chat(%)", null, true);
     public static final HashMap<String, Integer> totem_pop_counter = new HashMap<String, Integer>();
@@ -39,7 +32,6 @@ public class NotificationsModule extends Module {
     public NotificationsModule() {
         super("Notifications", "Notifications", ModuleType.Gui, 0);
         addOption(toggleNotifications);
-        addOption(rainbowNotifications.setVisibility(a -> toggleNotifications.isEnabled()));
         addOption(totemNotifications);
         addOption(receiveChatNotifications);
         endOption();
@@ -53,15 +45,9 @@ public class NotificationsModule extends Module {
         if(!toggleNotifications.isEnabled() || mc.player == null || mc.world == null)
             return;
 
-        if (NotificationsModule.rainbowNotifications.getValue() == "NONE") {
-            mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', event.toggled ?
-                    "&a&l" + event.module.getName() + " &ais now ON!" :
-                    "&c&l" + event.module.getName() + " &cis now OFF!")));
-        } else if (NotificationsModule.rainbowNotifications.getValue() == "NORMAL" || rainbowNotifications.getValue() == "GRADIENT") {
-            mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse_rainbow('&', event.toggled ?
-                    "&a&l" + event.module.getName() + " &ais now ON!" :
-                    "&c&l" + event.module.getName() + " &cis now OFF!")));
-        }
+        mc.player.sendMessage(new TextComponentString(ChatColor.prefix_parse('&', event.toggled ?
+                "&a&l" + event.module.getName() + " &ais now ON!" :
+                "&c&l" + event.module.getName() + " &cis now OFF!")));
     });
 
 

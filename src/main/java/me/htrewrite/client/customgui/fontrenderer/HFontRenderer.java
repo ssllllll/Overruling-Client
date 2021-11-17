@@ -13,10 +13,7 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class HFontRenderer {
@@ -74,21 +71,22 @@ public class HFontRenderer {
     }
 
     private Font getFontByName(String name) throws IOException, FontFormatException {
-        if (name.equalsIgnoreCase("roboto condensed")) {
-            return getFontFromInput("/assets/htrewrite/fonts/RobotoCondensed-Regular.ttf");
-        } else if (name.equalsIgnoreCase("roboto")) {
-            return getFontFromInput("/assets/htrewrite/fonts/Roboto-Regular.ttf");
-        } else if (name.equalsIgnoreCase("roboto medium")) {
-            return getFontFromInput("/assets/htrewrite/fonts/Roboto-Medium.ttf");
-        } else if (name.equalsIgnoreCase("montserrat")) {
-            return getFontFromInput("/assets/htrewrite/fonts/Montserrat-Regular.ttf");
-        } else if (name.equalsIgnoreCase("segoeui") || name.equalsIgnoreCase("segoeui light")) {
-            return getFontFromInput("/assets/htrewrite/fonts/SegoeUI-Light.ttf");
-        } else if (name.equalsIgnoreCase("raleway")) {
-            return getFontFromInput("/assets/htrewrite/fonts/Raleway-SemiBold.ttf");
-        } else {
-            // Need to return the default font.
-            return getFontFromInput("/assets/hyperium/fonts/SegoeUI-Light.ttf");
+        switch(name.toLowerCase(Locale.ROOT)) {
+            case "roboto condensed":
+                return getFontFromInput("/assets/htrewrite/fonts/RobotoCondensed-Regular.ttf");
+            case "roboto":
+                return getFontFromInput("/assets/htrewrite/fonts/Roboto-Regular.ttf");
+            case "roboto medium":
+                return getFontFromInput("/assets/htrewrite/fonts/Roboto-Medium.ttf");
+            case "montserrat":
+                return getFontFromInput("/assets/htrewrite/fonts/Montserrat-Regular.ttf");
+            case "segoeui":
+            case "segoeui light":
+                return getFontFromInput("/assets/htrewrite/fonts/SegoeUI-Light.ttf");
+            case "raleway":
+                return getFontFromInput("/assets/htrewrite/fonts/Raleway-SemiBold.ttf");
+            default:
+                return getFontFromInput("/assets/hyperium/fonts/SegoeUI-Light.ttf");
         }
     }
 
