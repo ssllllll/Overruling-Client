@@ -163,7 +163,7 @@ public class ShulkerPreviewModule extends Module {
         }
     });
 
-    @EventHandler
+    @EventHandler()
     private Listener<RenderTooltipEvent> renderTooltipEventListener = new Listener<>(event -> {
         if(event.getItemStack() == null)
             return;
@@ -208,7 +208,7 @@ public class ShulkerPreviewModule extends Module {
             if (this.middleClick.isEnabled()) {
                 if (Mouse.isButtonDown(2)) {
                     if (!this.clicked) {
-                        InventoryBasic l_Inventory = new InventoryBasic("SalHack EnderChest Viewer", true, 27);
+                        InventoryBasic l_Inventory = new InventoryBasic("HT+Rw EChest Viewer", true, 27);
 
                         for (int i = 0; i < EnderChestItems.size(); ++i)
                         {

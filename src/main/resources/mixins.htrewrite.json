@@ -29,6 +29,7 @@
     "MixinRenderManager",
     "MixinRenderPlayer",
     "MixinBlockLiquid",
-    "MixinGuiPlayerTabOverlay"
+    "MixinGuiPlayerTabOverlay",
+    "MixinGuiScreen"
   ]
 }

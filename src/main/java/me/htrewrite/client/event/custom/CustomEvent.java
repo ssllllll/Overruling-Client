@@ -5,7 +5,7 @@ import me.zero.alpine.fork.event.type.Cancellable;
 
 public class CustomEvent extends Cancellable {
     private float partialTicks = Wrapper.getMC().getRenderPartialTicks();
-    private Era era;
+    private Era era = Era.PRE;
 
     public CustomEvent(float partialTicks) {
         this.partialTicks = partialTicks;
