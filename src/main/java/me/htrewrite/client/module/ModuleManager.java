@@ -44,6 +44,7 @@ public class ModuleManager {
         modules.add(new NewChunksModule());
         modules.add(new PacketCancellerModule());
         modules.add(new ReachModule());
+        modules.add(new TickShiftMudule());
         /* Miscellaneous */
         modules.add(new AutoDupeModule());
         modules.add(new AutoEatModule());
