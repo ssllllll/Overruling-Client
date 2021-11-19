@@ -16,6 +16,8 @@ public class SlowSwingModule extends Module {
 
     @Override
     public void onDisable() {
+        super.onDisable();
+
         mc.player.removePotionEffect(MobEffects.MINING_FATIGUE);
     }
 
