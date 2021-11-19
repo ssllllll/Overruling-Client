@@ -5,7 +5,7 @@ import me.htrewrite.client.module.ModuleType;
 import me.htrewrite.exeterimports.mcapi.settings.IntegerSetting;
 
 public class TabExpanderModule extends Module {
-    public static final IntegerSetting size = new IntegerSetting("Size", 500d, 1d, 1000d);
+    public static final IntegerSetting size = new IntegerSetting("Size", 500, 1, 1000);
 
     public static TabExpanderModule INSTANCE;
     public TabExpanderModule() {

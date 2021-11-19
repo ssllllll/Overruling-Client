@@ -1,13 +1,13 @@
 package me.htrewrite.exeterimports.mcapi.settings;
 
-public class IntegerSetting extends ValueSetting<Double> {
-    public IntegerSetting(String label, String[] aliases, Double value, Double minimum, Double maximum) {
+public class IntegerSetting extends ValueSetting<Integer> {
+    public IntegerSetting(String label, String[] aliases, Integer value, Integer minimum, Integer maximum) {
         super(label, aliases, value, minimum, maximum);
     }
-    public IntegerSetting(String label, Double value, Double minimum, Double maximum) {
+    public IntegerSetting(String label, Integer value, Integer minimum, Integer maximum) {
         super(label, value, minimum, maximum);
     }
-    public IntegerSetting(String label, String[] aliases, Double value) {
+    public IntegerSetting(String label, String[] aliases, Integer value) {
         super(label, aliases, value);
     }
 
