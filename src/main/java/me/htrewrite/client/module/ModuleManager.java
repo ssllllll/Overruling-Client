@@ -89,6 +89,7 @@ public class ModuleManager {
         modules.add(new IbaiModule());
         // modules.add(new NametagsModule());
         modules.add(new NoFogModule());
+        modules.add(new NoRenderModule());  //TODO: fix mapas, noArmor, noArmorPlayers, signtext, nopumpkin y hurtcamera
         modules.add(new ShulkerPreviewModule());
         modules.add(new SkyColorModule());
         modules.add(new SlowSwingModule());
