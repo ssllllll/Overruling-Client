@@ -40,7 +40,7 @@ public class ModuleManager {
         modules.add(new CoordExploit3Module());
         modules.add(new CoordExploitModule());
         modules.add(new HandshakeSpoofModule());
-        // modules.add(new KnockbackPlusModule());
+        modules.add(new KnockbackPlusModule());
         modules.add(new NewChunksModule());
         modules.add(new PacketCancellerModule());
         modules.add(new ReachModule());

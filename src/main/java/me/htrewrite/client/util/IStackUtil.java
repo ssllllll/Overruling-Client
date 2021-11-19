@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import java.util.Map;
 
 public class IStackUtil {
-    private boolean containsEnchantment(ItemStack itemStack, Enchantment enchantment) {
+    public static boolean containsEnchantment(ItemStack itemStack, Enchantment enchantment) {
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(itemStack);
         if(enchantments.size() == 0)
             return false;
