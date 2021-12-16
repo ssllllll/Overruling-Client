@@ -105,50 +105,35 @@ public class SpammerModule extends Module {
     }
 
     private int listIndex = 0;
+    private Random random = new Random();
 
     @EventHandler
     private Listener<PlayerUpdateEvent> updateEventListener = new Listener<>(event -> {
-        int realDelay = delay.getValue().intValue()*20;
-
-        if (randomdelay.isEnabled()) {
-            int min = 0;
-            int max;
-            max = (int) (Math.random() * (randomdelayint.getValue()));
-            if (max == min) {
-                max = (int) (Math.random() * (randomdelayint.getValue()));
-            }
-            min = max;
-            realDelay = (delay.getValue().intValue() + max)*20;
-        }
+        int realDelay = (delay.getValue().intValue() + (randomdelay.isEnabled()?random.nextInt(randomdelayint.getValue()):0))*20;
 
         if(tickedTimer.passed(realDelay)) {
-            int min = 0;
-            int max = 2;
-            int randomnum = (int) (Math.random()*(max-min+1)+min);
-            if (randomnum == 1) {
-            switch(mode.getValue()) {
-                case "LIST": {
-                    if(listIndex >= lines.length)
-                        listIndex = 0;
+            int rand = random.nextInt(2);
+            if (!(rand == 1 && randomsentences.isEnabled())) {
+                switch(mode.getValue()) {
+                    case "LIST": {
+                        if(listIndex >= lines.length)
+                            listIndex = 0;
 
-                    sendChatMessage(lines[listIndex++]);
-                } break;
+                        sendChatMessage(lines[listIndex++]);
+                    } break;
 
-                case "RANDOM": {
-                    int index = 0;
-                    if(lines.length > 1)
-                        index = new Random().nextInt(lines.length);
+                    case "RANDOM": {
+                        int index = 0;
+                        if(lines.length > 1)
+                            index = new Random().nextInt(lines.length);
 
-                    sendChatMessage(lines[index]);
-                } break;
+                        sendChatMessage(lines[index]);
+                    } break;
 
-                default:
-                    break;
-            }
-            } else {
-                if (randomsentences.isEnabled())
-                sendChatMessage(new RandomString(8).nextString());
-            }
+                    default:
+                        break;
+                }
+            } else sendChatMessage(new RandomString(8).nextString());
             tickedTimer.reset();
         }
     });
