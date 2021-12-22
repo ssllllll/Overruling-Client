@@ -82,6 +82,17 @@ public abstract class PanelComponent extends Component {
 
     public void mouseReleased() {
         setDragging(false);
+
+        if(open)
+            components.forEach(Component::mouseRelease);
+    }
+
+    @Override
+    public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+
+        if(open)
+            components.forEach(component -> component.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick));
     }
 
     public List<Component> getComponents() {

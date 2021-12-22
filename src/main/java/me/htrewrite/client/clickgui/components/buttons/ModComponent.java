@@ -57,6 +57,13 @@ public class ModComponent extends Component {
     }
 
     @Override
+    public void mouseRelease() {
+        super.mouseRelease();
+
+        components.forEach(Component::mouseRelease);
+    }
+
+    @Override
     public void drawComponent(int mouseX, int mouseY) {
         drawBorderedRectReliant(getPositionX() + 1, StaticScrollOffset.offset + getPositionY() + 1, getPositionX() + getWidth() - 1,
                 StaticScrollOffset.offset + getPositionY() + 19, 1.7F, mod.isEnabled() ?

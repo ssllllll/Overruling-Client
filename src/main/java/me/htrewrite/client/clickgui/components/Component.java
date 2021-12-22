@@ -23,6 +23,9 @@ public abstract class Component extends RenderHelper implements Labeled {
         return label;
     }
 
+    public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {}
+    public void mouseRelease() {}
+
     public int getPositionX() {
         return positionX;
     }

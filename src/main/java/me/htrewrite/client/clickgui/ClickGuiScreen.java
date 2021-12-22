@@ -74,6 +74,11 @@ public final class ClickGuiScreen extends GuiScreen {
     }
 
     @Override
+    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+        panels.forEach(panelComponent -> panelComponent.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick));
+    }
+
+    @Override
     public void onGuiClosed() {
         //client.fileManager.getConfig("gui_config.json").save();
         //client.fileManager.getConfig("overlay_config.json").save();

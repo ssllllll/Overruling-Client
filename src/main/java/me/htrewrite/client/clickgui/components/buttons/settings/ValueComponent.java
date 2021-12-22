@@ -6,6 +6,7 @@ import me.htrewrite.client.clickgui.components.Colors;
 import me.htrewrite.client.clickgui.components.Component;
 import me.htrewrite.client.util.MathUtil;
 import me.htrewrite.exeterimports.mcapi.settings.ValueSetting;
+import org.lwjgl.input.Mouse;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -26,8 +27,7 @@ public class ValueComponent extends Component {
         this.valueSetting = valueSetting;
     }
 
-    @Override
-    public void onClicked(int mouseX, int mouseY, int mouseButton) {
+    private void handleClick(int mouseX, int mouseY) {
         if(!isHovering(mouseX, mouseY, StaticGuiConfig.MOD_CONFIG_COMPONENT_HEIGHT))
             return;
         if(!valueSetting.isVisible())
@@ -41,8 +41,34 @@ public class ValueComponent extends Component {
         valueSetting.setValue(round(value, 2));
     }
 
+    private boolean isDragging = false;
+
+    @Override
+    public void onClicked(int mouseX, int mouseY, int mouseButton) {
+        handleClick(mouseX, mouseY);
+
+        if(mouseButton == 0)
+            isDragging = true;
+    }
+
+    @Override
+    public void mouseRelease() {
+        super.mouseRelease();
+
+        isDragging = false;
+    }
+
+    /*
+    @Override
+    public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+        handleClick(mouseX, mouseY);
+    }*/
+
     @Override
     public void drawComponent(int mouseX, int mouseY) {
+        if(isDragging)
+            handleClick(mouseX, mouseY);
+
         drawRect(getPositionX() + 1, StaticScrollOffset.offset + getPositionY() + 1, getPositionX() + getWidth() - 1,
                 StaticScrollOffset.offset + getPositionY() + getHeight() - 1, Colors.BUTTON_COMPONENT.getColor());
         drawRect(
