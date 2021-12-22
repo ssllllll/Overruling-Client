@@ -5,10 +5,8 @@ import me.htrewrite.client.event.custom.player.PlayerUpdateEvent;
 import me.htrewrite.client.module.Module;
 import me.htrewrite.client.module.ModuleType;
 import me.htrewrite.client.util.TickedTimer;
-import me.htrewrite.exeterimports.mcapi.settings.ModeSetting;
-import me.htrewrite.exeterimports.mcapi.settings.StringSetting;
-import me.htrewrite.exeterimports.mcapi.settings.ToggleableSetting;
-import me.htrewrite.exeterimports.mcapi.settings.ValueSetting;
+import me.htrewrite.exeterimports.mcapi.settings.*;
+import me.pk2.moodlyencryption.util.RandomString;
 import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
 import net.minecraft.network.play.client.CPacketChatMessage;
@@ -23,6 +21,9 @@ public class SpammerModule extends Module {
     public static final StringSetting spammerFile = new StringSetting("File", null, "spammer.txt");
     public static final ToggleableSetting usePackets = new ToggleableSetting("UsePackets", null, false);
     public static final ValueSetting<Double> delay = new ValueSetting<>("Delay", null, 5d, 1d, 60d);
+    public static final ToggleableSetting randomdelay = new ToggleableSetting("RDelay", null, false);
+    public static final IntegerSetting randomdelayint = new IntegerSetting("RDelayMS", null, 50, 1, 10000);
+    public static final ToggleableSetting randomsentences = new ToggleableSetting("RandomSentences", null, false);
 
     private final String directory = "htRewrite\\spammer\\";
     private File currentFile = null;
@@ -34,6 +35,9 @@ public class SpammerModule extends Module {
         addOption(spammerFile);
         addOption(usePackets);
         addOption(delay);
+        addOption(randomdelay);
+        addOption(randomdelayint.setVisibility(v -> randomdelay.isEnabled()));
+        addOption(randomsentences);
         endOption();
 
         new File(directory).mkdirs();
@@ -101,31 +105,35 @@ public class SpammerModule extends Module {
     }
 
     private int listIndex = 0;
+    private Random random = new Random();
 
     @EventHandler
     private Listener<PlayerUpdateEvent> updateEventListener = new Listener<>(event -> {
-        int realDelay = delay.getValue().intValue()*20;
+        int realDelay = (delay.getValue().intValue() + (randomdelay.isEnabled()?random.nextInt(randomdelayint.getValue()):0))*20;
+
         if(tickedTimer.passed(realDelay)) {
-            switch(mode.getValue()) {
-                case "LIST": {
-                    if(listIndex >= lines.length)
-                        listIndex = 0;
+            int rand = random.nextInt(2);
+            if (!(rand == 1 && randomsentences.isEnabled())) {
+                switch(mode.getValue()) {
+                    case "LIST": {
+                        if(listIndex >= lines.length)
+                            listIndex = 0;
 
-                    sendChatMessage(lines[listIndex++]);
-                } break;
+                        sendChatMessage(lines[listIndex++]);
+                    } break;
 
-                case "RANDOM": {
-                    int index = 0;
-                    if(lines.length > 1)
-                        index = new Random().nextInt(lines.length);
+                    case "RANDOM": {
+                        int index = 0;
+                        if(lines.length > 1)
+                            index = new Random().nextInt(lines.length);
 
-                    sendChatMessage(lines[index]);
-                } break;
+                        sendChatMessage(lines[index]);
+                    } break;
 
-                default:
-                    break;
-            }
-
+                    default:
+                        break;
+                }
+            } else sendChatMessage(new RandomString(8).nextString());
             tickedTimer.reset();
         }
     });

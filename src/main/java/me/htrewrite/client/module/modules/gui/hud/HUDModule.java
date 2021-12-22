@@ -20,8 +20,9 @@ public class HUDModule extends Module {
     public static final ToggleableSetting arraylist = new ToggleableSetting("ArrayList", null, true);
     public static final ToggleableSetting tps = new ToggleableSetting("TPS", null, false);
     public static final ToggleableSetting htUsers = new ToggleableSetting("HT+Users", null, false);
+    public static final ToggleableSetting playtime = new ToggleableSetting("Playtime", null, false);
 
-    public static final ModeSetting moduleEdit = new ModeSetting("SModule", null, 0, BetterMode.construct("Watermark", "Position", "FPS", "ArrayList", "TPS", "HT+Users"));
+    public static final ModeSetting moduleEdit = new ModeSetting("SModule", null, 0, BetterMode.construct("Watermark", "Position", "FPS", "ArrayList", "TPS", "HT+Users", "Playtime"));
     /* WATERMARK */
     public static final ValueSetting<Double> watermarkX = new ValueSetting<>("WaterX", null, 4D, 0D, 1000D);
     public static final ValueSetting<Double> watermarkY = new ValueSetting<>("WaterY", null, 4D, 0D, 1000D);
@@ -41,6 +42,9 @@ public class HUDModule extends Module {
     /* HT+Users */
     public static final ValueSetting<Double> htUsersX = new ValueSetting<>("HT+UsersX", null, 0d, 0d, 1000d);
     public static final ValueSetting<Double> htUsersY = new ValueSetting<>("HT+UsersY", null, 0d, 0d, 1000d);
+    /* PLAYTIME */
+    public static final ValueSetting<Double> playtimeX = new ValueSetting<>("PlaytimeX", null, 0d, 0d, 1000d);
+    public static final ValueSetting<Double> playtimeY = new ValueSetting<>("PlaytimeY", null, 0d, 0d, 1000d);
 
     public HUDComponentManager hudComponentManager;
     private HUDWatermarkComponent hudWatermarkComponent;
@@ -49,6 +53,7 @@ public class HUDModule extends Module {
     private HUDArrayListComponent hudArrayListComponent;
     private HUDTPSComponent hudTPSComponent;
     private HUDConnectedHTUsersComponent hudConnectedHTUsersComponent;
+    private HUDPlaytimeComponent hudPlaytimeComponent;
     public HUDModule() {
         super("HUD", "Interface", ModuleType.Gui, 0);
         addOption(setting);
@@ -59,6 +64,7 @@ public class HUDModule extends Module {
         addOption(arraylist.setVisibility(a -> setting.getI() == 0));
         addOption(tps.setVisibility(a -> setting.getI() == 0));
         addOption(htUsers.setVisibility(a -> setting.getI() == 0));
+        addOption(playtime.setVisibility(a -> setting.getI() == 0));
         /* EDIT */
         addOption(moduleEdit.setVisibility(v -> setting.getI()==1));
         // - Water - \\
@@ -80,6 +86,9 @@ public class HUDModule extends Module {
         // - Connected HT+Users - \\
         addOption(htUsersX.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==5));
         addOption(htUsersY.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==5));
+        // - Playtime - \\
+        addOption(playtimeX.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==6));
+        addOption(playtimeY.setVisibility(v -> setting.getI()==1&&moduleEdit.getI()==6));
 
         endOption();
     }
@@ -95,6 +104,7 @@ public class HUDModule extends Module {
         this.hudArrayListComponent = (HUDArrayListComponent)hudComponentManager.getComponentByClass(HUDArrayListComponent.class);
         this.hudTPSComponent = (HUDTPSComponent)hudComponentManager.getComponentByClass(HUDTPSComponent.class);
         this.hudConnectedHTUsersComponent = (HUDConnectedHTUsersComponent)hudComponentManager.getComponentByClass(HUDConnectedHTUsersComponent.class);
+        this.hudPlaytimeComponent = (HUDPlaytimeComponent) hudComponentManager.getComponentByClass(HUDPlaytimeComponent.class);
     }
 
     @EventHandler
@@ -111,5 +121,7 @@ public class HUDModule extends Module {
             hudTPSComponent.render(event, tpsX.getValue().intValue(), tpsY.getValue().intValue());
         if(htUsers.isEnabled())
             hudConnectedHTUsersComponent.render(event, htUsersX.getValue().intValue(), htUsersY.getValue().intValue());
+        if (playtime.isEnabled())
+            hudPlaytimeComponent.render(event, playtimeX.getValue().intValue(), playtimeY.getValue().intValue());
     });
 }

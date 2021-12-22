@@ -20,6 +20,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -165,4 +166,6 @@ public class EventProcessor {
     @SubscribeEvent public void onCameraSetup(EntityViewRenderEvent.CameraSetup event) { EVENT_BUS.post(event); }
 
     @SubscribeEvent public void onEntityPlaceBlock(BlockEvent.EntityPlaceEvent event) { EVENT_BUS.post(event); }
+
+    @SubscribeEvent public void attackEntity(AttackEntityEvent event) {EVENT_BUS.post(event);}
 }

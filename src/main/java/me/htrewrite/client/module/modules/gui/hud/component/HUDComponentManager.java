@@ -15,6 +15,7 @@ public class HUDComponentManager {
         hudComponents.add(new HUDArrayListComponent());
         hudComponents.add(new HUDConnectedHTUsersComponent());
         hudComponents.add(new HUDFPSComponent());
+        hudComponents.add(new HUDPlaytimeComponent());
         hudComponents.add(new HUDPositionComponent());
         hudComponents.add(new HUDTPSComponent());
         hudComponents.add(new HUDWatermarkComponent());
