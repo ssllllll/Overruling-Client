@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class ChatColor {
     public static String stripColor(final String input) { return input == null ? null : Pattern.compile("(?i)" + '\u00A7' + "[0-9A-FK-OR]").matcher(input).replaceAll(""); }
-    public static String parse(char c, String txt) { return txt.replaceAll(String.valueOf(c), "\u00a7"); }
+    public static String parse(char c, String txt) { return txt.replaceAll(String.valueOf(c), "\u00A7"); }//Pattern.compile("(?i)" + c + "[0-9A-FK-OR]").matcher(txt).replaceAll("\u00A7"); }
     public static String prefix_parse(char c, String txt) { return parse(c, "&8&l[&b" + HTRewrite.NAME + "&8&l] &r" + txt); }
     public static String enumList(Enum[] enums) {
         StringBuilder list = new StringBuilder();
