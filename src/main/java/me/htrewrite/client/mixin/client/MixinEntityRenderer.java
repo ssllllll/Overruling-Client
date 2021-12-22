@@ -1,6 +1,7 @@
 package me.htrewrite.client.mixin.client;
 
 import me.htrewrite.client.HTRewrite;
+import me.htrewrite.client.event.custom.render.RenderHurtCameraEvent;
 import me.htrewrite.client.event.custom.render.RenderSetupFogEvent;
 import net.minecraft.client.renderer.EntityRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,5 +17,13 @@ public class MixinEntityRenderer {
         HTRewrite.EVENT_BUS.post(event);
         if(event.isCancelled())
             callbackInfo.cancel();
+    }
+
+    @Inject(method = "hurtCameraEffect", at = @At("HEAD"), cancellable = true)
+    public void hurtCameraEffect(float ticks, CallbackInfo info) {
+        RenderHurtCameraEvent event = new RenderHurtCameraEvent(ticks);
+        HTRewrite.EVENT_BUS.post(event);
+        if(event.isCancelled())
+            info.cancel();
     }
 }

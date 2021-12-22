@@ -1,8 +1,8 @@
 package me.htrewrite.client.event.custom.render;
 
-import net.minecraftforge.fml.common.eventhandler.Event;
+import me.htrewrite.client.event.custom.CustomEvent;
 
-public class RenderBossHealthEvent extends Event {
+public class RenderBossHealthEvent extends CustomEvent {
 
 
 

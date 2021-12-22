@@ -20,7 +20,6 @@ import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import java.util.Iterator;
 
 public class NoRenderModule extends Module {
-
     public static ToggleableSetting noitems = new ToggleableSetting("NoItems", false);
     public static ToggleableSetting fire = new ToggleableSetting("Fire", false);
     public static ToggleableSetting hurtcamera = new ToggleableSetting("NoHurtCamera", false);
@@ -32,9 +31,6 @@ public class NoRenderModule extends Module {
     public static ToggleableSetting NoArmorPlayers = new ToggleableSetting("NoArmorPlayers", true);
     public static ToggleableSetting maps = new ToggleableSetting("Maps", false);
     public static ToggleableSetting bossbars = new ToggleableSetting("BossBars", false);
-
-
-
 
     public NoRenderModule() {
         super("NoRender", "Deletes some hud stuff", ModuleType.Render, 0);
@@ -88,7 +84,7 @@ public class NoRenderModule extends Module {
     private Listener<RenderHurtCameraEvent> OnHurtCameraEffect = new Listener<>(p_Event ->
     {
         if (hurtcamera.isEnabled())
-            p_Event.setCanceled(true);
+            p_Event.cancel();
     });
     @EventHandler
     private Listener<RenderBlockOverlayEvent> OnBlockOverlayEvent = new Listener<>(p_Event ->
@@ -125,30 +121,30 @@ public class NoRenderModule extends Module {
     private Listener<RenderSignEvent> OnRenderSign = new Listener<>(p_Event ->
     {
         if (signText.isEnabled())
-            p_Event.setCanceled(true);
+            p_Event.cancel();
     });
     @EventHandler
     private Listener<RenderArmorLayerEvent> OnRenderArmorLayer = new Listener<>(p_Event ->
     {
         if (NoArmor.isEnabled())
         {
-            if (!(p_Event.Entity instanceof EntityPlayer) && NoArmorPlayers.isEnabled())
+            if (!(p_Event.entity instanceof EntityPlayer) && NoArmorPlayers.isEnabled())
                 return;
 
-            p_Event.setCanceled(true);
+            p_Event.cancel();
         }
     });
     @EventHandler
     private Listener<RenderMapEvent> OnRenderMap = new Listener<>(p_Event ->
     {
         if (maps.isEnabled())
-            p_Event.setCanceled(true);
+            p_Event.cancel();
     });
     @EventHandler
     private Listener<RenderBossHealthEvent> OnRenderBossHealth = new Listener<>(p_Event ->
     {
         if (bossbars.isEnabled())
-            p_Event.setCanceled(true);
+            p_Event.cancel();
     });
 }
 

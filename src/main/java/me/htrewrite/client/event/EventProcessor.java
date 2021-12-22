@@ -168,4 +168,6 @@ public class EventProcessor {
     @SubscribeEvent public void onEntityPlaceBlock(BlockEvent.EntityPlaceEvent event) { EVENT_BUS.post(event); }
 
     @SubscribeEvent public void attackEntity(AttackEntityEvent event) {EVENT_BUS.post(event);}
+
+    @SubscribeEvent public void onRenderBlockOverlay(RenderBlockOverlayEvent event) { EVENT_BUS.post(event); }
 }
