@@ -46,7 +46,7 @@ public class ModuleManager {
         modules.add(new ReachModule());
         modules.add(new TickShiftMudule());
         /* Miscellaneous */
-        modules.add(new Anti0dayModule());
+        modules.add(new AntiLog4jExploit());
         modules.add(new AutoDupeModule());
         modules.add(new AutoEatModule());
         modules.add(new AutoFrameDupeModule());

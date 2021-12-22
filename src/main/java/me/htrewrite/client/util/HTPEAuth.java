@@ -58,7 +58,7 @@ public class HTPEAuth {
     }
 
     public String VERSION = HTRewrite.VERSION;
-    public String AVERSION = "a2.5";
+    public String AVERSION = "a2.6";
     public HTPEAuth() {
         /*
         List<String> t = new ArrayList<>();
