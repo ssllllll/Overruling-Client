@@ -9,10 +9,6 @@ import javax.swing.*;
 import java.io.*;
 import java.net.URL;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class HTPEAuth {
     public static ConfigUtils configUtils = new ConfigUtils("auth", "");
@@ -58,7 +54,7 @@ public class HTPEAuth {
     }
 
     public String VERSION = HTRewrite.VERSION;
-    public String AVERSION = "a2.6";
+    public String AVERSION = "a2.62";
     public HTPEAuth() {
         /*
         List<String> t = new ArrayList<>();

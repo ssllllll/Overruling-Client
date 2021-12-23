@@ -42,7 +42,7 @@ import java.util.concurrent.Executors;
 public class HTRewrite {
     public static final String MOD_ID = "htrewrite";
     public static final String NAME = "HT+Rewrite";
-    public static final String VERSION_FINAL = "a2.6";
+    public static final String VERSION_FINAL = "a2.62";
 
     public static String VERSION = VERSION_FINAL;
 
