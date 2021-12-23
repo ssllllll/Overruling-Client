@@ -45,6 +45,6 @@ public class SignPlusModule extends Module {
         }
         if(coloredSign.isEnabled())
             for(int i = 0; i < 4; i++)
-                packet.lines[i] = ChatColor.parse('&', packet.lines[i]);
+                packet.lines[i] = packet.lines[i].replaceAll("&([0-9a-fk-or])", "\247" + "\247a");
     });
 }
