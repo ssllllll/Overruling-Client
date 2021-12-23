@@ -46,7 +46,7 @@ public class ModuleManager {
         modules.add(new ReachModule());
         modules.add(new TickShiftMudule());
         /* Miscellaneous */
-        modules.add(new AntiLog4jExploit());
+        modules.add(new AntiLog4jExploitModule());
         modules.add(new AutoDupeModule());
         modules.add(new AutoEatModule());
         modules.add(new AutoFrameDupeModule());
@@ -59,6 +59,7 @@ public class ModuleManager {
         modules.add(new MiddleClickModule());
         modules.add(new MobOwnerModule());
         modules.add(new NoFallModule());
+        modules.add(new SignPlusModule());
         modules.add(new SpammerModule());
         modules.add(new TabExpanderModule());
         modules.add(new TimestampsModule());
