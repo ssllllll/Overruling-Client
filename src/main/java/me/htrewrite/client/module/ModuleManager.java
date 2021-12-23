@@ -25,6 +25,7 @@ public class ModuleManager {
         modules.add(new AutoCityModule());
         modules.add(new AutoTotemModule());
         // modules.add(new AutoSelfShutdown());
+        modules.add(new BowBombModule());
         modules.add(new BowSpamModule());
         modules.add(new FastXPModule());
         modules.add(new InstantBurrowModule());
