@@ -69,13 +69,15 @@ public class ValueComponent extends Component {
         if(isDragging)
             handleClick(mouseX, mouseY);
 
+
+
         drawRect(getPositionX() + 1, StaticScrollOffset.offset + getPositionY() + 1, getPositionX() + getWidth() - 1,
                 StaticScrollOffset.offset + getPositionY() + getHeight() - 1, Colors.BUTTON_COMPONENT.getColor());
         drawRect(
                 getPositionX() + 1,
                 StaticScrollOffset.offset + getPositionY() + 1,
 
-                getPositionX() + (float)MathUtil.transform(valueSetting.getMaximum().doubleValue(), getWidth(), valueSetting.getValue().doubleValue()) - 1,
+                getPositionX() + (float)MathUtil.transform(valueSetting.getMaximum().doubleValue() + Math.abs(valueSetting.getMinimum().floatValue()), getWidth(), valueSetting.getValue().doubleValue() + Math.abs(valueSetting.getMinimum().floatValue())) - 1,
                 StaticScrollOffset.offset + getPositionY() + getHeight() - 1,
 
                 Colors.BUTTON_COMPONENT_ENABLED.getColor());
