@@ -36,6 +36,9 @@ public class ModComponent extends Component {
             } else if (setting instanceof BindSetting) {
                 components.add(new BindComponent((BindSetting) setting, setting.getLabel(), positionX,
                         positionY, width, height));
+            } else if(setting instanceof SeparatorSetting) {
+                components.add(new SeparatorComponent((SeparatorSetting)setting, setting.getLabel(), positionX,
+                        positionY, width, height));
             }
         }
     }
