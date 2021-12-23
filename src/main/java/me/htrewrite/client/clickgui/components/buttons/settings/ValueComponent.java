@@ -77,7 +77,7 @@ public class ValueComponent extends Component {
                 getPositionX() + 1,
                 StaticScrollOffset.offset + getPositionY() + 1,
 
-                getPositionX() + (float)MathUtil.transform(valueSetting.getMaximum().doubleValue() + Math.abs(valueSetting.getMinimum().floatValue()), getWidth(), valueSetting.getValue().doubleValue() + Math.abs(valueSetting.getMinimum().floatValue())) - 1,
+                getPositionX() + (float)MathUtil.transform(valueSetting.getMaximum().doubleValue() - valueSetting.getMinimum().floatValue(), getWidth(), valueSetting.getValue().doubleValue() - valueSetting.getMinimum().floatValue()) - 1,
                 StaticScrollOffset.offset + getPositionY() + getHeight() - 1,
 
                 Colors.BUTTON_COMPONENT_ENABLED.getColor());

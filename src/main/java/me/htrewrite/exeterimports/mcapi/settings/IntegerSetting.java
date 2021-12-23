@@ -12,7 +12,5 @@ public class IntegerSetting extends ValueSetting<Integer> {
     }
 
     @Override
-    public void setValue(Number value) {
-        super.setValue(value.intValue());
-    }
+    public void setValue(Number value) {super.setValue((int)Math.round(value.doubleValue()));}
 }
