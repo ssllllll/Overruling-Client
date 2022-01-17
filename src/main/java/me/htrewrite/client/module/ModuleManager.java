@@ -4,6 +4,7 @@ import me.htrewrite.client.module.modules.combat.*;
 import me.htrewrite.client.module.modules.exploit.*;
 import me.htrewrite.client.module.modules.gui.*;
 import me.htrewrite.client.module.modules.gui.hud.HUDModule;
+import me.htrewrite.client.module.modules.gui.webpanel.WebPanelModule;
 import me.htrewrite.client.module.modules.miscellaneous.*;
 import me.htrewrite.client.module.modules.movement.*;
 import me.htrewrite.client.module.modules.render.*;
@@ -116,6 +117,7 @@ public class ModuleManager {
         modules.add(new HUDModule());
         modules.add(new MusicModule());
         modules.add(notificationsModule = new NotificationsModule());
+        modules.add(new WebPanelModule());
     }
 
     public ArrayList<Module> getModules() {

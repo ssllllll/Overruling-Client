@@ -48,6 +48,16 @@ public class Module implements Listenable, Labeled {
     public ModuleType getCategory() { return category; }
     public ArrayList<Setting> getOptions() { return options; }
 
+    @Deprecated
+    public void rawToggle(boolean enabled) { this.enabled = enabled;}
+
+    public void defaultEnabled() {
+        rawToggle(true);
+
+        HTRewrite.EVENT_BUS.subscribe(this);
+        HTRewrite.EVENT_BUS.post(new ModuleToggleEvent(this, true));
+    }
+
     public boolean isEnabled() { return enabled; }
     public void toggle() {
         enabled = !enabled;

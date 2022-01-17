@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ChatAPI {
+    public static final String HOST = "135.125.183.121";
     public static final AtomicInteger lastKeepAliveUsers = new AtomicInteger(0);
     public static final ContainerManager containerManager = new ContainerManager();
     public static ExecutorService executorService = Executors.newFixedThreadPool(1);
@@ -41,7 +42,7 @@ public class ChatAPI {
         boolean success = false;
         while(!success) {
             try {
-                Socket socket = new Socket("209.141.58.112", 43710);
+                Socket socket = new Socket(HOST, 43710);
                 ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                 outputStream.writeObject(new CSChatPacket(user.username, message));
                 socket.close();
@@ -54,7 +55,7 @@ public class ChatAPI {
         boolean success = false;
         while(!success) {
             try {
-                Socket socket = new Socket("209.141.58.112", 43710);
+                Socket socket = new Socket(HOST, 43710);
                 ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                 outputStream.writeObject(new CSKeepAlivePacket(user.username));
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
