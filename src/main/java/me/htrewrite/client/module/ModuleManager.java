@@ -112,6 +112,7 @@ public class ModuleManager {
         /* Gui */
         modules.add(new ClickGuiModule());
         modules.add(new DiscordRPCModule());
+        modules.add(new GameGuiModule());
         modules.add(new HUDModule());
         modules.add(new MusicModule());
         modules.add(notificationsModule = new NotificationsModule());

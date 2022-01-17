@@ -170,4 +170,6 @@ public class EventProcessor {
     @SubscribeEvent public void attackEntity(AttackEntityEvent event) {EVENT_BUS.post(event);}
 
     @SubscribeEvent public void onRenderBlockOverlay(RenderBlockOverlayEvent event) { EVENT_BUS.post(event); }
+
+    @SubscribeEvent public void onGuiOpen(GuiOpenEvent event) { EVENT_BUS.post(event); }
 }

@@ -186,6 +186,7 @@ shadowJar {
         include(dependency('org.reflections:reflections'))
         include(dependency('org.javassist:javassist'))
         include(dependency('org.slick2d:slick2d-core'))
+        include(dependency('com.google.code.gson:gson:2.8.5'))
         //include(dependency('cabaletta:baritone-api:1.2'))
     }
     exclude 'dummyThing'
