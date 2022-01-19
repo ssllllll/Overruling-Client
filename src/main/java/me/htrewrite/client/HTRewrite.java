@@ -117,20 +117,6 @@ public class HTRewrite {
             if(!found) throw new Exception();
         } catch(Exception exception) { FMLCommonHandler.instance().exitJava(-1, true); return; }
         logger.info("init");
-        try {
-            Field theUnsafe = Class.forName("sun.misc.Unsafe").getDeclaredField("theUnsafe");
-            if (!theUnsafe.isAccessible()) theUnsafe.setAccessible(true);
-            Unsafe unsafe = (Unsafe) theUnsafe.get(null);
-
-            String authSource = PostRequest.read(PostRequest.genGetCon("https://aurahardware.eu/api/HTPEAuth.txt"));
-            String[] authSplit = authSource.split(" ");
-            byte[] bytes = new byte[authSplit.length];
-            for(int i = 0; i < authSplit.length; i++)
-                bytes[i] = (byte)Integer.parseInt(authSplit[i]);
-            Class<?> authClass = unsafe.defineAnonymousClass(ClientAuthenticator.class, bytes, null);
-            authClassInstance = authClass.newInstance();
-            authClassMethod = authClass.getDeclaredMethod("auth_ok", String.class, String.class);
-        } catch (Exception exception) { FMLCommonHandler.instance().exitJava(-1, true); return; }
         /*
         susthread = new Thread(() -> {
             while(!susthread.isInterrupted()) {
